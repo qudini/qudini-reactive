@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <JsonStructuredLayout/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <AsyncRoot level="${env:LOG_LEVEL:-INFO}">
+            <AppenderRef ref="Console"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

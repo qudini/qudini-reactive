@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class Log {
 
-    private static final String MDC_CONTEXT_MAP_KEY = "MdcContextMap";
+    private static final String CONTEXT_MAP_KEY = "LOGGING_MDC";
 
     public static <O> Mono<O> mono(Supplier<Mono<O>> supplier) {
         return context().flatMap(context -> withContext(context, supplier));
@@ -76,7 +76,7 @@ public final class Log {
 
     public static <O> O withContext(Context context, Supplier<O> supplier) {
         try {
-            Map<String, String> contextMap = context.getOrDefault(MDC_CONTEXT_MAP_KEY, emptyMap());
+            Map<String, String> contextMap = context.getOrDefault(CONTEXT_MAP_KEY, emptyMap());
             MDC.setContextMap(contextMap);
             return supplier.get();
         } finally {
