@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>reactive-utils</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
