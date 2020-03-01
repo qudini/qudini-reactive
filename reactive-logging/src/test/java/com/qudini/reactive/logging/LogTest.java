@@ -207,6 +207,49 @@ class LogTest {
         assertThat(mdcValue.get()).isEqualTo("value");
     }
 
+    @Test
+    @DisplayName("should populate then clear the MDC when passing a runnable")
+    void withContextRunnable() {
+        var mdcValue = new AtomicReference<>();
+        Log.withContext(
+                createContext(),
+                () -> mdcValue.set(MDC.get("key"))
+        );
+        assertThat(mdcValue.get()).isEqualTo("value");
+        assertThat(MDC.getCopyOfContextMap()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should populate then clear the MDC when passing a supplier")
+    void withContextSupplier() {
+        var mdcValue = Log.withContext(
+                createContext(),
+                () -> MDC.get("key")
+        );
+        assertThat(mdcValue).isEqualTo("value");
+        assertThat(MDC.getCopyOfContextMap()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should expose the correlation id")
+    void correlationId() {
+        var correlationId = Log
+                .getCorrelationId()
+                .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
+                .block();
+        assertThat(correlationId).isEqualTo("correlation id");
+    }
+
+    @Test
+    @DisplayName("should not expose the correlation id if not found")
+    void emptyCorrelationId() {
+        var correlationId = Log
+                .getCorrelationId()
+                .subscriberContext(Context.of("LOGGING_MDC", Map.of()))
+                .block();
+        assertThat(correlationId).isNull();
+    }
+
     private Context createContext() {
         return Context.of("LOGGING_MDC", Map.of("key", "value"));
     }

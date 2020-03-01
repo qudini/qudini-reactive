@@ -97,6 +97,10 @@ public final class Log implements ReactiveContextCreator {
         }
     }
 
+    public static Mono<String> getCorrelationId() {
+        return mono(() -> Mono.justOrEmpty(MDC.get(CORRELATION_ID_KEY)));
+    }
+
     private static Mono<Context> context() {
         return Mono.subscriberContext();
     }

@@ -1,5 +1,8 @@
 package com.qudini.reactive.logging;
 
+import com.qudini.reactive.logging.aop.DefaultJoinPointSerialiser;
+import com.qudini.reactive.logging.aop.JoinPointSerialiser;
+import com.qudini.reactive.logging.aop.LoggedAspect;
 import com.qudini.reactive.logging.correlation.CorrelationIdGenerator;
 import com.qudini.reactive.logging.correlation.DefaultCorrelationIdGenerator;
 import com.qudini.reactive.logging.web.DefaultLoggingContextExtractor;
@@ -16,7 +19,7 @@ public class ReactiveLoggingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public CorrelationIdGenerator correlationIdGenerator(
-            @Value("${logging.correlation-id.issuer:Unknown}") String issuer
+            @Value("${logging.correlation-id.issuer:UnknownIssuer}") String issuer
     ) {
         return new DefaultCorrelationIdGenerator(issuer);
     }
@@ -39,6 +42,17 @@ public class ReactiveLoggingAutoConfiguration {
             Log log
     ) {
         return new LoggingContextFilter(correlationIdHeader, loggingContextExtractor, log);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public JoinPointSerialiser joinPointSerialiser() {
+        return new DefaultJoinPointSerialiser();
+    }
+
+    @Bean
+    public LoggedAspect loggedAspect(JoinPointSerialiser joinPointSerialiser) {
+        return new LoggedAspect(joinPointSerialiser);
     }
 
 }
