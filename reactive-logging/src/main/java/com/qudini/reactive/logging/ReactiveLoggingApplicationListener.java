@@ -12,7 +12,7 @@ import java.util.Map;
 public class ReactiveLoggingApplicationListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent>, Ordered {
 
     private static final String LOGGING_CONFIG_PROPERTY = LoggingApplicationListener.CONFIG_PROPERTY;
-    private static final String JSON_STRUCTURED_LOGGING_CONFIG = "classpath:json-structured-log4j2.xml";
+    private static final String QUDINI_LOG4J2_CONFIG = "classpath:qudini-log4j2.xml";
     private static final String DEFAULT = "default";
     private static final String PROPERTY_SOURCE = "java-logging-property-source";
 
@@ -21,7 +21,7 @@ public class ReactiveLoggingApplicationListener implements ApplicationListener<A
         var environment = event.getEnvironment();
         var loggingConfig = environment.getProperty(LOGGING_CONFIG_PROPERTY, "");
         if (loggingConfig.isEmpty()) {
-            setLoggingConfig(environment, JSON_STRUCTURED_LOGGING_CONFIG);
+            setLoggingConfig(environment, QUDINI_LOG4J2_CONFIG);
         } else if (DEFAULT.equalsIgnoreCase(loggingConfig)) {
             setLoggingConfig(environment, "");
         }

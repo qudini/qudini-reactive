@@ -28,8 +28,8 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("JsonStructuredLayout")
-class JsonStructuredLayoutTest {
+@DisplayName("QudiniLog4j2Layout")
+class QudiniJsonLayoutTest {
 
     private static final LoggerContext LOGGER_CONTEXT = (LoggerContext) LogManager.getContext();
     private static final ResettableStringWriter LOG_OUTPUT = new ResettableStringWriter();
@@ -39,7 +39,7 @@ class JsonStructuredLayoutTest {
         var config = LOGGER_CONTEXT.getConfiguration();
         var appender = WriterAppender
                 .newBuilder()
-                .setLayout(JsonStructuredLayout.newInstance())
+                .setLayout(QudiniJsonLayout.newInstance())
                 .setTarget(LOG_OUTPUT)
                 .setName("STRING_APPENDER")
                 .build();

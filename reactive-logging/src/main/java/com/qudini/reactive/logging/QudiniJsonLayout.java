@@ -20,8 +20,8 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 import static org.apache.logging.log4j.core.Layout.ELEMENT_TYPE;
 import static org.apache.logging.log4j.core.config.Node.CATEGORY;
 
-@Plugin(name = "JsonStructuredLayout", category = CATEGORY, elementType = ELEMENT_TYPE)
-public final class JsonStructuredLayout extends AbstractStringLayout {
+@Plugin(name = "QudiniJsonLayout", category = CATEGORY, elementType = ELEMENT_TYPE)
+public final class QudiniJsonLayout extends AbstractStringLayout {
 
     private static final String TIMESTAMP_KEY = "timestamp";
     private static final String LOG_LEVEL_KEY = "log_level";
@@ -41,13 +41,13 @@ public final class JsonStructuredLayout extends AbstractStringLayout {
 
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
 
-    private JsonStructuredLayout() {
+    private QudiniJsonLayout() {
         super(UTF_8);
     }
 
     @PluginFactory
-    public static JsonStructuredLayout newInstance() {
-        return new JsonStructuredLayout();
+    public static QudiniJsonLayout newInstance() {
+        return new QudiniJsonLayout();
     }
 
     @SneakyThrows
