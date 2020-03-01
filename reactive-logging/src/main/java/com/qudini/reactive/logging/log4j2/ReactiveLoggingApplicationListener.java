@@ -1,4 +1,4 @@
-package com.qudini.reactive.logging;
+package com.qudini.reactive.logging.log4j2;
 
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.logging.LoggingApplicationListener;

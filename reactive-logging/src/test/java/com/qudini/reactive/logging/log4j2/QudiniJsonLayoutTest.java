@@ -1,7 +1,8 @@
-package com.qudini.reactive.logging;
+package com.qudini.reactive.logging.log4j2;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qudini.reactive.logging.log4j2.QudiniJsonLayout;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
