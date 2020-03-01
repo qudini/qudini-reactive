@@ -1,6 +1,7 @@
 package com.qudini.reactive.logging;
 
-import lombok.NoArgsConstructor;
+import com.qudini.reactive.logging.correlation.CorrelationIdGenerator;
+import lombok.RequiredArgsConstructor;
 import org.reactivestreams.Publisher;
 import org.slf4j.MDC;
 import reactor.core.publisher.Flux;
@@ -8,20 +9,31 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static java.util.Collections.emptyMap;
-import static lombok.AccessLevel.PRIVATE;
+import static java.util.Collections.unmodifiableMap;
 
-@NoArgsConstructor(access = PRIVATE)
+@RequiredArgsConstructor
 public final class Log {
 
-    private static final String CONTEXT_MAP_KEY = "LOGGING_MDC";
+    private static final String LOGGING_MDC_KEY = "LOGGING_MDC";
+
+    private static final String CORRELATION_ID_KEY = "correlation_id";
+
+    private final CorrelationIdGenerator correlationIdGenerator;
+
+    public Context createContext(Optional<String> correlationId, Map<String, String> loggingContext) {
+        Map<String, String> mdc = new HashMap<>(loggingContext);
+        mdc.put(CORRELATION_ID_KEY, correlationId.orElseGet(correlationIdGenerator::generate));
+        return Context.of(LOGGING_MDC_KEY, unmodifiableMap(mdc));
+    }
 
     public static <O> Mono<O> mono(Supplier<Mono<O>> supplier) {
         return context().flatMap(context -> withContext(context, supplier));
@@ -76,8 +88,8 @@ public final class Log {
 
     public static <O> O withContext(Context context, Supplier<O> supplier) {
         try {
-            Map<String, String> contextMap = context.getOrDefault(CONTEXT_MAP_KEY, emptyMap());
-            MDC.setContextMap(contextMap);
+            Map<String, String> mdc = context.getOrDefault(LOGGING_MDC_KEY, Map.of());
+            MDC.setContextMap(mdc);
             return supplier.get();
         } finally {
             MDC.clear();

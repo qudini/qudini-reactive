@@ -1,2 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.qudini.reactive.logging.ReactiveLoggingAutoConfiguration
 org.springframework.context.ApplicationListener=\
 com.qudini.reactive.logging.log4j2.ReactiveLoggingApplicationListener
