@@ -35,7 +35,7 @@ class LogTest {
     @Test
     @DisplayName("should generate a context with the given correlation id and logging context")
     void useGivenCorrelationId() {
-        var context = log.createContext(Optional.of("given"), Map.of("foo", "bar"));
+        var context = log.create(Optional.of("given"), Map.of("foo", "bar"));
         var mdc = context.<Map<String, String>>get("LOGGING_MDC");
         assertThat(mdc).containsExactlyInAnyOrderEntriesOf(Map.of(
                 "correlation_id", "given",
@@ -48,7 +48,7 @@ class LogTest {
     @DisplayName("should generate a correlation id if none is given")
     void generateCorrelationId() {
         given(correlationIdGenerator.generate()).willReturn("generated");
-        var context = log.createContext(Optional.empty(), Map.of());
+        var context = log.create(Optional.empty(), Map.of());
         var mdc = context.<Map<String, String>>get("LOGGING_MDC");
         assertThat(mdc).containsExactlyInAnyOrderEntriesOf(Map.of("correlation_id", "generated"));
     }
@@ -56,7 +56,7 @@ class LogTest {
     @Test
     @DisplayName("should ignore the correlation id in the logging context if any")
     void ignoreCorrelationIdInContext() {
-        var context = log.createContext(Optional.of("given"), Map.of(
+        var context = log.create(Optional.of("given"), Map.of(
                 "correlation_id", "ignored",
                 "foo", "bar"
         ));

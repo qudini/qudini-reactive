@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import static java.util.Collections.unmodifiableMap;
 
 @RequiredArgsConstructor
-public final class Log {
+public final class Log implements ReactiveContextCreator {
 
     private static final String LOGGING_MDC_KEY = "LOGGING_MDC";
 
@@ -29,7 +29,8 @@ public final class Log {
 
     private final CorrelationIdGenerator correlationIdGenerator;
 
-    public Context createContext(Optional<String> correlationId, Map<String, String> loggingContext) {
+    @Override
+    public Context create(Optional<String> correlationId, Map<String, String> loggingContext) {
         Map<String, String> mdc = new HashMap<>(loggingContext);
         mdc.put(CORRELATION_ID_KEY, correlationId.orElseGet(correlationIdGenerator::generate));
         return Context.of(LOGGING_MDC_KEY, unmodifiableMap(mdc));
