@@ -36,31 +36,47 @@ public final class Log implements ReactiveContextCreator {
         return Context.of(LOGGING_MDC_KEY, unmodifiableMap(mdc));
     }
 
-    public static <O> Mono<O> mono(Supplier<Mono<O>> supplier) {
+    public static <O> Mono<O> then(Supplier<O> supplier) {
+        return context().map(context -> withContext(context, supplier));
+    }
+
+    public static <O> Mono<O> thenMono(Supplier<Mono<O>> supplier) {
         return context().flatMap(context -> withContext(context, supplier));
     }
 
-    public static <O> Flux<O> flux(Supplier<Publisher<O>> supplier) {
+    public static <O> Flux<O> thenIterable(Supplier<Iterable<O>> supplier) {
+        return context().flatMapIterable(context -> withContext(context, supplier));
+    }
+
+    public static <O> Flux<O> thenFlux(Supplier<Publisher<O>> supplier) {
         return context().flatMapMany(context -> withContext(context, supplier));
     }
 
-    public static <I, O> Function<I, Mono<O>> mono(Function<I, Mono<O>> mapper) {
+    public static <I, O> Function<I, Mono<O>> then(Function<I, O> mapper) {
+        return value -> context().map(context -> withContext(context, () -> mapper.apply(value)));
+    }
+
+    public static <I, O> Function<I, Mono<O>> thenMono(Function<I, Mono<O>> mapper) {
         return value -> context().flatMap(context -> withContext(context, () -> mapper.apply(value)));
     }
 
-    public static <I, O> Function<I, Flux<O>> flux(Function<I, Publisher<O>> mapper) {
+    public static <I, O> Function<I, Flux<O>> thenIterable(Function<I, Iterable<O>> mapper) {
+        return value -> context().flatMapIterable(context -> withContext(context, () -> mapper.apply(value)));
+    }
+
+    public static <I, O> Function<I, Flux<O>> thenFlux(Function<I, Publisher<O>> mapper) {
         return value -> context().flatMapMany(context -> withContext(context, () -> mapper.apply(value)));
     }
 
-    public static <I> Consumer<Signal<I>> next(Consumer<I> consumer) {
+    public static <I> Consumer<Signal<I>> onNext(Consumer<I> consumer) {
         return on(Signal::isOnNext, (value, throwable) -> consumer.accept(value));
     }
 
-    public static <I> Consumer<Signal<I>> error(Consumer<Throwable> consumer) {
+    public static <I> Consumer<Signal<I>> onError(Consumer<Throwable> consumer) {
         return on(Signal::isOnError, (value, throwable) -> consumer.accept(throwable));
     }
 
-    public static <I, T extends Throwable> Consumer<Signal<I>> error(Class<T> throwableClass, Consumer<T> consumer) {
+    public static <I, T extends Throwable> Consumer<Signal<I>> onError(Class<T> throwableClass, Consumer<T> consumer) {
         return on(Signal::isOnError, (value, throwable) -> {
             if (throwableClass.isInstance(throwable)) {
                 consumer.accept((T) throwable);
@@ -68,7 +84,7 @@ public final class Log implements ReactiveContextCreator {
         });
     }
 
-    public static <I> Consumer<Signal<I>> complete(Runnable runnable) {
+    public static <I> Consumer<Signal<I>> onComplete(Runnable runnable) {
         return on(Signal::isOnComplete, (value, throwable) -> runnable.run());
     }
 
@@ -98,7 +114,7 @@ public final class Log implements ReactiveContextCreator {
     }
 
     public static Mono<String> getCorrelationId() {
-        return mono(() -> Mono.justOrEmpty(MDC.get(CORRELATION_ID_KEY)));
+        return thenMono(() -> Mono.justOrEmpty(MDC.get(CORRELATION_ID_KEY)));
     }
 
     private static Mono<Context> context() {

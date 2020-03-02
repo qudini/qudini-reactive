@@ -27,9 +27,9 @@ public final class DefaultCorrelationIdGenerator implements CorrelationIdGenerat
 
     private static final int VERSION = 1;
 
-    private static final String CORRELATION_ID_FORMAT = "%s=%d-%s-%s";
+    private static final String CORRELATION_ID_FORMAT = "%s%d-%s-%s";
 
-    private final String issuer;
+    private final String prefix;
 
     @Override
     public String generate() {
@@ -41,7 +41,7 @@ public final class DefaultCorrelationIdGenerator implements CorrelationIdGenerat
         }
         return String.format(
                 CORRELATION_ID_FORMAT,
-                issuer,
+                prefix,
                 VERSION,
                 toHexString(startTime),
                 paddedNumber

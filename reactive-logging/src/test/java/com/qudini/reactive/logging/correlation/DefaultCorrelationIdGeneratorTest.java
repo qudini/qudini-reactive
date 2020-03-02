@@ -11,7 +11,7 @@ class DefaultCorrelationIdGeneratorTest {
     @Test
     @DisplayName("should generate a correlation id")
     void generate() {
-        var generator = new DefaultCorrelationIdGenerator("Test");
+        var generator = new DefaultCorrelationIdGenerator("Test=");
         var correlationId = generator.generate();
         assertThat(correlationId).matches("Test=1-[a-z0-9]+-[a-z0-9]+");
     }

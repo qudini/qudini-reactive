@@ -19,9 +19,9 @@ public class ReactiveLoggingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public CorrelationIdGenerator correlationIdGenerator(
-            @Value("${logging.correlation-id.issuer:UnknownIssuer}") String issuer
+            @Value("${logging.correlation-id.prefix:}") String prefix
     ) {
-        return new DefaultCorrelationIdGenerator(issuer);
+        return new DefaultCorrelationIdGenerator(prefix);
     }
 
     @Bean

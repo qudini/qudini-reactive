@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.LoggerFactory;
 
-import static com.qudini.reactive.utils.Throwables.supplier;
+import static com.qudini.reactive.utils.Throwable.supplier;
 
 @Aspect
 @RequiredArgsConstructor
@@ -40,15 +40,15 @@ public class LoggedAspect {
     @Around("isAnnotated() && returnsMono()")
     public Object logMono(ProceedingJoinPoint joinPoint) {
         return Log
-                .mono(supplier(() -> logAndProceed(joinPoint)))
-                .doOnEach(Log.error(error -> logError(error, joinPoint)));
+                .thenMono(supplier(() -> logAndProceed(joinPoint)))
+                .doOnEach(Log.onError(error -> logError(error, joinPoint)));
     }
 
     @Around("isAnnotated() && returnsFlux()")
     public Object logFlux(ProceedingJoinPoint joinPoint) {
         return Log
-                .flux(supplier(() -> logAndProceed(joinPoint)))
-                .doOnEach(Log.error(error -> logError(error, joinPoint)));
+                .thenFlux(supplier(() -> logAndProceed(joinPoint)))
+                .doOnEach(Log.onError(error -> logError(error, joinPoint)));
     }
 
     private <T> T logAndProceed(ProceedingJoinPoint joinPoint) throws Throwable {

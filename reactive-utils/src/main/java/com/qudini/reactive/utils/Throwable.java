@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-public final class Throwables {
+public final class Throwable {
 
     @FunctionalInterface
     public interface ThrowableConsumer<I> extends Consumer<I> {
@@ -25,7 +25,7 @@ public final class Throwables {
             acceptOrThrow(i);
         }
 
-        void acceptOrThrow(I i) throws Throwable;
+        void acceptOrThrow(I i) throws java.lang.Throwable;
 
     }
 
@@ -38,7 +38,7 @@ public final class Throwables {
             return applyOrThrow(i);
         }
 
-        O applyOrThrow(I i) throws Throwable;
+        O applyOrThrow(I i) throws java.lang.Throwable;
 
     }
 
@@ -51,7 +51,7 @@ public final class Throwables {
             return getOrThrow();
         }
 
-        O getOrThrow() throws Throwable;
+        O getOrThrow() throws java.lang.Throwable;
 
     }
 
@@ -64,7 +64,7 @@ public final class Throwables {
             return testOrThrow(i);
         }
 
-        boolean testOrThrow(I i) throws Throwable;
+        boolean testOrThrow(I i) throws java.lang.Throwable;
     }
 
     @FunctionalInterface
@@ -76,7 +76,7 @@ public final class Throwables {
             acceptOrThrow(i, j);
         }
 
-        void acceptOrThrow(I i, J j) throws Throwable;
+        void acceptOrThrow(I i, J j) throws java.lang.Throwable;
 
     }
 
@@ -89,7 +89,7 @@ public final class Throwables {
             return applyOrThrow(i, j);
         }
 
-        O applyOrThrow(I i, J j) throws Throwable;
+        O applyOrThrow(I i, J j) throws java.lang.Throwable;
 
     }
 
@@ -102,7 +102,7 @@ public final class Throwables {
             return testOrThrow(i, j);
         }
 
-        boolean testOrThrow(I i, J j) throws Throwable;
+        boolean testOrThrow(I i, J j) throws java.lang.Throwable;
     }
 
     public static <I> Consumer<I> consumer(ThrowableConsumer<I> consumer) {

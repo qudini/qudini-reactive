@@ -68,24 +68,61 @@ class LogTest {
     }
 
     @Test
-    @DisplayName("should populate the reactive context when using the Mono supplier")
-    void monoSupplier() {
+    @DisplayName("should populate the reactive context when using the value supplier")
+    void valueSupplier() {
         var mdcValue = Log
-                .mono(() -> Mono.just(MDC.get("key")))
+                .then(() -> MDC.get("key"))
                 .subscriberContext(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo("value");
     }
 
     @Test
-    @DisplayName("should populate the reactive context when using the Flux supplier")
-    void fluxSupplier() {
+    @DisplayName("should populate the reactive context when using the Mono supplier")
+    void monoSupplier() {
         var mdcValue = Log
-                .flux(() -> Flux.just(MDC.get("key")))
+                .thenMono(() -> Mono.just(MDC.get("key")))
+                .subscriberContext(createContext())
+                .block();
+        assertThat(mdcValue).isEqualTo("value");
+    }
+
+    @Test
+    @DisplayName("should populate the reactive context when using the Iterable supplier")
+    void iterableSupplier() {
+        var mdcValue = Log
+                .thenIterable(() -> List.of(MDC.get("key")))
                 .collectList()
                 .subscriberContext(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo(List.of("value"));
+    }
+
+    @Test
+    @DisplayName("should populate the reactive context when using the Flux supplier")
+    void fluxSupplier() {
+        var mdcValue = Log
+                .thenFlux(() -> Flux.just(MDC.get("key")))
+                .collectList()
+                .subscriberContext(createContext())
+                .block();
+        assertThat(mdcValue).isEqualTo(List.of("value"));
+    }
+
+    @Test
+    @DisplayName("should populate the reactive context when using the value mapper")
+    void valueMapper() {
+        var mdcValue = new AtomicReference<>();
+        var value = Mono
+                .just(42)
+                .flatMap(Log.then(i -> {
+                    mdcValue.set(MDC.get("key"));
+                    return i;
+                }))
+                .subscriberContext(createContext())
+                .block();
+        assertThat(value).isEqualTo(42);
+        assertThat(mdcValue.get()).isEqualTo("value");
     }
 
     @Test
@@ -94,7 +131,7 @@ class LogTest {
         var mdcValue = new AtomicReference<>();
         var value = Mono
                 .just(42)
-                .flatMap(Log.mono(i -> {
+                .flatMap(Log.thenMono(i -> {
                     mdcValue.set(MDC.get("key"));
                     return Mono.just(i);
                 }))
@@ -105,12 +142,29 @@ class LogTest {
     }
 
     @Test
+    @DisplayName("should populate the reactive context when using the Iterable mapper")
+    void iterableMapper() {
+        var mdcValue = new AtomicReference<>();
+        var value = Mono
+                .just(42)
+                .flatMapMany(Log.thenIterable(i -> {
+                    mdcValue.set(MDC.get("key"));
+                    return List.of(i);
+                }))
+                .collectList()
+                .subscriberContext(createContext())
+                .block();
+        assertThat(value).isEqualTo(List.of(42));
+        assertThat(mdcValue.get()).isEqualTo("value");
+    }
+
+    @Test
     @DisplayName("should populate the reactive context when using the Flux mapper")
     void fluxMapper() {
         var mdcValue = new AtomicReference<>();
         var value = Mono
                 .just(42)
-                .flatMapMany(Log.flux(i -> {
+                .flatMapMany(Log.thenFlux(i -> {
                     mdcValue.set(MDC.get("key"));
                     return Flux.just(i);
                 }))
@@ -128,7 +182,7 @@ class LogTest {
         var mdcValue = new AtomicReference<>();
         Mono
                 .just(42)
-                .doOnEach(Log.next(i -> {
+                .doOnEach(Log.onNext(i -> {
                     value.set(i);
                     mdcValue.set(MDC.get("key"));
                 }))
@@ -146,7 +200,7 @@ class LogTest {
         var exception = new Exception();
         Mono
                 .error(exception)
-                .doOnEach(Log.error(error -> {
+                .doOnEach(Log.onError(error -> {
                     value.set(error);
                     mdcValue.set(MDC.get("key"));
                 }))
@@ -165,7 +219,7 @@ class LogTest {
         var exception = new IllegalArgumentException();
         Mono
                 .error(exception)
-                .doOnEach(Log.error(RuntimeException.class, error -> {
+                .doOnEach(Log.onError(RuntimeException.class, error -> {
                     value.set(error);
                     mdcValue.set(MDC.get("key"));
                 }))
@@ -184,7 +238,7 @@ class LogTest {
         var exception = new IllegalArgumentException();
         Mono
                 .error(exception)
-                .doOnEach(Log.error(IllegalStateException.class, error -> {
+                .doOnEach(Log.onError(IllegalStateException.class, error -> {
                     value.set(error);
                     mdcValue.set(MDC.get("key"));
                 }))
@@ -201,7 +255,7 @@ class LogTest {
         var mdcValue = new AtomicReference<>();
         Mono
                 .just(42)
-                .doOnEach(Log.complete(() -> mdcValue.set(MDC.get("key"))))
+                .doOnEach(Log.onComplete(() -> mdcValue.set(MDC.get("key"))))
                 .subscriberContext(createContext())
                 .block();
         assertThat(mdcValue.get()).isEqualTo("value");
