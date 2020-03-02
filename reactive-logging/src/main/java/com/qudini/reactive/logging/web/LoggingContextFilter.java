@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
+import static com.qudini.reactive.utils.MoreTuples.both;
+
 @RequiredArgsConstructor
 public final class LoggingContextFilter implements CorrelationIdForwarder, WebFilter, Ordered {
 
@@ -39,10 +41,13 @@ public final class LoggingContextFilter implements CorrelationIdForwarder, WebFi
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        var correlationId = extractCorrelationId(exchange);
-        var loggingContext = loggingContextExtractor.extract(exchange);
-        var context = reactiveContextCreator.create(correlationId, loggingContext);
-        return chain.filter(exchange).subscriberContext(context);
+        return Mono
+                .zip(
+                        Mono.just(extractCorrelationId(exchange)),
+                        loggingContextExtractor.extract(exchange)
+                )
+                .map(both(reactiveContextCreator::create))
+                .flatMap(context -> chain.filter(exchange).subscriberContext(context));
     }
 
     private Optional<String> extractCorrelationId(ServerWebExchange exchange) {

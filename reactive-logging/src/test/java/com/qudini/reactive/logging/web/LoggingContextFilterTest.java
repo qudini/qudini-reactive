@@ -132,7 +132,7 @@ public class LoggingContextFilterTest {
         given(exchange.getRequest()).willReturn(request);
         given(request.getHeaders()).willReturn(headers);
         given(headers.getFirst("header")).willReturn(null);
-        given(loggingContextExtractor.extract(exchange)).willReturn(Map.of());
+        given(loggingContextExtractor.extract(exchange)).willReturn(Mono.just(Map.of()));
         given(reactiveContextCreator.create(any(), any())).willReturn(reactiveContext);
         given(chain.filter(exchange)).willReturn(filtered);
         filter.filter(exchange, chain).block();

@@ -23,7 +23,8 @@ class DefaultLoggingContextExtractorTest {
     @Test
     @DisplayName("should return an empty map")
     void emptyMap() {
-        assertThat(extractor.extract(exchange)).isEmpty();
+        var context = extractor.extract(exchange).block();
+        assertThat(context).isEmpty();
     }
 
 }
