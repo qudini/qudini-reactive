@@ -154,11 +154,11 @@ class ThrowablesTest {
         consumer.accept(42);
     }
 
-    private Integer takeFunction(Function<Integer, Integer> function) {
+    private int takeFunction(Function<Integer, Integer> function) {
         return function.apply(42);
     }
 
-    private Integer takeSupplier(Supplier<Integer> supplier) {
+    private int takeSupplier(Supplier<Integer> supplier) {
         return supplier.get();
     }
 
@@ -170,7 +170,7 @@ class ThrowablesTest {
         consumer.accept(42, 42);
     }
 
-    private Integer takeBiFunction(BiFunction<Integer, Integer, Integer> function) {
+    private int takeBiFunction(BiFunction<Integer, Integer, Integer> function) {
         return function.apply(42, 42);
     }
 
