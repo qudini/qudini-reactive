@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.LoggerFactory;
 
-import static com.qudini.reactive.utils.Throwable.supplier;
+import static com.qudini.reactive.utils.Throwables.supplier;
 
 @Aspect
 @RequiredArgsConstructor
