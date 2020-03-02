@@ -11,18 +11,18 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.qudini.reactive.utils.Throwables.biConsumer;
-import static com.qudini.reactive.utils.Throwables.biFunction;
-import static com.qudini.reactive.utils.Throwables.biPredicate;
-import static com.qudini.reactive.utils.Throwables.consumer;
-import static com.qudini.reactive.utils.Throwables.function;
-import static com.qudini.reactive.utils.Throwables.predicate;
-import static com.qudini.reactive.utils.Throwables.supplier;
+import static com.qudini.reactive.utils.MoreThrowables.biConsumer;
+import static com.qudini.reactive.utils.MoreThrowables.biFunction;
+import static com.qudini.reactive.utils.MoreThrowables.biPredicate;
+import static com.qudini.reactive.utils.MoreThrowables.consumer;
+import static com.qudini.reactive.utils.MoreThrowables.function;
+import static com.qudini.reactive.utils.MoreThrowables.predicate;
+import static com.qudini.reactive.utils.MoreThrowables.supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("Throwables")
-class ThrowablesTest {
+@DisplayName("MoreThrowables")
+class MoreThrowablesTest {
 
     @Test
     @DisplayName("should handle successful throwable consumer")

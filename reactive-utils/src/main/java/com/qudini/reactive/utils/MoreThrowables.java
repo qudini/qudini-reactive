@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-public final class Throwables {
+public final class MoreThrowables {
 
     @FunctionalInterface
     public interface ThrowableConsumer<T> extends Consumer<T> {
