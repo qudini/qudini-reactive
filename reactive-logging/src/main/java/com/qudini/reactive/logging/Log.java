@@ -36,59 +36,59 @@ public final class Log implements ReactiveContextCreator {
         return Context.of(LOGGING_MDC_KEY, unmodifiableMap(mdc));
     }
 
-    public static <O> Mono<O> then(Supplier<O> supplier) {
+    public static <R> Mono<R> then(Supplier<R> supplier) {
         return context().map(context -> withContext(context, supplier));
     }
 
-    public static <O> Mono<O> thenMono(Supplier<Mono<O>> supplier) {
+    public static <R> Mono<R> thenMono(Supplier<Mono<R>> supplier) {
         return context().flatMap(context -> withContext(context, supplier));
     }
 
-    public static <O> Flux<O> thenIterable(Supplier<Iterable<O>> supplier) {
+    public static <R> Flux<R> thenIterable(Supplier<Iterable<R>> supplier) {
         return context().flatMapIterable(context -> withContext(context, supplier));
     }
 
-    public static <O> Flux<O> thenFlux(Supplier<Publisher<O>> supplier) {
+    public static <R> Flux<R> thenFlux(Supplier<Publisher<R>> supplier) {
         return context().flatMapMany(context -> withContext(context, supplier));
     }
 
-    public static <I, O> Function<I, Mono<O>> then(Function<I, O> mapper) {
+    public static <T, R> Function<T, Mono<R>> then(Function<T, R> mapper) {
         return value -> context().map(context -> withContext(context, () -> mapper.apply(value)));
     }
 
-    public static <I, O> Function<I, Mono<O>> thenMono(Function<I, Mono<O>> mapper) {
+    public static <T, R> Function<T, Mono<R>> thenMono(Function<T, Mono<R>> mapper) {
         return value -> context().flatMap(context -> withContext(context, () -> mapper.apply(value)));
     }
 
-    public static <I, O> Function<I, Flux<O>> thenIterable(Function<I, Iterable<O>> mapper) {
+    public static <T, R> Function<T, Flux<R>> thenIterable(Function<T, Iterable<R>> mapper) {
         return value -> context().flatMapIterable(context -> withContext(context, () -> mapper.apply(value)));
     }
 
-    public static <I, O> Function<I, Flux<O>> thenFlux(Function<I, Publisher<O>> mapper) {
+    public static <T, R> Function<T, Flux<R>> thenFlux(Function<T, Publisher<R>> mapper) {
         return value -> context().flatMapMany(context -> withContext(context, () -> mapper.apply(value)));
     }
 
-    public static <I> Consumer<Signal<I>> onNext(Consumer<I> consumer) {
+    public static <T> Consumer<Signal<T>> onNext(Consumer<T> consumer) {
         return on(Signal::isOnNext, (value, throwable) -> consumer.accept(value));
     }
 
-    public static <I> Consumer<Signal<I>> onError(Consumer<Throwable> consumer) {
+    public static <T> Consumer<Signal<T>> onError(Consumer<Throwable> consumer) {
         return on(Signal::isOnError, (value, throwable) -> consumer.accept(throwable));
     }
 
-    public static <I, T extends Throwable> Consumer<Signal<I>> onError(Class<T> throwableClass, Consumer<T> consumer) {
+    public static <T, E extends Throwable> Consumer<Signal<T>> onError(Class<E> throwableClass, Consumer<E> consumer) {
         return on(Signal::isOnError, (value, throwable) -> {
             if (throwableClass.isInstance(throwable)) {
-                consumer.accept((T) throwable);
+                consumer.accept((E) throwable);
             }
         });
     }
 
-    public static <I> Consumer<Signal<I>> onComplete(Runnable runnable) {
+    public static <T> Consumer<Signal<T>> onComplete(Runnable runnable) {
         return on(Signal::isOnComplete, (value, throwable) -> runnable.run());
     }
 
-    public static <I> Consumer<Signal<I>> on(Predicate<Signal<I>> event, BiConsumer<I, Throwable> logger) {
+    public static <T> Consumer<Signal<T>> on(Predicate<Signal<T>> event, BiConsumer<T, Throwable> logger) {
         return signal -> {
             if (event.test(signal)) {
                 withContext(signal.getContext(), () -> logger.accept(signal.get(), signal.getThrowable()));
@@ -103,7 +103,7 @@ public final class Log implements ReactiveContextCreator {
         });
     }
 
-    public static <O> O withContext(Context context, Supplier<O> supplier) {
+    public static <R> R withContext(Context context, Supplier<R> supplier) {
         try {
             Map<String, String> mdc = context.getOrDefault(LOGGING_MDC_KEY, Map.of());
             MDC.setContextMap(mdc);

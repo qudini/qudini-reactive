@@ -17,119 +17,119 @@ import static lombok.AccessLevel.PRIVATE;
 public final class Throwables {
 
     @FunctionalInterface
-    public interface ThrowableConsumer<I> extends Consumer<I> {
+    public interface ThrowableConsumer<T> extends Consumer<T> {
 
         @Override
         @SneakyThrows
-        default void accept(I i) {
-            acceptOrThrow(i);
+        default void accept(T t) {
+            acceptOrThrow(t);
         }
 
-        void acceptOrThrow(I i) throws java.lang.Throwable;
+        void acceptOrThrow(T t) throws java.lang.Throwable;
 
     }
 
     @FunctionalInterface
-    public interface ThrowableFunction<I, O> extends Function<I, O> {
+    public interface ThrowableFunction<T, R> extends Function<T, R> {
 
         @Override
         @SneakyThrows
-        default O apply(I i) {
-            return applyOrThrow(i);
+        default R apply(T t) {
+            return applyOrThrow(t);
         }
 
-        O applyOrThrow(I i) throws java.lang.Throwable;
+        R applyOrThrow(T t) throws java.lang.Throwable;
 
     }
 
     @FunctionalInterface
-    public interface ThrowableSupplier<O> extends Supplier<O> {
+    public interface ThrowableSupplier<R> extends Supplier<R> {
 
         @Override
         @SneakyThrows
-        default O get() {
+        default R get() {
             return getOrThrow();
         }
 
-        O getOrThrow() throws java.lang.Throwable;
+        R getOrThrow() throws java.lang.Throwable;
 
     }
 
     @FunctionalInterface
-    public interface ThrowablePredicate<I> extends Predicate<I> {
+    public interface ThrowablePredicate<T> extends Predicate<T> {
 
         @Override
         @SneakyThrows
-        default boolean test(I i) {
-            return testOrThrow(i);
+        default boolean test(T t) {
+            return testOrThrow(t);
         }
 
-        boolean testOrThrow(I i) throws java.lang.Throwable;
+        boolean testOrThrow(T t) throws java.lang.Throwable;
     }
 
     @FunctionalInterface
-    public interface ThrowableBiConsumer<I, J> extends BiConsumer<I, J> {
+    public interface ThrowableBiConsumer<T1, T2> extends BiConsumer<T1, T2> {
 
         @Override
         @SneakyThrows
-        default void accept(I i, J j) {
-            acceptOrThrow(i, j);
+        default void accept(T1 t1, T2 t2) {
+            acceptOrThrow(t1, t2);
         }
 
-        void acceptOrThrow(I i, J j) throws java.lang.Throwable;
-
-    }
-
-    @FunctionalInterface
-    public interface ThrowableBiFunction<I, J, O> extends BiFunction<I, J, O> {
-
-        @Override
-        @SneakyThrows
-        default O apply(I i, J j) {
-            return applyOrThrow(i, j);
-        }
-
-        O applyOrThrow(I i, J j) throws java.lang.Throwable;
+        void acceptOrThrow(T1 t1, T2 t2) throws java.lang.Throwable;
 
     }
 
     @FunctionalInterface
-    public interface ThrowableBiPredicate<I, J> extends BiPredicate<I, J> {
+    public interface ThrowableBiFunction<T1, T2, R> extends BiFunction<T1, T2, R> {
 
         @Override
         @SneakyThrows
-        default boolean test(I i, J j) {
-            return testOrThrow(i, j);
+        default R apply(T1 t1, T2 t2) {
+            return applyOrThrow(t1, t2);
         }
 
-        boolean testOrThrow(I i, J j) throws java.lang.Throwable;
+        R applyOrThrow(T1 t1, T2 t2) throws java.lang.Throwable;
+
     }
 
-    public static <I> Consumer<I> consumer(ThrowableConsumer<I> consumer) {
+    @FunctionalInterface
+    public interface ThrowableBiPredicate<T1, T2> extends BiPredicate<T1, T2> {
+
+        @Override
+        @SneakyThrows
+        default boolean test(T1 t1, T2 t2) {
+            return testOrThrow(t1, t2);
+        }
+
+        boolean testOrThrow(T1 t1, T2 t2) throws java.lang.Throwable;
+    }
+
+    public static <T> Consumer<T> consumer(ThrowableConsumer<T> consumer) {
         return consumer;
     }
 
-    public static <I, O> Function<I, O> function(ThrowableFunction<I, O> function) {
+    public static <T, R> Function<T, R> function(ThrowableFunction<T, R> function) {
         return function;
     }
 
-    public static <O> Supplier<O> supplier(ThrowableSupplier<O> supplier) {
+    public static <R> Supplier<R> supplier(ThrowableSupplier<R> supplier) {
         return supplier;
     }
 
-    public static <I> Predicate<I> predicate(ThrowablePredicate<I> predicate) {
+    public static <T> Predicate<T> predicate(ThrowablePredicate<T> predicate) {
         return predicate;
     }
 
-    public static <I, J> BiConsumer<I, J> biConsumer(ThrowableBiConsumer<I, J> consumer) {
+    public static <T1, T2> BiConsumer<T1, T2> biConsumer(ThrowableBiConsumer<T1, T2> consumer) {
         return consumer;
     }
 
-    public static <I, J, O> BiFunction<I, J, O> biFunction(ThrowableBiFunction<I, J, O> function) {
+    public static <T1, T2, R> BiFunction<T1, T2, R> biFunction(ThrowableBiFunction<T1, T2, R> function) {
         return function;
     }
 
-    public static <I, J> BiPredicate<I, J> biPredicate(ThrowableBiPredicate<I, J> predicate) {
+    public static <T1, T2> BiPredicate<T1, T2> biPredicate(ThrowableBiPredicate<T1, T2> predicate) {
         return predicate;
     }
 

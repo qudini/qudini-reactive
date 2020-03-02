@@ -8,15 +8,15 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Monos")
-class MonosTest {
+@DisplayName("MoreMonos")
+class MoreMonosTest {
 
     @Test
     @DisplayName("should allow transforming a Mono<T> into a Mono<Optional<T>>")
     void toValuedOptional() {
         var result = Mono
                 .just(42)
-                .transform(Monos::toOptional)
+                .transform(MoreMonos::toOptional)
                 .block();
         assertThat(result).isEqualTo(Optional.of(42));
     }
@@ -26,7 +26,7 @@ class MonosTest {
     void toEmptyOptional() {
         var result = Mono
                 .empty()
-                .transform(Monos::toOptional)
+                .transform(MoreMonos::toOptional)
                 .block();
         assertThat(result).isEqualTo(Optional.empty());
     }

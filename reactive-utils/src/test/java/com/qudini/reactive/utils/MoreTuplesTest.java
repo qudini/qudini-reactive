@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.qudini.reactive.utils.MoreTuples.both;
 import static com.qudini.reactive.utils.MoreTuples.each;
 import static com.qudini.reactive.utils.MoreTuples.ifBoth;
+import static com.qudini.reactive.utils.MoreTuples.ifEach;
+import static com.qudini.reactive.utils.MoreTuples.ifEither;
 import static com.qudini.reactive.utils.MoreTuples.ifLeft;
 import static com.qudini.reactive.utils.MoreTuples.ifRight;
 import static com.qudini.reactive.utils.MoreTuples.left;
@@ -63,6 +65,24 @@ class MoreTuplesTest {
                 .map(each(x -> x + "bar"))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foobar", "barbar"));
+    }
+
+    @Test
+    @DisplayName("should allow mapping on each value of a Tuple2 with a predicate")
+    void eachPredicate() {
+        var output = createFooBar()
+                .filter(ifEach(x -> 3 == x.length()))
+                .block();
+        assertThat(output).isEqualTo(Tuples.of("foo", "bar"));
+    }
+
+    @Test
+    @DisplayName("should allow mapping on either value of a Tuple2 with a predicate")
+    void eitherPredicate() {
+        var output = createFooBar()
+                .filter(ifEither("bar"::equals))
+                .block();
+        assertThat(output).isEqualTo(Tuples.of("foo", "bar"));
     }
 
     @Test
