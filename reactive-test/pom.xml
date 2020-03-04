@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>reactive-logging</artifactId>
+    <artifactId>reactive-tests</artifactId>
 
     <parent>
         <groupId>com.qudini</groupId>
@@ -15,20 +15,22 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.qudini</groupId>
-            <artifactId>reactive-utils</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>3.4.2</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.qudini</groupId>
-            <artifactId>reactive-tests</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
         </dependency>
     </dependencies>
 
