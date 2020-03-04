@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Version
+        run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\//} -DgenerateBackupPoms=false
+      - name: Release
+        run: mvn -B clean deploy -Dregistry=https://maven.pkg.github.com/qudini -Dtoken=${GITHUB_TOKEN}
+        env:
+          LOG_LEVEL: FATAL
