@@ -1,6 +1,6 @@
 package com.qudini.reactive.logging.web;
 
-import com.qudini.reactive.logging.ReactiveContextCreator;
+import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class LoggingContextFilterTest {
     private LoggingContextExtractor loggingContextExtractor;
 
     @Mock
-    private ReactiveContextCreator reactiveContextCreator;
+    private ReactiveLoggingContextCreator reactiveLoggingContextCreator;
 
     @Mock
     private ServerWebExchange exchange;
@@ -51,7 +51,7 @@ public class LoggingContextFilterTest {
 
     @BeforeEach
     void prepareMocks() {
-        filter = new LoggingContextFilter("header", loggingContextExtractor, reactiveContextCreator);
+        filter = new LoggingContextFilter("header", loggingContextExtractor, reactiveLoggingContextCreator);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class LoggingContextFilterTest {
         given(request.getHeaders()).willReturn(headers);
         given(headers.getFirst("header")).willReturn(null);
         given(loggingContextExtractor.extract(exchange)).willReturn(Mono.just(Map.of()));
-        given(reactiveContextCreator.create(any(), any())).willReturn(reactiveContext);
+        given(reactiveLoggingContextCreator.create(any(), any())).willReturn(reactiveContext);
         given(chain.filter(exchange)).willReturn(filtered);
         filter.filter(exchange, chain).block();
         assertThat(contextValue.get()).isEqualTo("bar");

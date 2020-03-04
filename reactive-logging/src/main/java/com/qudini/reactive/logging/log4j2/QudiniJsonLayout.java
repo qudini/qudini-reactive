@@ -8,7 +8,6 @@ import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Set;
@@ -100,6 +99,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
 
     }
 
+    @SneakyThrows
     private String readStackTrace(Throwable throwable) {
         try (
                 var stringWriter = new StringWriter();
@@ -108,8 +108,6 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             throwable.printStackTrace(printWriter);
             printWriter.flush();
             return stringWriter.toString();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
         }
     }
 

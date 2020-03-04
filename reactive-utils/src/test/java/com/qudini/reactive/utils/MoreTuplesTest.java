@@ -17,7 +17,9 @@ import static com.qudini.reactive.utils.MoreTuples.ifEither;
 import static com.qudini.reactive.utils.MoreTuples.ifLeft;
 import static com.qudini.reactive.utils.MoreTuples.ifRight;
 import static com.qudini.reactive.utils.MoreTuples.left;
+import static com.qudini.reactive.utils.MoreTuples.leftWhen;
 import static com.qudini.reactive.utils.MoreTuples.right;
+import static com.qudini.reactive.utils.MoreTuples.rightWhen;
 import static com.qudini.reactive.utils.MoreTuples.takeBoth;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -123,6 +125,15 @@ class MoreTuplesTest {
     }
 
     @Test
+    @DisplayName("should allow mapping on the left value of a Tuple2 with a function returning a Mono")
+    void leftWhenMapper() {
+        var output = createFooBar()
+                .flatMap(leftWhen(foo -> Mono.just(foo + "bar")))
+                .block();
+        assertThat(output).isEqualTo(Tuples.of("foobar", "bar"));
+    }
+
+    @Test
     @DisplayName("should allow mapping on the left value of a Tuple2 with a predicate")
     void ifLeftPredicate() {
         var output = createFooBar()
@@ -136,6 +147,15 @@ class MoreTuplesTest {
     void rightMapper() {
         var output = createFooBar()
                 .map(right(bar -> bar + "bar"))
+                .block();
+        assertThat(output).isEqualTo(Tuples.of("foo", "barbar"));
+    }
+
+    @Test
+    @DisplayName("should allow mapping on the right value of a Tuple2 with a function returning a Mono")
+    void rightWhenMapper() {
+        var output = createFooBar()
+                .flatMap(rightWhen(bar -> Mono.just(bar + "bar")))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foo", "barbar"));
     }

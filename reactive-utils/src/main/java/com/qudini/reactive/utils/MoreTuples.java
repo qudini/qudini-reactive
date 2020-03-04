@@ -1,6 +1,7 @@
 package com.qudini.reactive.utils;
 
 import lombok.NoArgsConstructor;
+import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -61,12 +62,20 @@ public final class MoreTuples {
         return tuple -> Tuples.of(mapper.apply(tuple.getT1()), tuple.getT2());
     }
 
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, Mono<Tuple2<R, T2>>> leftWhen(Function<T1, Mono<R>> mapper) {
+        return tuple -> Mono.zip(mapper.apply(tuple.getT1()), Mono.just(tuple.getT2()));
+    }
+
     public static <T1, T2> Predicate<Tuple2<T1, T2>> ifLeft(Predicate<T1> predicate) {
         return tuple -> predicate.test(tuple.getT1());
     }
 
     public static <T1, T2, R> Function<Tuple2<T1, T2>, Tuple2<T1, R>> right(Function<T2, R> mapper) {
         return tuple -> Tuples.of(tuple.getT1(), mapper.apply(tuple.getT2()));
+    }
+
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, Mono<Tuple2<T1, R>>> rightWhen(Function<T2, Mono<R>> mapper) {
+        return tuple -> Mono.zip(Mono.just(tuple.getT1()), mapper.apply(tuple.getT2()));
     }
 
     public static <T1, T2> Predicate<Tuple2<T1, T2>> ifRight(Predicate<T2> predicate) {

@@ -25,6 +25,7 @@
     <modules>
         <module>reactive-logging</module>
         <module>reactive-utils</module>
+        <module>reactive-sqs</module>
     </modules>
 
     <dependencies>

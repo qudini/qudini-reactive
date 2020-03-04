@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import static java.util.Collections.unmodifiableMap;
 
 @RequiredArgsConstructor
-public final class Log implements ReactiveContextCreator {
+public final class Log implements ReactiveLoggingContextCreator {
 
     private static final String LOGGING_MDC_KEY = "LOGGING_MDC";
 

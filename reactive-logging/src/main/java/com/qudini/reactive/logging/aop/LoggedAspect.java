@@ -2,14 +2,13 @@ package com.qudini.reactive.logging.aop;
 
 import com.qudini.reactive.logging.Log;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.LoggerFactory;
-
-import static com.qudini.reactive.utils.MoreThrowables.supplier;
 
 @Aspect
 @RequiredArgsConstructor
@@ -40,18 +39,19 @@ public class LoggedAspect {
     @Around("isAnnotated() && returnsMono()")
     public Object logMono(ProceedingJoinPoint joinPoint) {
         return Log
-                .thenMono(supplier(() -> logAndProceed(joinPoint)))
+                .thenMono(() -> logAndProceed(joinPoint))
                 .doOnEach(Log.onError(error -> logError(error, joinPoint)));
     }
 
     @Around("isAnnotated() && returnsFlux()")
     public Object logFlux(ProceedingJoinPoint joinPoint) {
         return Log
-                .thenFlux(supplier(() -> logAndProceed(joinPoint)))
+                .thenFlux(() -> logAndProceed(joinPoint))
                 .doOnEach(Log.onError(error -> logError(error, joinPoint)));
     }
 
-    private <T> T logAndProceed(ProceedingJoinPoint joinPoint) throws Throwable {
+    @SneakyThrows
+    private <T> T logAndProceed(ProceedingJoinPoint joinPoint) {
         var serialisedJoinPoint = joinPointSerialiser.serialise(joinPoint);
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
