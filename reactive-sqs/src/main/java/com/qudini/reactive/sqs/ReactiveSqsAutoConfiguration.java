@@ -34,6 +34,7 @@ public class ReactiveSqsAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SqsListeners sqsListeners(Collection<SqsListener<?>> listeners, SqsAsyncClient sqsClient, SqsMessageChecker sqsMessageChecker, ReactiveLoggingContextCreator reactiveLoggingContextCreator) {
         return new DefaultSqsListeners(listeners, sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
     }
@@ -44,7 +45,6 @@ public class ReactiveSqsAutoConfiguration {
                 .getApplicationContext()
                 .getBean("sqsListeners", SqsListeners.class)
                 .start();
-        log.info("SQS listeners started");
     }
 
 }

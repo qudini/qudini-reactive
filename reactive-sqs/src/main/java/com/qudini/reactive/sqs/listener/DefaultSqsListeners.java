@@ -35,7 +35,7 @@ public final class DefaultSqsListeners implements SqsListeners {
 
     private final Flux<Void> flux;
 
-    private volatile Disposable disposable;
+    private Disposable disposable;
 
     public DefaultSqsListeners(Collection<SqsListener<?>> listeners, SqsAsyncClient sqsClient, SqsMessageChecker sqsMessageChecker, ReactiveLoggingContextCreator reactiveLoggingContextCreator) {
         this.listeners = listeners.stream().collect(toUnmodifiableMap(SqsListener::getQueueName, identity()));
@@ -46,8 +46,13 @@ public final class DefaultSqsListeners implements SqsListeners {
     }
 
     @Override
-    public void start() {
-        this.disposable = flux.subscribe();
+    public synchronized void start() {
+        if (disposable == null) {
+            this.disposable = flux.subscribe();
+            log.info("SQS listeners started");
+        } else {
+            throw new IllegalStateException("SQS listeners already started");
+        }
     }
 
     private Flux<Void> prepare() {
@@ -68,14 +73,14 @@ public final class DefaultSqsListeners implements SqsListeners {
                     return sqsClient.getQueueUrl(getQueueUrlRequest);
                 })
                 .map(GetQueueUrlResponse::queueUrl)
-                .doOnEach(Log.onError(error -> log.error("Unable to get the URL of the queue named {}", queueName, error)))
+                .doOnEach(Log.onError(error -> log.error("Unable to get the URL of the queue named {}, long polling will not start", queueName, error)))
                 .onErrorResume(error -> Mono.empty());
     }
 
     private Flux<Void> startPolling(String queueUrl, SqsListener<?> listener) {
         return sqsMessageChecker
                 .checkForMessages(queueUrl, listener)
-                .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, polling will keep going", queueUrl, error)))
+                .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, long polling will keep going", queueUrl, error)))
                 .onErrorResume(error -> Mono.empty())
                 .subscriberContext(context -> context.putAll(reactiveLoggingContextCreator.create(Optional.empty(), Map.of())))
                 .repeat();
@@ -83,11 +88,14 @@ public final class DefaultSqsListeners implements SqsListeners {
 
     @PreDestroy
     @Override
-    public void stop() {
+    public synchronized void stop() {
         if (null != disposable && !disposable.isDisposed()) {
             disposable.dispose();
             log.info("SQS listeners stopped");
+        } else {
+            log.info("SQS listeners already stopped");
         }
+        disposable = null;
     }
 
 }
