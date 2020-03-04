@@ -9,25 +9,21 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Java
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Cache
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: ${{ runner.os }}-m2
-#      - name: Build
-#        run: mvn -B clean verify
-#        env:
-#          LOG_LEVEL: FATAL
-#      - name: Build
-#        run: mvn -B clean verify
-#        env:
-#          LOG_LEVEL: FATAL
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Version
-        run: echo mvn versions:set -DnewVersion=$GITHUB_REF
+        run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\//} -DgenerateBackupPoms=false
+      - name: Release
+        run: mvn -B clean deploy -Dregistry=https://maven.pkg.github.com/qudini -Dtoken=${GITHUB_TOKEN}
+        env:
+          LOG_LEVEL: FATAL
