@@ -31,8 +31,8 @@
 
     <distributionManagement>
         <repository>
-            <id>qudini-github</id>
-            <name>Qudini GitHub</name>
+            <id>github</id>
+            <name>GitHub</name>
             <url>https://maven.pkg.github.com/qudini/qudini-reactive</url>
         </repository>
     </distributionManagement>

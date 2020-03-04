@@ -24,6 +24,9 @@ jobs:
       - name: Version
         run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
       - name: Release
-        run: mvn -B clean deploy -Dregistry=https://maven.pkg.github.com/qudini -Dtoken=${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "<settings><servers><server><id>github</id><username>qudini</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+          mvn -B clean deploy
         env:
           LOG_LEVEL: FATAL
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
