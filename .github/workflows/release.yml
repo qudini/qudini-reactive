@@ -22,7 +22,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Version
-        run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\//} -DgenerateBackupPoms=false
+        run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
       - name: Release
         run: mvn -B clean deploy -Dregistry=https://maven.pkg.github.com/qudini -Dtoken=${{ secrets.GITHUB_TOKEN }}
         env:
