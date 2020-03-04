@@ -29,6 +29,14 @@
         <module>reactive-sqs</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>qudini-github</id>
+            <name>Qudini GitHub</name>
+            <url>https://maven.pkg.github.com/qudini/qudini-reactive</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
