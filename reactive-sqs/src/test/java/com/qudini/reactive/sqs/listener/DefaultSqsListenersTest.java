@@ -126,7 +126,7 @@ class DefaultSqsListenersTest {
     private void startAndStop() {
         var sqsListeners = new DefaultSqsListeners(Set.of(listener), sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
         runAsync(sqsListeners::start);
-        Thread.sleep(100);
+        Thread.sleep(500);
         sqsListeners.stop();
     }
 
