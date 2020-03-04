@@ -5,7 +5,7 @@ import reactor.util.context.Context;
 import java.util.Map;
 import java.util.Optional;
 
-public interface ReactiveContextCreator {
+public interface ReactiveLoggingContextCreator {
 
     Context create(Optional<String> correlationId, Map<String, String> loggingContext);
 

@@ -37,7 +37,7 @@ class DefaultJoinPointSerialiserTest {
 
     @Test
     @DisplayName("should serialise all parameters when none is excluded")
-    void withoutExclusion() throws NoSuchMethodException {
+    void withoutExclusion() throws Exception {
         var method = getClass().getDeclaredMethod("methodWithoutExclusion", int.class, int.class);
         given(methodSignature.getParameterNames()).willReturn(new String[]{"foo", "bar"});
         given(joinPoint.getArgs()).willReturn(new Object[]{1, 2});
@@ -51,7 +51,7 @@ class DefaultJoinPointSerialiserTest {
 
     @Test
     @DisplayName("should only serialise parameters that are not excluded")
-    void withExclusion() throws NoSuchMethodException {
+    void withExclusion() throws Exception {
         var method = getClass().getDeclaredMethod("methodWithExclusion", int.class, int.class);
         given(methodSignature.getParameterNames()).willReturn(new String[]{"foo", "bar"});
         given(joinPoint.getArgs()).willReturn(new Object[]{1, 2});
@@ -65,7 +65,7 @@ class DefaultJoinPointSerialiserTest {
 
     @Test
     @DisplayName("should serialise when the method has no parameter")
-    void withoutParameters() throws NoSuchMethodException {
+    void withoutParameters() throws Exception {
         var method = getClass().getDeclaredMethod("methodWithoutParameters");
         given(methodSignature.getParameterNames()).willReturn(new String[]{});
         given(joinPoint.getArgs()).willReturn(new Object[]{});

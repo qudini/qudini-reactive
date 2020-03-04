@@ -1,7 +1,7 @@
 package com.qudini.reactive.logging.web;
 
 import com.qudini.reactive.logging.Log;
-import com.qudini.reactive.logging.ReactiveContextCreator;
+import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,7 +21,7 @@ public final class LoggingContextFilter implements CorrelationIdForwarder, WebFi
 
     private final LoggingContextExtractor loggingContextExtractor;
 
-    private final ReactiveContextCreator reactiveContextCreator;
+    private final ReactiveLoggingContextCreator reactiveLoggingContextCreator;
 
     @Override
     public Mono<WebClient.RequestHeadersSpec<?>> forward(WebClient.RequestHeadersSpec<?> webClient) {
@@ -46,7 +46,7 @@ public final class LoggingContextFilter implements CorrelationIdForwarder, WebFi
                         Mono.just(extractCorrelationId(exchange)),
                         loggingContextExtractor.extract(exchange)
                 )
-                .map(both(reactiveContextCreator::create))
+                .map(both(reactiveLoggingContextCreator::create))
                 .flatMap(context -> chain.filter(exchange).subscriberContext(context));
     }
 

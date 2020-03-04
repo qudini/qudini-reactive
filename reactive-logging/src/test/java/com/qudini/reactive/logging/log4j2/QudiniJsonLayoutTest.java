@@ -2,7 +2,6 @@ package com.qudini.reactive.logging.log4j2;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qudini.reactive.logging.log4j2.QudiniJsonLayout;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +28,7 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("QudiniLog4j2Layout")
+@DisplayName("QudiniJsonLayout")
 class QudiniJsonLayoutTest {
 
     private static final LoggerContext LOGGER_CONTEXT = (LoggerContext) LogManager.getContext();
@@ -55,12 +54,12 @@ class QudiniJsonLayoutTest {
     }
 
     @AfterAll
-    static void closeOutput() throws IOException {
+    static void closeOutput() throws Exception {
         LOG_OUTPUT.close();
     }
 
     @AfterEach
-    void resetOutput() throws IOException {
+    void resetOutput() throws Exception {
         LOG_OUTPUT.reset();
     }
 
@@ -132,7 +131,7 @@ class QudiniJsonLayoutTest {
             delegate = new StringWriter();
         }
 
-        synchronized void reset() throws IOException {
+        synchronized void reset() throws Exception {
             delegate.close();
             delegate = new StringWriter();
         }

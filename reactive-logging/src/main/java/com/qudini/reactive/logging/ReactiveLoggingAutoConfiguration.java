@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.server.WebFilter;
 
 @Configuration
 public class ReactiveLoggingAutoConfiguration {
@@ -25,7 +26,8 @@ public class ReactiveLoggingAutoConfiguration {
     }
 
     @Bean
-    public Log log(CorrelationIdGenerator correlationIdGenerator) {
+    @ConditionalOnMissingBean
+    public ReactiveLoggingContextCreator reactiveContextCreator(CorrelationIdGenerator correlationIdGenerator) {
         return new Log(correlationIdGenerator);
     }
 
@@ -36,12 +38,12 @@ public class ReactiveLoggingAutoConfiguration {
     }
 
     @Bean
-    public LoggingContextFilter loggingContextFilter(
+    public WebFilter loggingContextFilter(
             @Value("${logging.correlation-id.header-name:X-Amzn-Trace-Id}") String correlationIdHeader,
             LoggingContextExtractor loggingContextExtractor,
-            Log log
+            ReactiveLoggingContextCreator reactiveLoggingContextCreator
     ) {
-        return new LoggingContextFilter(correlationIdHeader, loggingContextExtractor, log);
+        return new LoggingContextFilter(correlationIdHeader, loggingContextExtractor, reactiveLoggingContextCreator);
     }
 
     @Bean
