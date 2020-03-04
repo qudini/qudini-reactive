@@ -131,7 +131,7 @@ class DefaultSqsListenersTest {
     }
 
     private static Mono<Void> waitThenIncrement(AtomicInteger counter) {
-        var waitTime = Duration.of(10, MILLIS);
+        var waitTime = Duration.of(1, MILLIS);
         return Mono.delay(waitTime).then(Mono.fromRunnable(counter::incrementAndGet));
     }
 
