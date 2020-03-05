@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>reactive-utils</artifactId>
+    <artifactId>qudini-reactive-utils</artifactId>
 
     <parent>
         <groupId>com.qudini</groupId>
@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.qudini</groupId>
-            <artifactId>reactive-tests</artifactId>
+            <artifactId>qudini-reactive-tests</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
