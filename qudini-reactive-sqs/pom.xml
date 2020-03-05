@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>reactive-sqs</artifactId>
+    <artifactId>qudini-reactive-sqs</artifactId>
 
     <parent>
         <groupId>com.qudini</groupId>
@@ -16,12 +16,12 @@
     <dependencies>
         <dependency>
             <groupId>com.qudini</groupId>
-            <artifactId>reactive-logging</artifactId>
+            <artifactId>qudini-reactive-logging</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
-            <artifactId>reactive-utils</artifactId>
+            <artifactId>qudini-reactive-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
-            <artifactId>reactive-tests</artifactId>
+            <artifactId>qudini-reactive-tests</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

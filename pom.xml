@@ -23,10 +23,10 @@
     </parent>
 
     <modules>
-        <module>reactive-test</module>
-        <module>reactive-logging</module>
-        <module>reactive-utils</module>
-        <module>reactive-sqs</module>
+        <module>qudini-reactive-tests</module>
+        <module>qudini-reactive-logging</module>
+        <module>qudini-reactive-utils</module>
+        <module>qudini-reactive-sqs</module>
     </modules>
 
     <distributionManagement>
