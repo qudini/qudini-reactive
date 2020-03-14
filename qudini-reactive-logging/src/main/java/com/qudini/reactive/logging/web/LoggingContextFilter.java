@@ -24,7 +24,7 @@ public final class LoggingContextFilter implements CorrelationIdForwarder, WebFi
     private final ReactiveLoggingContextCreator reactiveLoggingContextCreator;
 
     @Override
-    public Mono<WebClient.RequestHeadersSpec<?>> forward(WebClient.RequestHeadersSpec<?> webClient) {
+    public Mono<WebClient.RequestHeadersSpec<?>> forwardOn(WebClient.RequestHeadersSpec<?> webClient) {
         return Log
                 .getCorrelationId()
                 .<WebClient.RequestHeadersSpec<?>>map(correlationId -> webClient.header(correlationIdHeader, correlationId))
@@ -32,7 +32,7 @@ public final class LoggingContextFilter implements CorrelationIdForwarder, WebFi
     }
 
     @Override
-    public Mono<WebClient.RequestBodySpec> forward(WebClient.RequestBodySpec webClient) {
+    public Mono<WebClient.RequestBodySpec> forwardOn(WebClient.RequestBodySpec webClient) {
         return Log
                 .getCorrelationId()
                 .map(correlationId -> webClient.header(correlationIdHeader, correlationId))

@@ -5,8 +5,8 @@ import reactor.core.publisher.Mono;
 
 public interface CorrelationIdForwarder {
 
-    Mono<WebClient.RequestBodySpec> forward(WebClient.RequestBodySpec webClient);
+    Mono<WebClient.RequestBodySpec> forwardOn(WebClient.RequestBodySpec webClient);
 
-    Mono<WebClient.RequestHeadersSpec<?>> forward(WebClient.RequestHeadersSpec<?> webClient);
+    Mono<WebClient.RequestHeadersSpec<?>> forwardOn(WebClient.RequestHeadersSpec<?> webClient);
 
 }
