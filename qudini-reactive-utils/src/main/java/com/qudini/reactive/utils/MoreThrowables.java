@@ -14,11 +14,14 @@ import java.util.function.Supplier;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
- * Builds functions that can throw checked exceptions.
+ * Utilities around functions.
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class MoreThrowables {
 
+    /**
+     * A consumer that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowableConsumer<T> extends Consumer<T> {
 
@@ -32,6 +35,9 @@ public final class MoreThrowables {
 
     }
 
+    /**
+     * A function that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowableFunction<T, R> extends Function<T, R> {
 
@@ -45,6 +51,9 @@ public final class MoreThrowables {
 
     }
 
+    /**
+     * A supplier that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowableSupplier<R> extends Supplier<R> {
 
@@ -58,6 +67,9 @@ public final class MoreThrowables {
 
     }
 
+    /**
+     * A predicate that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowablePredicate<T> extends Predicate<T> {
 
@@ -70,6 +82,9 @@ public final class MoreThrowables {
         boolean testOrThrow(T t) throws java.lang.Throwable;
     }
 
+    /**
+     * A biconsumer that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowableBiConsumer<T1, T2> extends BiConsumer<T1, T2> {
 
@@ -83,6 +98,9 @@ public final class MoreThrowables {
 
     }
 
+    /**
+     * A bifunction that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowableBiFunction<T1, T2, R> extends BiFunction<T1, T2, R> {
 
@@ -96,6 +114,9 @@ public final class MoreThrowables {
 
     }
 
+    /**
+     * A bipredicate that can throw checked exceptions.
+     */
     @FunctionalInterface
     public interface ThrowableBiPredicate<T1, T2> extends BiPredicate<T1, T2> {
 
