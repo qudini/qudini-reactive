@@ -56,12 +56,12 @@ public final class MoreTuples {
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<String, String>> example(Mono<Tuple2<Integer, Integer>> mono) {
-     *     return mono.map(each(Object::toString));
+     *     return mono.map(onEach(Object::toString));
      * }
      * }</pre>
      * </p>
      */
-    public static <T, R> Function<Tuple2<T, T>, Tuple2<R, R>> each(Function<T, R> mapper) {
+    public static <T, R> Function<Tuple2<T, T>, Tuple2<R, R>> onEach(Function<T, R> mapper) {
         return tuple -> Tuples.of(mapper.apply(tuple.getT1()), mapper.apply(tuple.getT2()));
     }
 
@@ -102,26 +102,26 @@ public final class MoreTuples {
      * <p>Example:
      * <pre>{@literal
      * Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.map(both((i, s) -> s + i));
+     *     return mono.map(onBoth((i, s) -> s + i));
      * }
      * }</pre>
      * </p>
      * <p>Example:
      * <pre>{@literal
      * Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.flatMap(both((i, s) -> Mono.just(s + i)));
+     *     return mono.flatMap(onBoth((i, s) -> Mono.just(s + i)));
      * }
      * }</pre>
      * </p>
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.filterWhen(both((i, s) -> Mono.just("foo42".equals(s + i))));
+     *     return mono.filterWhen(onBoth((i, s) -> Mono.just("foo42".equals(s + i))));
      * }
      * }</pre>
      * </p>
      */
-    public static <T1, T2, R> Function<Tuple2<T1, T2>, R> both(BiFunction<T1, T2, R> mapper) {
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, R> onBoth(BiFunction<T1, T2, R> mapper) {
         return tuple -> mapper.apply(tuple.getT1(), tuple.getT2());
     }
 
@@ -159,12 +159,12 @@ public final class MoreTuples {
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.map(left(i -> i + 1));
+     *     return mono.map(onLeft(i -> i + 1));
      * }
      * }</pre>
      * </p>
      */
-    public static <T1, T2, R> Function<Tuple2<T1, T2>, Tuple2<R, T2>> left(Function<T1, R> mapper) {
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, Tuple2<R, T2>> onLeft(Function<T1, R> mapper) {
         return tuple -> Tuples.of(mapper.apply(tuple.getT1()), tuple.getT2());
     }
 
@@ -174,13 +174,27 @@ public final class MoreTuples {
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.flatMap(leftWhen(i -> Mono.just(i + 1)));
+     *     return mono.flatMap(onLeftWhen(i -> Mono.just(i + 1)));
      * }
      * }</pre>
      * </p>
      */
-    public static <T1, T2, R> Function<Tuple2<T1, T2>, Mono<Tuple2<R, T2>>> leftWhen(Function<T1, Mono<R>> mapper) {
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, Mono<Tuple2<R, T2>>> onLeftWhen(Function<T1, Mono<R>> mapper) {
         return tuple -> Mono.zip(mapper.apply(tuple.getT1()), Mono.just(tuple.getT2()));
+    }
+
+    /**
+     * <p>Reduces a tuple by mapping its left value, losing its right value.</p>
+     * <p>Example:
+     * <pre>{@literal
+     * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+     *     return mono.filterWhen(fromLeft(i -> Mono.just(0 < i)));
+     * }
+     * }</pre>
+     * </p>
+     */
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, R> fromLeft(Function<T1, R> mapper) {
+        return tuple -> mapper.apply(tuple.getT1());
     }
 
     /**
@@ -203,12 +217,12 @@ public final class MoreTuples {
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.map(right(s -> s + "bar"));
+     *     return mono.map(onRight(s -> s + "bar"));
      * }
      * }</pre>
      * </p>
      */
-    public static <T1, T2, R> Function<Tuple2<T1, T2>, Tuple2<T1, R>> right(Function<T2, R> mapper) {
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, Tuple2<T1, R>> onRight(Function<T2, R> mapper) {
         return tuple -> Tuples.of(tuple.getT1(), mapper.apply(tuple.getT2()));
     }
 
@@ -218,13 +232,27 @@ public final class MoreTuples {
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.flatMap(rightWhen(s -> Mono.just(s + "bar")));
+     *     return mono.flatMap(onRightWhen(s -> Mono.just(s + "bar")));
      * }
      * }</pre>
      * </p>
      */
-    public static <T1, T2, R> Function<Tuple2<T1, T2>, Mono<Tuple2<T1, R>>> rightWhen(Function<T2, Mono<R>> mapper) {
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, Mono<Tuple2<T1, R>>> onRightWhen(Function<T2, Mono<R>> mapper) {
         return tuple -> Mono.zip(Mono.just(tuple.getT1()), mapper.apply(tuple.getT2()));
+    }
+
+    /**
+     * <p>Reduces a tuple by mapping its right value, losing its left value.</p>
+     * <p>Example:
+     * <pre>{@literal
+     * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+     *     return mono.filterWhen(fromRight(s -> Mono.just("foobar".equals(s))));
+     * }
+     * }</pre>
+     * </p>
+     */
+    public static <T1, T2, R> Function<Tuple2<T1, T2>, R> fromRight(Function<T2, R> mapper) {
+        return tuple -> mapper.apply(tuple.getT2());
     }
 
     /**

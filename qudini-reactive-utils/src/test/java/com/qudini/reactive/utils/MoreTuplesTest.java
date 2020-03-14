@@ -9,17 +9,19 @@ import reactor.util.function.Tuples;
 import java.util.AbstractMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.qudini.reactive.utils.MoreTuples.both;
-import static com.qudini.reactive.utils.MoreTuples.each;
+import static com.qudini.reactive.utils.MoreTuples.fromLeft;
+import static com.qudini.reactive.utils.MoreTuples.fromRight;
 import static com.qudini.reactive.utils.MoreTuples.ifBoth;
 import static com.qudini.reactive.utils.MoreTuples.ifEach;
 import static com.qudini.reactive.utils.MoreTuples.ifEither;
 import static com.qudini.reactive.utils.MoreTuples.ifLeft;
 import static com.qudini.reactive.utils.MoreTuples.ifRight;
-import static com.qudini.reactive.utils.MoreTuples.left;
-import static com.qudini.reactive.utils.MoreTuples.leftWhen;
-import static com.qudini.reactive.utils.MoreTuples.right;
-import static com.qudini.reactive.utils.MoreTuples.rightWhen;
+import static com.qudini.reactive.utils.MoreTuples.onBoth;
+import static com.qudini.reactive.utils.MoreTuples.onEach;
+import static com.qudini.reactive.utils.MoreTuples.onLeft;
+import static com.qudini.reactive.utils.MoreTuples.onLeftWhen;
+import static com.qudini.reactive.utils.MoreTuples.onRight;
+import static com.qudini.reactive.utils.MoreTuples.onRightWhen;
 import static com.qudini.reactive.utils.MoreTuples.takeBoth;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +48,7 @@ class MoreTuplesTest {
     @DisplayName("should allow mapping on each value of a Tuple2")
     void eachMapper() {
         var output = createFooBar()
-                .map(each(x -> x + "bar"))
+                .map(onEach(x -> x + "bar"))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foobar", "barbar"));
     }
@@ -70,10 +72,10 @@ class MoreTuplesTest {
     }
 
     @Test
-    @DisplayName("should allow mapping a Tuple2 with a bifunction")
+    @DisplayName("should allow reducing a Tuple2 with a bifunction")
     void bothMapper() {
         var output = createFooBar()
-                .map(both((foo, bar) -> foo + bar))
+                .map(onBoth((foo, bar) -> foo + bar))
                 .block();
         assertThat(output).isEqualTo("foobar");
     }
@@ -101,7 +103,7 @@ class MoreTuplesTest {
     @DisplayName("should allow mapping on the left value of a Tuple2 with a function")
     void leftMapper() {
         var output = createFooBar()
-                .map(left(foo -> foo + "bar"))
+                .map(onLeft(foo -> foo + "bar"))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foobar", "bar"));
     }
@@ -110,9 +112,18 @@ class MoreTuplesTest {
     @DisplayName("should allow mapping on the left value of a Tuple2 with a function returning a Mono")
     void leftWhenMapper() {
         var output = createFooBar()
-                .flatMap(leftWhen(foo -> Mono.just(foo + "bar")))
+                .flatMap(onLeftWhen(foo -> Mono.just(foo + "bar")))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foobar", "bar"));
+    }
+
+    @Test
+    @DisplayName("should allow reducing a Tuple2 by mapping on its left value")
+    void fromLeftMapper() {
+        var output = createFooBar()
+                .filterWhen(fromLeft(foo -> Mono.just("foo".equals(foo))))
+                .block();
+        assertThat(output).isEqualTo(Tuples.of("foo", "bar"));
     }
 
     @Test
@@ -128,7 +139,7 @@ class MoreTuplesTest {
     @DisplayName("should allow mapping on the right value of a Tuple2 with a function")
     void rightMapper() {
         var output = createFooBar()
-                .map(right(bar -> bar + "bar"))
+                .map(onRight(bar -> bar + "bar"))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foo", "barbar"));
     }
@@ -137,9 +148,18 @@ class MoreTuplesTest {
     @DisplayName("should allow mapping on the right value of a Tuple2 with a function returning a Mono")
     void rightWhenMapper() {
         var output = createFooBar()
-                .flatMap(rightWhen(bar -> Mono.just(bar + "bar")))
+                .flatMap(onRightWhen(bar -> Mono.just(bar + "bar")))
                 .block();
         assertThat(output).isEqualTo(Tuples.of("foo", "barbar"));
+    }
+
+    @Test
+    @DisplayName("should allow reducing a Tuple2 by mapping on its right value")
+    void fromRightMapper() {
+        var output = createFooBar()
+                .filterWhen(fromRight(foo -> Mono.just("bar".equals(foo))))
+                .block();
+        assertThat(output).isEqualTo(Tuples.of("foo", "bar"));
     }
 
     @Test
