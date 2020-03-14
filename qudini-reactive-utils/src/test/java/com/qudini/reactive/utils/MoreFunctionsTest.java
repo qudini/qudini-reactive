@@ -11,18 +11,18 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.qudini.reactive.utils.MoreThrowables.throwableBiConsumer;
-import static com.qudini.reactive.utils.MoreThrowables.throwableBiFunction;
-import static com.qudini.reactive.utils.MoreThrowables.throwableBiPredicate;
-import static com.qudini.reactive.utils.MoreThrowables.throwableConsumer;
-import static com.qudini.reactive.utils.MoreThrowables.throwableFunction;
-import static com.qudini.reactive.utils.MoreThrowables.throwablePredicate;
-import static com.qudini.reactive.utils.MoreThrowables.throwableSupplier;
+import static com.qudini.reactive.utils.MoreFunctions.throwableBiConsumer;
+import static com.qudini.reactive.utils.MoreFunctions.throwableBiFunction;
+import static com.qudini.reactive.utils.MoreFunctions.throwableBiPredicate;
+import static com.qudini.reactive.utils.MoreFunctions.throwableConsumer;
+import static com.qudini.reactive.utils.MoreFunctions.throwableFunction;
+import static com.qudini.reactive.utils.MoreFunctions.throwablePredicate;
+import static com.qudini.reactive.utils.MoreFunctions.throwableSupplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("MoreThrowables")
-class MoreThrowablesTest {
+@DisplayName("MoreFunctions")
+class MoreFunctionsTest {
 
     @Test
     @DisplayName("should handle successful throwable consumer")

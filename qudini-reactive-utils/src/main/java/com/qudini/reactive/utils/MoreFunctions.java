@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
  * Utilities around functions.
  */
 @NoArgsConstructor(access = PRIVATE)
-public final class MoreThrowables {
+public final class MoreFunctions {
 
     /**
      * A consumer that can throw checked exceptions.

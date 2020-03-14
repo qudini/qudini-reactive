@@ -23,6 +23,8 @@ import static com.qudini.reactive.utils.MoreTuples.onLeftWhen;
 import static com.qudini.reactive.utils.MoreTuples.onRight;
 import static com.qudini.reactive.utils.MoreTuples.onRightWhen;
 import static com.qudini.reactive.utils.MoreTuples.takeBoth;
+import static com.qudini.reactive.utils.MoreTuples.takeLeft;
+import static com.qudini.reactive.utils.MoreTuples.takeRight;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("MoreTuples")
@@ -96,6 +98,26 @@ class MoreTuplesTest {
                 .map(onBoth((foo, bar) -> foo + bar))
                 .block();
         assertThat(output).isEqualTo("foobar");
+    }
+
+    @Test
+    @DisplayName("should allow mapping the left value of a Tuple2 with a consumer")
+    void takeLeftMapper() {
+        var value = new AtomicReference<String>();
+        createFooBar()
+                .doOnNext(takeLeft(value::set))
+                .block();
+        assertThat(value.get()).isEqualTo("foo");
+    }
+
+    @Test
+    @DisplayName("should allow mapping the right value of a Tuple2 with a consumer")
+    void takeRightMapper() {
+        var value = new AtomicReference<String>();
+        createFooBar()
+                .doOnNext(takeRight(value::set))
+                .block();
+        assertThat(value.get()).isEqualTo("bar");
     }
 
     @Test

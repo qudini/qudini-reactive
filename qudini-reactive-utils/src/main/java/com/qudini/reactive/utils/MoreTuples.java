@@ -52,14 +52,28 @@ public final class MoreTuples {
     }
 
     /**
-     * Aliases {@link Tuple2#getT1()}.
+     * <p>Aliases {@link Tuple2#getT1()}.</p>
+     * <p>Example:
+     * <pre>{@literal
+     * Mono<Integer> example(Mono<Tuple2<Integer, String>> mono) {
+     *     return mono.map(MoreTuples::left);
+     * }
+     * }</pre>
+     * </p>
      */
     public static <T1, T2> T1 left(Tuple2<T1, T2> tuple) {
         return tuple.getT1();
     }
 
     /**
-     * Aliases {@link Tuple2#getT2()}.
+     * <p>Aliases {@link Tuple2#getT2()}.</p>
+     * <p>Example:
+     * <pre>{@literal
+     * Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
+     *     return mono.map(MoreTuples::right);
+     * }
+     * }</pre>
+     * </p>
      */
     public static <T1, T2> T2 right(Tuple2<T1, T2> tuple) {
         return tuple.getT2();
@@ -140,11 +154,39 @@ public final class MoreTuples {
     }
 
     /**
+     * <p>Consumes the left value of a tuple.</p>
+     * <p>Example:
+     * <pre>{@literal
+     * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+     *     return mono.doOnNext(takeLeft(i -> log.debug("i:{}", i)));
+     * }
+     * }</pre>
+     * </p>
+     */
+    public static <T1, T2> Consumer<Tuple2<T1, T2>> takeLeft(Consumer<T1> consumer) {
+        return tuple -> consumer.accept(tuple.getT1());
+    }
+
+    /**
+     * <p>Consumes the right value of a tuple.</p>
+     * <p>Example:
+     * <pre>{@literal
+     * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+     *     return mono.doOnNext(takeRight(s -> log.debug("s:{}", s)));
+     * }
+     * }</pre>
+     * </p>
+     */
+    public static <T1, T2> Consumer<Tuple2<T1, T2>> takeRight(Consumer<T2> consumer) {
+        return tuple -> consumer.accept(tuple.getT2());
+    }
+
+    /**
      * <p>Consumes a tuple via a biconsumer.</p>
      * <p>Example:
      * <pre>{@literal
      * Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-     *     return mono.doOnNext(takeBoth((i, s) -> log.debug("i:{} s:{}", i, s)))
+     *     return mono.doOnNext(takeBoth((i, s) -> log.debug("i:{} s:{}", i, s)));
      * }
      * }</pre>
      * </p>
