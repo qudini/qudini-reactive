@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
     </parent>
 
     <modules>
@@ -27,6 +27,7 @@
         <module>qudini-reactive-logging</module>
         <module>qudini-reactive-utils</module>
         <module>qudini-reactive-sqs</module>
+        <module>qudini-reactive-example</module>
     </modules>
 
     <distributionManagement>
@@ -62,6 +63,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
