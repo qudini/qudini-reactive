@@ -52,6 +52,20 @@ public final class MoreTuples {
     }
 
     /**
+     * Aliases {@link Tuple2#getT1()}.
+     */
+    public static <T1, T2> T1 left(Tuple2<T1, T2> tuple) {
+        return tuple.getT1();
+    }
+
+    /**
+     * Aliases {@link Tuple2#getT2()}.
+     */
+    public static <T1, T2> T2 right(Tuple2<T1, T2> tuple) {
+        return tuple.getT2();
+    }
+
+    /**
      * <p>Applies the same mapper on each element of a tuple, returning a new tuple.</p>
      * <p>Example:
      * <pre>{@literal

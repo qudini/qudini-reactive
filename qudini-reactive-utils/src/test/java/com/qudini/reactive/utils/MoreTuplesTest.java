@@ -45,6 +45,24 @@ class MoreTuplesTest {
     }
 
     @Test
+    @DisplayName("should allow reducing to the left value of a Tuple2")
+    void leftReducer() {
+        var output = createFooBar()
+                .map(MoreTuples::left)
+                .block();
+        assertThat(output).isEqualTo("foo");
+    }
+
+    @Test
+    @DisplayName("should allow reducing to the right value of a Tuple2")
+    void rightReducer() {
+        var output = createFooBar()
+                .map(MoreTuples::right)
+                .block();
+        assertThat(output).isEqualTo("bar");
+    }
+
+    @Test
     @DisplayName("should allow mapping on each value of a Tuple2")
     void eachMapper() {
         var output = createFooBar()
