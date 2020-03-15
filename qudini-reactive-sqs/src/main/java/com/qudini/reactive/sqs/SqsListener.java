@@ -7,24 +7,24 @@ import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 /**
  * <p>Non-blocking SQS listener.</p>
  * <p>Example:</p>
- * <pre>{@literal
- * @Component
+ * <pre><code>
+ * &#64;Component
  * public class YourSqsListener implements SqsListener {
  *
- *     @Override
+ *     &#64;Override
  *     public String getQueueName() {
  *         return "your-sqs-queue";
  *     }
  *
- *     @Override
- *     public Class<T> getMessageType() {
+ *     &#64;Override
+ *     public Class&lt;T&gt; getMessageType() {
  *         return YourMessage.class
  *     }
  *
- *     @Override
- *     public Mono<Void> handleMessage(YourMessage message, Acknowledger acknowledger) {
+ *     &#64;Override
+ *     public Mono&lt;Void&gt; handleMessage(YourMessage message, Acknowledger acknowledger) {
  *         return Log
- *             .thenMono(() -> {
+ *             .thenMono(() -&gt; {
  *                 log.info("Received a new SQS message: {}", message);
  *                 return process(message);
  *             })
@@ -32,7 +32,7 @@ import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
  *     }
  *
  * }
- * }</pre>
+ * </code></pre>
  */
 public interface SqsListener<T> {
 

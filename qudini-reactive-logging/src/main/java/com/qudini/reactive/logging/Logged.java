@@ -12,16 +12,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p>Annotate a type or a method with <code>@Logged</code> to make it logged when starting, and if an error occurs.</p>
  * <p>Only public methods returning either a mono or a flux will be matched.</p>
  * <p>Example:</p>
- * <pre>{@literal
+ * <pre><code>
  * public class YourClass {
  *
- *     @Logged
- *     public Mono<String> yourMethod(String foobar, @Logged.Exclude String email) {
+ *     &#64;Logged
+ *     public Mono&lt;String&gt; yourMethod(String foobar, &#64;Logged.Exclude String email) {
  *         return ...;
  *     }
  *
  * }
- * }</pre>
+ * </code></pre>
  * <p>Logged message:</p>
  * <pre>{@literal
  * YourClass#yourMethod(

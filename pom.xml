@@ -196,7 +196,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <doclint>none</doclint>
+                            <doclint>all,-missing</doclint>
                         </configuration>
                     </execution>
                 </executions>
