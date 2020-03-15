@@ -6,23 +6,6 @@ Non-blocking SQS listeners based on AWS asynchronous SDK and long polling.
 
 ```xml
 <dependencies>
-    <!-- Main dependency: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-sqs</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <!-- Qudini Reactive dependencies needed: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-logging</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
     <!-- Spring dependencies needed: -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -41,6 +24,23 @@ Non-blocking SQS listeners based on AWS asynchronous SDK and long polling.
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <!-- Qudini Reactive dependencies needed: -->
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-utils</artifactId>
+        <version>${qudini-reactive.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-logging</artifactId>
+        <version>${qudini-reactive.version}</version>
+    </dependency>
+    <!-- Main dependency: -->
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-sqs</artifactId>
+        <version>${qudini-reactive.version}</version>
     </dependency>
 </dependencies>
 ```

@@ -6,18 +6,6 @@ Helps logging in a reactive context.
 
 ```xml
 <dependencies>
-    <!-- Main dependency: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-logging</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <!-- Qudini Reactive dependencies needed: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
     <!-- Spring dependencies needed: -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -36,6 +24,18 @@ Helps logging in a reactive context.
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <!-- Qudini Reactive dependencies needed: -->
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-utils</artifactId>
+        <version>${qudini-reactive.version}</version>
+    </dependency>
+    <!-- Main dependency: -->
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-logging</artifactId>
+        <version>${qudini-reactive.version}</version>
     </dependency>
 </dependencies>
 ```

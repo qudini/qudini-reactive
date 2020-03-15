@@ -1,6 +1,8 @@
 # qudini-reactive
 
-Libraries around the reactive stack of Spring (WebFlux with Project Reactor).
+Libraries simplifying the development of applications based on the reactive stack of Spring: WebFlux with Project Reactor.
+
+They are all preconfigured, so that just adding them as dependencies is enough to get started. Further fine-grained configuration is available if needed.
 
 ## Installation
 
