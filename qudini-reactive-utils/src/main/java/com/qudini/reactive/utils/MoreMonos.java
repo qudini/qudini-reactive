@@ -16,13 +16,12 @@ public final class MoreMonos {
     /**
      * <p>Transforms an empty mono into a valued mono of an empty optional,
      * and a valued mono into a valued mono of a valued optional.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<Optional<T>> example(Mono<T> mono) {
      *     return mono.transform(MoreMonos::toOptional);
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Mono<Optional<T>> toOptional(Mono<T> mono) {
         return mono

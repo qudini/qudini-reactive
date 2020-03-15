@@ -39,7 +39,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given supplier with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<Integer> example() {
      *     return Log.then(() -> {
@@ -48,7 +48,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <R> Mono<R> then(Supplier<R> supplier) {
         return context().map(context -> withContext(context, supplier));
@@ -56,7 +55,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given supplier with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<Integer> example() {
      *     return Log.thenMono(() -> {
@@ -65,7 +64,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <R> Mono<R> thenMono(Supplier<Mono<R>> supplier) {
         return context().flatMap(context -> withContext(context, supplier));
@@ -73,7 +71,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given supplier with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Flux<Integer> example() {
      *     return Log.thenIterable(() -> {
@@ -82,7 +80,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <R> Flux<R> thenIterable(Supplier<Iterable<R>> supplier) {
         return context().flatMapIterable(context -> withContext(context, supplier));
@@ -90,7 +87,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given supplier with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Flux<Integer> example() {
      *     return Log.thenFlux(() -> {
@@ -99,7 +96,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <R> Flux<R> thenFlux(Supplier<Publisher<R>> supplier) {
         return context().flatMapMany(context -> withContext(context, supplier));
@@ -107,7 +103,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given mapper with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<Integer> example(Mono<String> mono) {
      *     return mono.flatMap(Log.then(s -> {
@@ -116,7 +112,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     }));
      * }
      * }</pre>
-     * </p>
      */
     public static <T, R> Function<T, Mono<R>> then(Function<T, R> mapper) {
         return value -> context().map(context -> withContext(context, () -> mapper.apply(value)));
@@ -124,7 +119,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given mapper with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<Integer> example(Mono<String> mono) {
      *     return mono.flatMap(Log.thenMono(s -> {
@@ -133,7 +128,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     }));
      * }
      * }</pre>
-     * </p>
      */
     public static <T, R> Function<T, Mono<R>> thenMono(Function<T, Mono<R>> mapper) {
         return value -> context().flatMap(context -> withContext(context, () -> mapper.apply(value)));
@@ -141,7 +135,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given mapper with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Flux<Integer> example(Mono<String> mono) {
      *     return mono.flatMapMany(Log.thenIterable(s -> {
@@ -150,7 +144,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     }));
      * }
      * }</pre>
-     * </p>
      */
     public static <T, R> Function<T, Flux<R>> thenIterable(Function<T, Iterable<R>> mapper) {
         return value -> context().flatMapIterable(context -> withContext(context, () -> mapper.apply(value)));
@@ -158,7 +151,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given mapper with the MDC available.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Flux<Integer> example(Mono<String> mono) {
      *     return mono.flatMapMany(Log.thenFlux(s -> {
@@ -167,7 +160,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     }));
      * }
      * }</pre>
-     * </p>
      */
     public static <T, R> Function<T, Flux<R>> thenFlux(Function<T, Publisher<R>> mapper) {
         return value -> context().flatMapMany(context -> withContext(context, () -> mapper.apply(value)));
@@ -175,13 +167,12 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given consumer with the MDC available {@link SignalType#ON_NEXT}.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<String> example(Mono<String> mono) {
      *     return mono.doOnEach(Log.onNext(s -> log.debug("s:{}", s)));
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Consumer<Signal<T>> onNext(Consumer<T> consumer) {
         return on(Signal::isOnNext, (value, throwable) -> consumer.accept(value));
@@ -189,13 +180,12 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given consumer with the MDC available {@link SignalType#ON_ERROR}.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<String> example(Mono<String> mono) {
      *     return mono.doOnEach(Log.onError(e -> log.debug("An error occurred", e)));
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Consumer<Signal<T>> onError(Consumer<Throwable> consumer) {
         return on(Signal::isOnError, (value, throwable) -> consumer.accept(throwable));
@@ -204,13 +194,12 @@ public final class Log implements ReactiveLoggingContextCreator {
     /**
      * <p>Runs the given consumer with the MDC available {@link SignalType#ON_ERROR}
      * if the error matches the given type.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<String> example(Mono<String> mono) {
      *     return mono.doOnEach(Log.onError(YourException.class, e -> log.debug("Your exception occurred", e)));
      * }
      * }</pre>
-     * </p>
      */
     public static <T, E extends Throwable> Consumer<Signal<T>> onError(Class<E> throwableClass, Consumer<E> consumer) {
         return on(Signal::isOnError, (value, throwable) -> {
@@ -222,13 +211,12 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given consumer with the MDC available {@link SignalType#ON_COMPLETE}.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<String> example(Mono<String> mono) {
      *     return mono.doOnEach(Log.onComplete(() -> log.debug("Completed")));
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Consumer<Signal<T>> onComplete(Runnable runnable) {
         return on(Signal::isOnComplete, (value, throwable) -> runnable.run());
@@ -236,13 +224,12 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Runs the given consumer with the MDC available if the given predicate matches.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<String> example(Mono<String> mono) {
      *     return mono.doOnEach(Log.on(Signal::isOnSubscribe, (value, error) -> log.debug("subscribed with value:{} error:{}", value, error)));
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Consumer<Signal<T>> on(Predicate<Signal<T>> event, BiConsumer<T, Throwable> logger) {
         return signal -> {
@@ -255,13 +242,12 @@ public final class Log implements ReactiveLoggingContextCreator {
     /**
      * <p>Runs the given runnable with the MDC available
      * after having been extracted from the given reactive context.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * void example(Context context) {
      *     Log.withContext(context, () -> log.debug("foobar"));
      * }
      * }</pre>
-     * </p>
      */
     public static void withContext(Context context, Runnable runnable) {
         withContext(context, () -> {
@@ -273,7 +259,7 @@ public final class Log implements ReactiveLoggingContextCreator {
     /**
      * <p>Runs the given supplier with the MDC available
      * after having been extracted from the given reactive context.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * int example(Context context) {
      *     return Log.withContext(context, () -> {
@@ -282,7 +268,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <R> R withContext(Context context, Supplier<R> supplier) {
         try {
@@ -296,7 +281,7 @@ public final class Log implements ReactiveLoggingContextCreator {
 
     /**
      * <p>Returns the correlation id if any.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Mono<Integer> example(Context context) {
      *     return Log
@@ -306,7 +291,6 @@ public final class Log implements ReactiveLoggingContextCreator {
      *             .then(Mono.just(42));
      * }
      * }</pre>
-     * </p>
      */
     public static Mono<String> getCorrelationId() {
         return thenMono(() -> Mono.justOrEmpty(MDC.get(CORRELATION_ID_KEY)));

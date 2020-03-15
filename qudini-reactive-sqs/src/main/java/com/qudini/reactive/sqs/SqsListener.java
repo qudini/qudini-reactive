@@ -6,7 +6,7 @@ import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 
 /**
  * <p>Non-blocking SQS listener.</p>
- * <p>Example:
+ * <p>Example:</p>
  * <pre>{@literal
  * @Component
  * public class YourSqsListener implements SqsListener {
@@ -33,7 +33,6 @@ import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
  *
  * }
  * }</pre>
- * </p>
  */
 public interface SqsListener<T> {
 

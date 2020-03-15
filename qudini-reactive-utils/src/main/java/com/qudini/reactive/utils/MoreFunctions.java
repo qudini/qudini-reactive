@@ -131,7 +131,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a consumer that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Consumer<T> example() {
      *     return throwableConsumer(x -> {
@@ -139,7 +139,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Consumer<T> throwableConsumer(ThrowableConsumer<T> consumer) {
         return consumer;
@@ -147,7 +146,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a function that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Function<T, R> example() {
      *     return throwableFunction(x -> {
@@ -155,7 +154,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <T, R> Function<T, R> throwableFunction(ThrowableFunction<T, R> function) {
         return function;
@@ -164,7 +162,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a supplier that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Supplier<R> example() {
      *     return throwableSupplier(() -> {
@@ -172,7 +170,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <R> Supplier<R> throwableSupplier(ThrowableSupplier<R> supplier) {
         return supplier;
@@ -180,7 +177,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a predicate that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * Predicate<T> example() {
      *     return throwablePredicate(x -> {
@@ -188,7 +185,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <T> Predicate<T> throwablePredicate(ThrowablePredicate<T> predicate) {
         return predicate;
@@ -196,7 +192,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a biconsumer that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * BiConsumer<T1, T2> example() {
      *     return throwableBiConsumer((x, y) -> {
@@ -204,7 +200,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <T1, T2> BiConsumer<T1, T2> throwableBiConsumer(ThrowableBiConsumer<T1, T2> consumer) {
         return consumer;
@@ -212,7 +207,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a bifunction that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * BiFunction<T1, T2, R> example() {
      *     return throwableBiFunction((x, y) -> {
@@ -220,7 +215,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <T1, T2, R> BiFunction<T1, T2, R> throwableBiFunction(ThrowableBiFunction<T1, T2, R> function) {
         return function;
@@ -228,7 +222,7 @@ public final class MoreFunctions {
 
     /**
      * <p>Builds a bipredicate that can throw checked exceptions.</p>
-     * <p>Example:
+     * <p>Example:</p>
      * <pre>{@literal
      * BiPredicate<T1, T2> example() {
      *     return throwableBiPredicate((x, y) -> {
@@ -236,7 +230,6 @@ public final class MoreFunctions {
      *     });
      * }
      * }</pre>
-     * </p>
      */
     public static <T1, T2> BiPredicate<T1, T2> throwableBiPredicate(ThrowableBiPredicate<T1, T2> predicate) {
         return predicate;

@@ -9,9 +9,9 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * <p>Annotate a type or a method with `@Logged` to make it logged when starting, and if an error occurs.</p>
+ * <p>Annotate a type or a method with <code>@Logged</code> to make it logged when starting, and if an error occurs.</p>
  * <p>Only public methods returning either a mono or a flux will be matched.</p>
- * <p>Example:
+ * <p>Example:</p>
  * <pre>{@literal
  * public class YourClass {
  *
@@ -22,15 +22,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * }
  * }</pre>
- * </p>
- * <p>Logged message:
+ * <p>Logged message:</p>
  * <pre>{@literal
  * YourClass#yourMethod(
  * 	foobar: "the value the method received"
  * 	email:  <excluded>
  * )
  * }</pre>
- * </p>
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
