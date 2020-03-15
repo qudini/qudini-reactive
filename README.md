@@ -17,6 +17,6 @@ Add a Maven repository that points to `qudini-reactive` GitHub Packages:
 
 ## Libraries:
 
-- `qudini-reactive-utils`
-- `qudini-reactive-logging`
-- `qudini-reactive-sqs`
+- [`qudini-reactive-utils`](qudini-reactive-utils/)
+- [`qudini-reactive-logging`](qudini-reactive-logging/)
+- [`qudini-reactive-sqs`](qudini-reactive-sqs/)
