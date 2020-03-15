@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ReactiveLoggingContextCreator {
 
     /**
-     * Prepares a reactive context with a correlation id and a logging context.
+     * <p>Prepares a reactive context with a correlation id and a logging context.</p>
      */
     Context create(Optional<String> correlationId, Map<String, String> loggingContext);
 

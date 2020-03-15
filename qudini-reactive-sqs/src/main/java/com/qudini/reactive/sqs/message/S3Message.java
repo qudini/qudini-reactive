@@ -11,7 +11,7 @@ import java.util.List;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
- * See https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html.
+ * <p>See https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html.</p>
  */
 @Value
 @Builder

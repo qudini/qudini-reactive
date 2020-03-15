@@ -8,7 +8,7 @@ import java.util.Optional;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
- * Utilities around monos.
+ * <p>Utilities around monos.</p>
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class MoreMonos {

@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
- * Utilities around tuples.
+ * <p>Utilities around tuples.</p>
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class MoreTuples {

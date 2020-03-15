@@ -14,13 +14,13 @@ import java.util.function.Supplier;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
- * Utilities around functions.
+ * <p>Utilities around functions.</p>
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class MoreFunctions {
 
     /**
-     * A consumer that can throw checked exceptions.
+     * <p>A consumer that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowableConsumer<T> extends Consumer<T> {
@@ -36,7 +36,7 @@ public final class MoreFunctions {
     }
 
     /**
-     * A function that can throw checked exceptions.
+     * <p>A function that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowableFunction<T, R> extends Function<T, R> {
@@ -52,7 +52,7 @@ public final class MoreFunctions {
     }
 
     /**
-     * A supplier that can throw checked exceptions.
+     * <p>A supplier that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowableSupplier<R> extends Supplier<R> {
@@ -68,7 +68,7 @@ public final class MoreFunctions {
     }
 
     /**
-     * A predicate that can throw checked exceptions.
+     * <p>A predicate that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowablePredicate<T> extends Predicate<T> {
@@ -83,7 +83,7 @@ public final class MoreFunctions {
     }
 
     /**
-     * A biconsumer that can throw checked exceptions.
+     * <p>A biconsumer that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowableBiConsumer<T1, T2> extends BiConsumer<T1, T2> {
@@ -99,7 +99,7 @@ public final class MoreFunctions {
     }
 
     /**
-     * A bifunction that can throw checked exceptions.
+     * <p>A bifunction that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowableBiFunction<T1, T2, R> extends BiFunction<T1, T2, R> {
@@ -115,7 +115,7 @@ public final class MoreFunctions {
     }
 
     /**
-     * A bipredicate that can throw checked exceptions.
+     * <p>A bipredicate that can throw checked exceptions.</p>
      */
     @FunctionalInterface
     public interface ThrowableBiPredicate<T1, T2> extends BiPredicate<T1, T2> {

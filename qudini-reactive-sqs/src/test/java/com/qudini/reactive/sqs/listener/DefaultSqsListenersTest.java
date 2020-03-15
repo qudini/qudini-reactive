@@ -1,6 +1,7 @@
 package com.qudini.reactive.sqs.listener;
 
 import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
+import com.qudini.reactive.sqs.SqsListener;
 import com.qudini.reactive.sqs.message.Acknowledger;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
 import lombok.SneakyThrows;

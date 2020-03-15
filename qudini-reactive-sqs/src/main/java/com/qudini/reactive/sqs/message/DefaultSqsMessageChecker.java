@@ -1,7 +1,7 @@
 package com.qudini.reactive.sqs.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qudini.reactive.sqs.listener.SqsListener;
+import com.qudini.reactive.sqs.SqsListener;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 import software.amazon.awssdk.services.sqs.model.Message;
-import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageResponse;
 
 @Slf4j
@@ -26,20 +25,15 @@ public final class DefaultSqsMessageChecker implements SqsMessageChecker {
 
     @Override
     public Mono<Void> checkForMessages(String queueUrl, SqsListener<?> listener) {
-        return fetchMessages(queueUrl)
+        return fetchMessages(queueUrl, listener)
                 .flatMap(message -> handleMessage(queueUrl, message, listener))
                 .then();
     }
 
-    private Flux<Message> fetchMessages(String queueUrl) {
+    private Flux<Message> fetchMessages(String queueUrl, SqsListener<?> listener) {
         return Mono
                 .fromFuture(() -> {
-                    var receiveMessageRequest = ReceiveMessageRequest.builder()
-                            .queueUrl(queueUrl)
-                            .maxNumberOfMessages(10)
-                            .visibilityTimeout(5)
-                            .waitTimeSeconds(20)
-                            .build();
+                    var receiveMessageRequest = listener.buildReceiveMessageRequest(queueUrl);
                     return sqsClient.receiveMessage(receiveMessageRequest);
                 })
                 .filter(ReceiveMessageResponse::hasMessages)

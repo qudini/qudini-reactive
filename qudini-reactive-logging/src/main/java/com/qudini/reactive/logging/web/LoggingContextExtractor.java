@@ -8,7 +8,7 @@ import java.util.Map;
 public interface LoggingContextExtractor {
 
     /**
-     * Extracts a logging context from an HTTP exchange.
+     * <p>Extracts a logging context from an HTTP exchange.</p>
      */
     Mono<Map<String, String>> extract(ServerWebExchange exchange);
 

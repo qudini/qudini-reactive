@@ -1,6 +1,6 @@
 package com.qudini.reactive.sqs.message;
 
-import com.qudini.reactive.sqs.listener.SqsListener;
+import com.qudini.reactive.sqs.SqsListener;
 import reactor.core.publisher.Mono;
 
 public interface SqsMessageChecker {

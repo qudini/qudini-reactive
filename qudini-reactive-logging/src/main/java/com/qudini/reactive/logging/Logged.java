@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Logged {
 
     /**
-     * Excludes a parameter from the logged message, see {@link Logged}.
+     * <p>Excludes a parameter from the logged message, see {@link Logged}.</p>
      */
     @Target(PARAMETER)
     @Retention(RUNTIME)
