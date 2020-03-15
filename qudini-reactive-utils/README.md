@@ -18,7 +18,7 @@ Utilities around the reactive stack of Spring (WebFlux with Project Reactor).
 
 ### com.qudini.reactive.utils.MoreMonos
 
-Utilities around monos:
+Utilities around monos.
 
 ```java
 Mono<Optional<T>> example(Mono<T> mono) {
@@ -28,7 +28,9 @@ Mono<Optional<T>> example(Mono<T> mono) {
 
 ### com.qudini.reactive.utils.MoreFunctions
 
-Utilities around functions:
+Utilities around functions.
+
+#### Throwable functions
 
 ```java
 Consumer<T> example() {
@@ -76,7 +78,9 @@ BiPredicate<T1, T2> example() {
 
 ### com.qudini.reactive.utils.MoreTuples
 
-Utilities around tuples:
+Utilities around tuples.
+
+#### Building
 
 ```java
 Flux<Tuple2<T1, T2>> example(Mono<Map<T1, T2>> map) {
@@ -88,25 +92,17 @@ Flux<Tuple2<T1, T2>> example(Mono<Map<T1, T2>> map) {
 Tuple2<Integer, Integer> example() {
     return MoreTuples.fromArray(new Integer[]{1, 2});
 }
+```
 
+#### Reducing
+
+```java
 Mono<Integer> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.map(MoreTuples::left);
 }
 
 Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.map(MoreTuples::right);
-}
-
-Mono<Tuple2<String, String>> example(Mono<Tuple2<Integer, Integer>> mono) {
-    return mono.map(onEach(Object::toString));
-}
-
-Mono<Tuple2<Integer, Integer>> example(Mono<Tuple2<Integer, Integer>> mono) {
-    return mono.filter(ifEach(i -> 0 < i));
-}
-
-Mono<Tuple2<Integer, Integer>> example(Mono<Tuple2<Integer, Integer>> mono) {
-    return mono.filter(ifEither(i -> 0 < i));
 }
 
 Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
@@ -116,41 +112,17 @@ Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
 Mono<String> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.flatMap(onBoth((i, s) -> Mono.just(s + i)));
 }
+```
 
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.filterWhen(onBoth((i, s) -> Mono.just("foo42".equals(s + i))));
-}
+#### Mapping
 
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.doOnNext(takeLeft(i -> log.debug("i:{}", i)));
-}
-
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.doOnNext(takeRight(s -> log.debug("s:{}", s)));
-}
-
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.doOnNext(takeBoth((i, s) -> log.debug("i:{} s:{}", i, s)));
-}
-
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.filter(ifBoth((i, s) -> "foo42".equals(s + i)));
-}
-
+```java
 Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.map(onLeft(i -> i + 1));
 }
 
 Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.flatMap(onLeftWhen(i -> Mono.just(i + 1)));
-}
-
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.filterWhen(fromLeft(i -> Mono.just(0 < i)));
-}
-
-Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.filter(ifLeft(i -> 0 < i));
 }
 
 Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
@@ -161,11 +133,59 @@ Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.flatMap(onRightWhen(s -> Mono.just(s + "bar")));
 }
 
+Mono<Tuple2<String, String>> example(Mono<Tuple2<Integer, Integer>> mono) {
+    return mono.map(onEach(Object::toString));
+}
+```
+
+#### Filtering
+
+```java
+Mono<Tuple2<Integer, Integer>> example(Mono<Tuple2<Integer, Integer>> mono) {
+    return mono.filter(ifEach(i -> 0 < i));
+}
+
+Mono<Tuple2<Integer, Integer>> example(Mono<Tuple2<Integer, Integer>> mono) {
+    return mono.filter(ifEither(i -> 0 < i));
+}
+
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.filter(ifLeft(i -> 0 < i));
+}
+
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.filter(ifRight("foobar"::equals));
+}
+
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.filter(ifBoth((i, s) -> "foo42".equals(s + i)));
+}
+
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.filterWhen(fromLeft(i -> Mono.just(0 < i)));
+}
+
 Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.filterWhen(fromRight(s -> Mono.just("foobar".equals(s))));
 }
 
 Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
-    return mono.filter(ifRight("foobar"::equals));
+    return mono.filterWhen(onBoth((i, s) -> Mono.just("foo42".equals(s + i))));
+}
+```
+
+#### Consuming
+
+```java
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.doOnNext(takeLeft(i -> log.debug("i:{}", i)));
+}
+
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.doOnNext(takeRight(s -> log.debug("s:{}", s)));
+}
+
+Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
+    return mono.doOnNext(takeBoth((i, s) -> log.debug("i:{} s:{}", i, s)));
 }
 ```
