@@ -51,9 +51,9 @@ The JSON layout will produce logs according to the following format:
 ```json
 {
   "timestamp": "<UTC instant ISO formatted>",
-  "log_level": "<log level>",
+  "log_level": "<logging level>",
   "thread": "<thread name>",
-  "logger_name": "<logging name>",
+  "logger_name": "<logger name>",
   "message": "<logged message>",
   "stacktrace": "<error stacktrace if any>",
   "<mdc key 1>": "<mdc value 1>",
