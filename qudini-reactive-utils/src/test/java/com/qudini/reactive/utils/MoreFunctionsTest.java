@@ -11,23 +11,23 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.qudini.reactive.utils.MoreThrowables.biConsumer;
-import static com.qudini.reactive.utils.MoreThrowables.biFunction;
-import static com.qudini.reactive.utils.MoreThrowables.biPredicate;
-import static com.qudini.reactive.utils.MoreThrowables.consumer;
-import static com.qudini.reactive.utils.MoreThrowables.function;
-import static com.qudini.reactive.utils.MoreThrowables.predicate;
-import static com.qudini.reactive.utils.MoreThrowables.supplier;
+import static com.qudini.reactive.utils.MoreFunctions.throwableBiConsumer;
+import static com.qudini.reactive.utils.MoreFunctions.throwableBiFunction;
+import static com.qudini.reactive.utils.MoreFunctions.throwableBiPredicate;
+import static com.qudini.reactive.utils.MoreFunctions.throwableConsumer;
+import static com.qudini.reactive.utils.MoreFunctions.throwableFunction;
+import static com.qudini.reactive.utils.MoreFunctions.throwablePredicate;
+import static com.qudini.reactive.utils.MoreFunctions.throwableSupplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("MoreThrowables")
-class MoreThrowablesTest {
+@DisplayName("MoreFunctions")
+class MoreFunctionsTest {
 
     @Test
     @DisplayName("should handle successful throwable consumer")
     void consumerSuccess() {
-        takeConsumer(consumer(i -> {
+        takeConsumer(throwableConsumer(i -> {
         }));
     }
 
@@ -36,7 +36,7 @@ class MoreThrowablesTest {
     void consumerError() {
         assertThrows(
                 TestException.class,
-                () -> takeConsumer(consumer(i -> {
+                () -> takeConsumer(throwableConsumer(i -> {
                     throw new TestException();
                 }))
         );
@@ -45,7 +45,7 @@ class MoreThrowablesTest {
     @Test
     @DisplayName("should handle successful throwable function")
     void functionSuccess() {
-        var output = takeFunction(function(i -> 42));
+        var output = takeFunction(throwableFunction(i -> 42));
         assertThat(output).isEqualTo(42);
     }
 
@@ -54,7 +54,7 @@ class MoreThrowablesTest {
     void functionError() {
         assertThrows(
                 TestException.class,
-                () -> takeFunction(function(i -> {
+                () -> takeFunction(throwableFunction(i -> {
                     throw new TestException();
                 }))
         );
@@ -63,7 +63,7 @@ class MoreThrowablesTest {
     @Test
     @DisplayName("should handle successful throwable supplier")
     void supplierSuccess() {
-        var output = takeSupplier(supplier(() -> 42));
+        var output = takeSupplier(throwableSupplier(() -> 42));
         assertThat(output).isEqualTo(42);
     }
 
@@ -72,7 +72,7 @@ class MoreThrowablesTest {
     void supplierError() {
         assertThrows(
                 TestException.class,
-                () -> takeSupplier(supplier(() -> {
+                () -> takeSupplier(throwableSupplier(() -> {
                     throw new TestException();
                 }))
         );
@@ -81,7 +81,7 @@ class MoreThrowablesTest {
     @Test
     @DisplayName("should handle successful throwable predicate")
     void predicateSuccess() {
-        var output = takePredicate(predicate(i -> true));
+        var output = takePredicate(throwablePredicate(i -> true));
         assertThat(output).isTrue();
     }
 
@@ -90,7 +90,7 @@ class MoreThrowablesTest {
     void predicateError() {
         assertThrows(
                 TestException.class,
-                () -> takePredicate(predicate(i -> {
+                () -> takePredicate(throwablePredicate(i -> {
                     throw new TestException();
                 }))
         );
@@ -99,7 +99,7 @@ class MoreThrowablesTest {
     @Test
     @DisplayName("should handle successful throwable biconsumer")
     void biConsumerSuccess() {
-        takeBiConsumer(biConsumer((i, j) -> {
+        takeBiConsumer(throwableBiConsumer((i, j) -> {
         }));
     }
 
@@ -108,7 +108,7 @@ class MoreThrowablesTest {
     void biConsumerError() {
         assertThrows(
                 TestException.class,
-                () -> takeBiConsumer(biConsumer((i, j) -> {
+                () -> takeBiConsumer(throwableBiConsumer((i, j) -> {
                     throw new TestException();
                 }))
         );
@@ -117,7 +117,7 @@ class MoreThrowablesTest {
     @Test
     @DisplayName("should handle successful throwable bifunction")
     void biFunctionSuccess() {
-        var output = takeBiFunction(biFunction((i, j) -> 42));
+        var output = takeBiFunction(throwableBiFunction((i, j) -> 42));
         assertThat(output).isEqualTo(42);
     }
 
@@ -126,7 +126,7 @@ class MoreThrowablesTest {
     void biFunctionError() {
         assertThrows(
                 TestException.class,
-                () -> takeBiFunction(biFunction((i, j) -> {
+                () -> takeBiFunction(throwableBiFunction((i, j) -> {
                     throw new TestException();
                 }))
         );
@@ -135,7 +135,7 @@ class MoreThrowablesTest {
     @Test
     @DisplayName("should handle successful throwable bipredicate")
     void biPredicateSuccess() {
-        var output = takeBiPredicate(biPredicate((i, j) -> true));
+        var output = takeBiPredicate(throwableBiPredicate((i, j) -> true));
         assertThat(output).isTrue();
     }
 
@@ -144,7 +144,7 @@ class MoreThrowablesTest {
     void biPredicateError() {
         assertThrows(
                 TestException.class,
-                () -> takeBiPredicate(biPredicate((i, j) -> {
+                () -> takeBiPredicate(throwableBiPredicate((i, j) -> {
                     throw new TestException();
                 }))
         );

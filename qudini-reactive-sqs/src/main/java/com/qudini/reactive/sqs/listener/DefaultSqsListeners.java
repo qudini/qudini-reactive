@@ -2,6 +2,7 @@ package com.qudini.reactive.sqs.listener;
 
 import com.qudini.reactive.logging.Log;
 import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
+import com.qudini.reactive.sqs.SqsListener;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
 import com.qudini.reactive.utils.MoreTuples;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.qudini.reactive.utils.MoreTuples.both;
-import static com.qudini.reactive.utils.MoreTuples.leftWhen;
+import static com.qudini.reactive.utils.MoreTuples.onBoth;
+import static com.qudini.reactive.utils.MoreTuples.onLeftWhen;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
@@ -60,8 +61,8 @@ public final class DefaultSqsListeners implements SqsListeners {
                 .just(listeners)
                 .flatMapIterable(Map::entrySet)
                 .map(MoreTuples::fromEntry)
-                .flatMap(leftWhen(this::getQueueUrl))
-                .flatMap(both(this::startPolling));
+                .flatMap(onLeftWhen(this::getQueueUrl))
+                .flatMap(onBoth(this::startPolling));
     }
 
     private Mono<String> getQueueUrl(String queueName) {

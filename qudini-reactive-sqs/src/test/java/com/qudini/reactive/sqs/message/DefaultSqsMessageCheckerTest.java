@@ -1,7 +1,7 @@
 package com.qudini.reactive.sqs.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qudini.reactive.sqs.listener.SqsListener;
+import com.qudini.reactive.sqs.SqsListener;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

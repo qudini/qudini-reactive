@@ -3,7 +3,6 @@ package com.qudini.reactive.sqs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
 import com.qudini.reactive.sqs.listener.DefaultSqsListeners;
-import com.qudini.reactive.sqs.listener.SqsListener;
 import com.qudini.reactive.sqs.listener.SqsListeners;
 import com.qudini.reactive.sqs.message.DefaultSqsMessageChecker;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
@@ -28,9 +27,15 @@ public class ReactiveSqsAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "sqsMessageObjectMapper")
+    public ObjectMapper sqsMessageObjectMapper(ObjectMapper objectMapper) {
+        return objectMapper;
+    }
+
+    @Bean
     @ConditionalOnMissingBean
-    public SqsMessageChecker sqsMessageChecker(SqsAsyncClient sqsClient, ObjectMapper objectMapper) {
-        return new DefaultSqsMessageChecker(sqsClient, objectMapper);
+    public SqsMessageChecker sqsMessageChecker(SqsAsyncClient sqsClient, ObjectMapper sqsMessageObjectMapper) {
+        return new DefaultSqsMessageChecker(sqsClient, sqsMessageObjectMapper);
     }
 
     @Bean

@@ -59,7 +59,7 @@ public class LoggingContextFilterTest {
     void forwardWithoutBodyWithCorrelationId() {
         var request = WebClient.create().get();
         var updatedRequest = filter
-                .forward(request)
+                .forwardOn(request)
                 .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
                 .block();
         var called = new AtomicBoolean();
@@ -76,7 +76,7 @@ public class LoggingContextFilterTest {
     void forwardWithoutBodyWithoutCorrelationId() {
         var request = WebClient.create().get();
         var updatedRequest = filter
-                .forward(request)
+                .forwardOn(request)
                 .block();
         var called = new AtomicBoolean();
         assertThat(updatedRequest).isNotNull();
@@ -92,7 +92,7 @@ public class LoggingContextFilterTest {
     void forwardWithBodyWithCorrelationId() {
         var request = WebClient.create().post();
         var updatedRequest = filter
-                .forward(request)
+                .forwardOn(request)
                 .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
                 .block();
         var called = new AtomicBoolean();
@@ -109,7 +109,7 @@ public class LoggingContextFilterTest {
     void forwardWithBodyWithoutCorrelationId() {
         var request = WebClient.create().post();
         var updatedRequest = filter
-                .forward(request)
+                .forwardOn(request)
                 .block();
         var called = new AtomicBoolean();
         assertThat(updatedRequest).isNotNull();

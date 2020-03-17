@@ -9,7 +9,7 @@ import static java.lang.Long.toHexString;
 import static java.time.Instant.now;
 
 /**
- * Largely inspired from <a href="https://github.com/aws/aws-xray-sdk-java/blob/master/aws-xray-recorder-sdk-core/src/main/java/com/amazonaws/xray/entities/TraceID.java">AWS TraceId</a>.
+ * <p>Largely inspired from <a href="https://github.com/aws/aws-xray-sdk-java/blob/master/aws-xray-recorder-sdk-core/src/main/java/com/amazonaws/xray/entities/TraceID.java">AWS TraceId</a>.</p>
  */
 @RequiredArgsConstructor
 public final class DefaultCorrelationIdGenerator implements CorrelationIdGenerator {
