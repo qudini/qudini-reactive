@@ -12,6 +12,11 @@ import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -46,6 +51,26 @@ class MeasuredAspectTest {
     }
 
     @Test
+    @DisplayName("should measure a method annotated with a custom annotation returning a mono")
+    void measureCustomMono() {
+        class Example {
+            @CustomMeasured
+            Mono<Integer> example() {
+                return Mono.just(42);
+            }
+        }
+        var proxy = proxy(new Example());
+        var returnedValue = proxy.example().block();
+        assertThat(returnedValue).isEqualTo(42);
+        checkTimer(
+                "test_custom_metric_name",
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$2Example"),
+                Tag.of("method_name", "example"),
+                Tag.of("status", "success")
+        );
+    }
+
+    @Test
     @DisplayName("should measure a method returning an erroneous mono")
     void measureErroneousMono() {
         var expectedException = new IllegalStateException();
@@ -63,7 +88,7 @@ class MeasuredAspectTest {
         assertThat(thrownException).isEqualTo(expectedException);
         checkTimer(
                 "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$2Example"),
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$3Example"),
                 Tag.of("method_name", "example"),
                 Tag.of("status", "error")
         );
@@ -83,7 +108,27 @@ class MeasuredAspectTest {
         assertThat(returnedValue).isEqualTo(42);
         checkTimer(
                 "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$3Example"),
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$4Example"),
+                Tag.of("method_name", "example"),
+                Tag.of("status", "success")
+        );
+    }
+
+    @Test
+    @DisplayName("should measure a method annotated with a custom annotation returning a flux")
+    void measureCustomFlux() {
+        class Example {
+            @CustomMeasured
+            Flux<Integer> example() {
+                return Flux.just(42);
+            }
+        }
+        var proxy = proxy(new Example());
+        var returnedValue = proxy.example().blockLast();
+        assertThat(returnedValue).isEqualTo(42);
+        checkTimer(
+                "test_custom_metric_name",
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$5Example"),
                 Tag.of("method_name", "example"),
                 Tag.of("status", "success")
         );
@@ -107,7 +152,7 @@ class MeasuredAspectTest {
         assertThat(thrownException).isEqualTo(expectedException);
         checkTimer(
                 "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$4Example"),
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$6Example"),
                 Tag.of("method_name", "example"),
                 Tag.of("status", "error")
         );
@@ -127,7 +172,27 @@ class MeasuredAspectTest {
         assertThat(returnedValue).isEqualTo(42);
         checkTimer(
                 "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$5Example"),
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$7Example"),
+                Tag.of("method_name", "example"),
+                Tag.of("status", "success")
+        );
+    }
+
+    @Test
+    @DisplayName("should measure a method annotated with a custom annotation with a synchronous return type")
+    void measureCustomSyncReturn() {
+        class Example {
+            @CustomMeasured
+            int example() {
+                return 42;
+            }
+        }
+        var proxy = proxy(new Example());
+        var returnedValue = proxy.example();
+        assertThat(returnedValue).isEqualTo(42);
+        checkTimer(
+                "test_custom_metric_name",
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$8Example"),
                 Tag.of("method_name", "example"),
                 Tag.of("status", "success")
         );
@@ -151,7 +216,7 @@ class MeasuredAspectTest {
         assertThat(thrownException).isEqualTo(expectedException);
         checkTimer(
                 "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$6Example"),
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$9Example"),
                 Tag.of("method_name", "example"),
                 Tag.of("status", "error")
         );
@@ -159,7 +224,7 @@ class MeasuredAspectTest {
 
     @Test
     @DisplayName("should measure a method without a return type")
-    void measureSuccessfulSyncVoid() {
+    void measureSyncVoid() {
         class Example {
             @Measured("test_metric_name")
             void example() {
@@ -169,34 +234,16 @@ class MeasuredAspectTest {
         proxy.example();
         checkTimer(
                 "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$7Example"),
+                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$10Example"),
                 Tag.of("method_name", "example"),
                 Tag.of("status", "success")
         );
     }
 
-    @Test
-    @DisplayName("should measure a method without a return type throwing an exception")
-    void measureErroneousSyncVoid() {
-        var expectedException = new IllegalStateException();
-        class Example {
-            @Measured("test_metric_name")
-            void example() {
-                throw expectedException;
-            }
-        }
-        var proxy = proxy(new Example());
-        var thrownException = assertThrows(
-                Exception.class,
-                proxy::example
-        );
-        assertThat(thrownException).isEqualTo(expectedException);
-        checkTimer(
-                "test_metric_name",
-                Tag.of("class_name", "com.qudini.reactive.metrics.aop.MeasuredAspectTest$8Example"),
-                Tag.of("method_name", "example"),
-                Tag.of("status", "error")
-        );
+    @Target(METHOD)
+    @Retention(RUNTIME)
+    @Measured("test_custom_metric_name")
+    public @interface CustomMeasured {
     }
 
     private <T> T proxy(T target) {

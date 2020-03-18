@@ -12,7 +12,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.annotation.Annotation;
 import java.time.Duration;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import static java.lang.System.nanoTime;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
@@ -24,7 +27,11 @@ public class MeasuredAspect {
     private final MeterRegistry registry;
 
     @Pointcut("@annotation(com.qudini.reactive.metrics.Measured)")
-    public void isAnnotated() {
+    public void isAnnotatedWithStandardAnnotation() {
+    }
+
+    @Pointcut("execution(@(@com.qudini.reactive.metrics.Measured *) * *(..))")
+    public void isAnnotatedWithCustomAnnotation() {
     }
 
     @Pointcut("execution(reactor.core.publisher.Mono *(..))")
@@ -35,48 +42,90 @@ public class MeasuredAspect {
     public void returnsFlux() {
     }
 
-    @Around("isAnnotated() && returnsMono()")
-    public Object measureMono(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("isAnnotatedWithStandardAnnotation() && returnsMono()")
+    public Object measureMonoWithStandardAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
+        return measureMono(joinPoint, findStandardAnnotation(joinPoint));
+    }
+
+    @Around("isAnnotatedWithStandardAnnotation() && returnsFlux()")
+    public Object measureFluxWithStandardAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
+        return measureFlux(joinPoint, findStandardAnnotation(joinPoint));
+    }
+
+    @Around("isAnnotatedWithStandardAnnotation() && !returnsMono() && !returnsFlux()")
+    public Object measureSynchronouslyWithStandardAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
+        return measureSynchronously(joinPoint, findStandardAnnotation(joinPoint));
+    }
+
+    @Around("isAnnotatedWithCustomAnnotation() && returnsMono()")
+    public Object measureMonoWithCustomAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
+        return measureMono(joinPoint, findCustomAnnotation(joinPoint));
+    }
+
+    @Around("isAnnotatedWithCustomAnnotation() && returnsFlux()")
+    public Object measureFluxWithCustomAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
+        return measureFlux(joinPoint, findCustomAnnotation(joinPoint));
+    }
+
+    @Around("isAnnotatedWithCustomAnnotation() && !returnsMono() && !returnsFlux()")
+    public Object measureSynchronouslyWithCustomAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
+        return measureSynchronously(joinPoint, findCustomAnnotation(joinPoint));
+    }
+
+    private Measured findStandardAnnotation(ProceedingJoinPoint joinPoint) {
+        var signature = (MethodSignature) joinPoint.getSignature();
+        return signature.getMethod().getAnnotation(Measured.class);
+    }
+
+    private Measured findCustomAnnotation(ProceedingJoinPoint joinPoint) {
+        var signature = (MethodSignature) joinPoint.getSignature();
+        return Stream
+                .of(signature.getMethod().getAnnotations())
+                .map(Annotation::annotationType)
+                .map(annotation -> annotation.getAnnotation(Measured.class))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Object measureMono(ProceedingJoinPoint joinPoint, Measured measured) throws Throwable {
         var start = nanoTime();
         return ((Mono<?>) joinPoint.proceed())
-                .doOnSuccess(x -> recordSuccess(joinPoint, start))
-                .doOnError(x -> recordError(joinPoint, start));
+                .doOnSuccess(x -> recordSuccess(joinPoint, measured, start))
+                .doOnError(x -> recordError(joinPoint, measured, start));
     }
 
-    @Around("isAnnotated() && returnsFlux()")
-    public Object measureFlux(ProceedingJoinPoint joinPoint) throws Throwable {
+    private Object measureFlux(ProceedingJoinPoint joinPoint, Measured measured) throws Throwable {
         var start = nanoTime();
         return ((Flux<?>) joinPoint.proceed())
-                .doOnComplete(() -> recordSuccess(joinPoint, start))
-                .doOnError(x -> recordError(joinPoint, start));
+                .doOnComplete(() -> recordSuccess(joinPoint, measured, start))
+                .doOnError(x -> recordError(joinPoint, measured, start));
     }
 
-    @Around("isAnnotated() && !returnsMono() && !returnsFlux()")
-    public Object measureSynchronously(ProceedingJoinPoint joinPoint) throws Throwable {
+    private Object measureSynchronously(ProceedingJoinPoint joinPoint, Measured measured) throws Throwable {
         var start = nanoTime();
         try {
             var returnedValue = joinPoint.proceed();
-            recordSuccess(joinPoint, start);
+            recordSuccess(joinPoint, measured, start);
             return returnedValue;
         } catch (Throwable error) {
-            recordError(joinPoint, start);
+            recordError(joinPoint, measured, start);
             throw error;
         }
     }
 
-    private void recordSuccess(ProceedingJoinPoint joinPoint, long start) {
-        record(joinPoint, start, "success");
+    private void recordSuccess(ProceedingJoinPoint joinPoint, Measured measured, long start) {
+        record(joinPoint, measured, start, "success");
     }
 
-    private void recordError(ProceedingJoinPoint joinPoint, long start) {
-        record(joinPoint, start, "error");
+    private void recordError(ProceedingJoinPoint joinPoint, Measured measured, long start) {
+        record(joinPoint, measured, start, "error");
     }
 
-    private void record(ProceedingJoinPoint joinPoint, long start, String status) {
+    private void record(ProceedingJoinPoint joinPoint, Measured measured, long start, String status) {
         var nanos = nanoTime() - start;
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
-        var measured = signature.getMethod().getAnnotation(Measured.class);
         Timer
                 .builder(measured.value())
                 .description(measured.description())
