@@ -13,8 +13,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.lang.System.nanoTime;
@@ -23,6 +27,8 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 @Aspect
 @RequiredArgsConstructor
 public class MeasuredAspect {
+
+    private static final Map<Method, Measured> CACHE = new ConcurrentHashMap<>();
 
     private final MeterRegistry registry;
 
@@ -44,43 +50,54 @@ public class MeasuredAspect {
 
     @Around("isAnnotatedWithStandardAnnotation() && returnsMono()")
     public Object measureMonoWithStandardAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
-        return measureMono(joinPoint, findStandardAnnotation(joinPoint));
+        return measureMono(joinPoint, getStandardAnnotation(joinPoint));
     }
 
     @Around("isAnnotatedWithStandardAnnotation() && returnsFlux()")
     public Object measureFluxWithStandardAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
-        return measureFlux(joinPoint, findStandardAnnotation(joinPoint));
+        return measureFlux(joinPoint, getStandardAnnotation(joinPoint));
     }
 
     @Around("isAnnotatedWithStandardAnnotation() && !returnsMono() && !returnsFlux()")
     public Object measureSynchronouslyWithStandardAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
-        return measureSynchronously(joinPoint, findStandardAnnotation(joinPoint));
+        return measureSynchronously(joinPoint, getStandardAnnotation(joinPoint));
     }
 
     @Around("isAnnotatedWithCustomAnnotation() && returnsMono()")
     public Object measureMonoWithCustomAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
-        return measureMono(joinPoint, findCustomAnnotation(joinPoint));
+        return measureMono(joinPoint, getCustomAnnotation(joinPoint));
     }
 
     @Around("isAnnotatedWithCustomAnnotation() && returnsFlux()")
     public Object measureFluxWithCustomAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
-        return measureFlux(joinPoint, findCustomAnnotation(joinPoint));
+        return measureFlux(joinPoint, getCustomAnnotation(joinPoint));
     }
 
     @Around("isAnnotatedWithCustomAnnotation() && !returnsMono() && !returnsFlux()")
     public Object measureSynchronouslyWithCustomAnnotation(ProceedingJoinPoint joinPoint) throws Throwable {
-        return measureSynchronously(joinPoint, findCustomAnnotation(joinPoint));
+        return measureSynchronously(joinPoint, getCustomAnnotation(joinPoint));
     }
 
-    private Measured findStandardAnnotation(ProceedingJoinPoint joinPoint) {
-        var signature = (MethodSignature) joinPoint.getSignature();
-        return signature.getMethod().getAnnotation(Measured.class);
+    private Measured getStandardAnnotation(ProceedingJoinPoint joinPoint) {
+        return getAnnotation(joinPoint, this::findStandardAnnotation);
     }
 
-    private Measured findCustomAnnotation(ProceedingJoinPoint joinPoint) {
+    private Measured getCustomAnnotation(ProceedingJoinPoint joinPoint) {
+        return getAnnotation(joinPoint, this::findCustomAnnotation);
+    }
+
+    private Measured getAnnotation(ProceedingJoinPoint joinPoint, Function<Method, Measured> finder) {
         var signature = (MethodSignature) joinPoint.getSignature();
+        return CACHE.computeIfAbsent(signature.getMethod(), finder);
+    }
+
+    private Measured findStandardAnnotation(Method method) {
+        return method.getAnnotation(Measured.class);
+    }
+
+    private Measured findCustomAnnotation(Method method) {
         return Stream
-                .of(signature.getMethod().getAnnotations())
+                .of(method.getAnnotations())
                 .map(Annotation::annotationType)
                 .map(annotation -> annotation.getAnnotation(Measured.class))
                 .filter(Objects::nonNull)
