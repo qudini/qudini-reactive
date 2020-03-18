@@ -24,11 +24,11 @@
 
     <modules>
         <module>qudini-reactive-tests</module>
-        <module>qudini-reactive-logging</module>
         <module>qudini-reactive-utils</module>
+        <module>qudini-reactive-logging</module>
+        <module>qudini-reactive-metrics</module>
         <module>qudini-reactive-sqs</module>
         <module>qudini-reactive-example</module>
-        <module>qudini-reactive-metrics</module>
     </modules>
 
     <distributionManagement>
