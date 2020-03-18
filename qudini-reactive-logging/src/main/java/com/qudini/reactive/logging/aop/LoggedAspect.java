@@ -8,13 +8,24 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.Function;
+
+import static lombok.AccessLevel.PACKAGE;
+
 @Aspect
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = PACKAGE)
 public class LoggedAspect {
 
     private final JoinPointSerialiser joinPointSerialiser;
+
+    private final Function<Class<?>, Logger> loggerGetter;
+
+    public LoggedAspect(JoinPointSerialiser joinPointSerialiser) {
+        this(joinPointSerialiser, LoggerFactory::getLogger);
+    }
 
     @Pointcut("@annotation(com.qudini.reactive.logging.Logged)")
     public void isAnnotated() {
@@ -57,7 +68,7 @@ public class LoggedAspect {
         var serialisedJoinPoint = joinPointSerialiser.serialise(joinPoint);
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
-        var logger = LoggerFactory.getLogger(declaringType);
+        var logger = loggerGetter.apply(declaringType);
         logger.info(serialisedJoinPoint);
         return (T) joinPoint.proceed();
     }
@@ -65,7 +76,7 @@ public class LoggedAspect {
     private void logError(Throwable error, ProceedingJoinPoint joinPoint) {
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
-        var logger = LoggerFactory.getLogger(declaringType);
+        var logger = loggerGetter.apply(declaringType);
         logger.error("{}#{} failed", declaringType.getName(), signature.getName(), error);
     }
 
