@@ -12,6 +12,8 @@ public @interface Measured {
 
     String value();
 
+    String description() default "histogram";
+
     boolean publishPercentileHistogram() default true;
 
     long minimumExpectedValueInNanos() default 5 * 1000;

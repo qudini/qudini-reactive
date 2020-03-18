@@ -79,6 +79,7 @@ public class MeasuredAspect {
         var measured = signature.getMethod().getAnnotation(Measured.class);
         Timer
                 .builder(measured.value())
+                .description(measured.description())
                 .tag("class_name", declaringType.getName())
                 .tag("method_name", signature.getName())
                 .tag("status", status)
