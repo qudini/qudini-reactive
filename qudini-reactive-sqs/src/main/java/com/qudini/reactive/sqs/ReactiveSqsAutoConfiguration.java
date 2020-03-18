@@ -2,7 +2,6 @@ package com.qudini.reactive.sqs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
-import com.qudini.reactive.sqs.listener.DefaultSqsListeners;
 import com.qudini.reactive.sqs.listener.SqsListeners;
 import com.qudini.reactive.sqs.message.DefaultSqsMessageChecker;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
@@ -39,9 +38,8 @@ public class ReactiveSqsAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
     public SqsListeners sqsListeners(Collection<SqsListener<?>> listeners, SqsAsyncClient sqsClient, SqsMessageChecker sqsMessageChecker, ReactiveLoggingContextCreator reactiveLoggingContextCreator) {
-        return new DefaultSqsListeners(listeners, sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
+        return new SqsListeners(listeners, sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
     }
 
     @EventListener(ApplicationReadyEvent.class)

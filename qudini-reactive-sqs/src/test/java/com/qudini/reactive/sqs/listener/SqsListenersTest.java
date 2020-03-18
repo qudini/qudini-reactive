@@ -32,8 +32,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("DefaultSqsListeners")
-class DefaultSqsListenersTest {
+@DisplayName("SqsListeners")
+class SqsListenersTest {
 
     private final SqsListener<String> listener = new SqsListener<>() {
 
@@ -125,7 +125,7 @@ class DefaultSqsListenersTest {
 
     @SneakyThrows
     private void startAndStop() {
-        var sqsListeners = new DefaultSqsListeners(Set.of(listener), sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
+        var sqsListeners = new SqsListeners(Set.of(listener), sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
         runAsync(sqsListeners::start);
         Thread.sleep(500);
         sqsListeners.stop();

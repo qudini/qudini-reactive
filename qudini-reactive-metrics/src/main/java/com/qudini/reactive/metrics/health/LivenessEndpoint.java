@@ -1,9 +1,15 @@
 package com.qudini.reactive.metrics.health;
 
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.health.Health;
 
-public interface LivenessEndpoint {
+@Endpoint(id = "liveness")
+public class LivenessEndpoint {
 
-    Health check();
+    @ReadOperation
+    public Health check() {
+        return Health.up().build();
+    }
 
 }

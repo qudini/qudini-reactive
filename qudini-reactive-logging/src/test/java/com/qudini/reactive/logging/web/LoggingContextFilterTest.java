@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("LoggingContextFilter")
-public class LoggingContextFilterTest {
+class LoggingContextFilterTest {
 
     @Mock
     private LoggingContextExtractor loggingContextExtractor;
