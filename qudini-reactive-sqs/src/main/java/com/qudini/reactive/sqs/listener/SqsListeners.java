@@ -24,7 +24,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @Slf4j
-public final class SqsListeners implements SqsListeners {
+public final class SqsListeners {
 
     private final Map<String, SqsListener<?>> listeners;
 
@@ -46,7 +46,6 @@ public final class SqsListeners implements SqsListeners {
         this.flux = prepare();
     }
 
-    @Override
     public synchronized void start() {
         if (disposable == null) {
             this.disposable = flux.subscribe();
@@ -88,7 +87,6 @@ public final class SqsListeners implements SqsListeners {
     }
 
     @PreDestroy
-    @Override
     public synchronized void stop() {
         if (null != disposable && !disposable.isDisposed()) {
             disposable.dispose();
