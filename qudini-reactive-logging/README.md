@@ -275,9 +275,7 @@ int example(Context context) {
 
 ### com.qudini.reactive.logging.Logged
 
-Annotate a type or a method with `@Logged` to make it logged when starting, and if an error occurs.
-
-Only public methods returning either a mono or a flux will be matched.
+Annotate a method with `@Logged` to make it logged when starting, and if an error occurs.
 
 Parameters will be logged too, but you can exclude them by annotating them with `@Logged.Exclude`.
 

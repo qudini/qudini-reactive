@@ -28,6 +28,7 @@
         <module>qudini-reactive-utils</module>
         <module>qudini-reactive-sqs</module>
         <module>qudini-reactive-example</module>
+        <module>qudini-reactive-metrics</module>
     </modules>
 
     <distributionManagement>
@@ -57,12 +58,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

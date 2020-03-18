@@ -16,15 +16,7 @@ public class LoggedAspect {
 
     private final JoinPointSerialiser joinPointSerialiser;
 
-    @Pointcut("@within(com.qudini.reactive.logging.Logged)")
-    public void classIsAnnotated() {
-    }
-
     @Pointcut("@annotation(com.qudini.reactive.logging.Logged)")
-    public void methodIsAnnotated() {
-    }
-
-    @Pointcut("classIsAnnotated() || methodIsAnnotated()")
     public void isAnnotated() {
     }
 
@@ -50,6 +42,16 @@ public class LoggedAspect {
                 .doOnEach(Log.onError(error -> logError(error, joinPoint)));
     }
 
+    @Around("isAnnotated() && !returnsMono() && !returnsFlux()")
+    public Object logSynchronously(ProceedingJoinPoint joinPoint) {
+        try {
+            return logAndProceed(joinPoint);
+        } catch (Throwable error) {
+            logError(error, joinPoint);
+            throw error;
+        }
+    }
+
     @SneakyThrows
     private <T> T logAndProceed(ProceedingJoinPoint joinPoint) {
         var serialisedJoinPoint = joinPointSerialiser.serialise(joinPoint);
@@ -64,7 +66,7 @@ public class LoggedAspect {
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
         var logger = LoggerFactory.getLogger(declaringType);
-        logger.error("{}#{} failed", declaringType.getSimpleName(), signature.getName(), error);
+        logger.error("{}#{} failed", declaringType.getName(), signature.getName(), error);
     }
 
 }

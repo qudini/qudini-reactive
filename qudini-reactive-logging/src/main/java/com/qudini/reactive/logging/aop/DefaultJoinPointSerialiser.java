@@ -54,7 +54,7 @@ public final class DefaultJoinPointSerialiser implements JoinPointSerialiser {
     private LoggedMethod buildLoggedMethod(UniqueMethodSignature uniqueMethodSignature) {
         var methodSignature = uniqueMethodSignature.getMethodSignature();
         var method = methodSignature.getMethod();
-        var className = method.getDeclaringClass().getSimpleName();
+        var className = method.getDeclaringClass().getName();
         var methodName = method.getName();
         var parameterNames = methodSignature.getParameterNames();
         var includedParameterIndexes = getIncludedParameterIndexes(method);

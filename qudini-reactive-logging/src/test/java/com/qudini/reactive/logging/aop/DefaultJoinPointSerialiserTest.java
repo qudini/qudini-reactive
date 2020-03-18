@@ -43,7 +43,7 @@ class DefaultJoinPointSerialiserTest {
         given(joinPoint.getArgs()).willReturn(new Object[]{1, 2});
         given(methodSignature.getMethod()).willReturn(method);
         var serialisedJoinPoint = serialiser.serialise(joinPoint);
-        assertThat(serialisedJoinPoint).isEqualTo("DefaultJoinPointSerialiserTest#methodWithoutExclusion(\n\tfoo: 1\n\tbar: 2\n)");
+        assertThat(serialisedJoinPoint).isEqualTo("com.qudini.reactive.logging.aop.DefaultJoinPointSerialiserTest#methodWithoutExclusion(\n\tfoo: 1\n\tbar: 2\n)");
     }
 
     public void methodWithExclusion(@Logged.Exclude int foo, int bar) {
@@ -57,7 +57,7 @@ class DefaultJoinPointSerialiserTest {
         given(joinPoint.getArgs()).willReturn(new Object[]{1, 2});
         given(methodSignature.getMethod()).willReturn(method);
         var serialisedJoinPoint = serialiser.serialise(joinPoint);
-        assertThat(serialisedJoinPoint).isEqualTo("DefaultJoinPointSerialiserTest#methodWithExclusion(\n\tfoo: <excluded>\n\tbar: 2\n)");
+        assertThat(serialisedJoinPoint).isEqualTo("com.qudini.reactive.logging.aop.DefaultJoinPointSerialiserTest#methodWithExclusion(\n\tfoo: <excluded>\n\tbar: 2\n)");
     }
 
     public void methodWithoutParameters() {
@@ -71,7 +71,7 @@ class DefaultJoinPointSerialiserTest {
         given(joinPoint.getArgs()).willReturn(new Object[]{});
         given(methodSignature.getMethod()).willReturn(method);
         var serialisedJoinPoint = serialiser.serialise(joinPoint);
-        assertThat(serialisedJoinPoint).isEqualTo("DefaultJoinPointSerialiserTest#methodWithoutParameters()");
+        assertThat(serialisedJoinPoint).isEqualTo("com.qudini.reactive.logging.aop.DefaultJoinPointSerialiserTest#methodWithoutParameters()");
     }
 
 }
