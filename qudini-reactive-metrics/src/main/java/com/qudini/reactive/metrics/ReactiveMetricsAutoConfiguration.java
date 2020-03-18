@@ -3,9 +3,11 @@ package com.qudini.reactive.metrics;
 import com.qudini.reactive.metrics.aop.MeasuredAspect;
 import com.qudini.reactive.metrics.buildinfo.BuildInfoMeterBinder;
 import com.qudini.reactive.metrics.buildinfo.BuildInfoService;
+import com.qudini.reactive.metrics.buildinfo.DefaultBuildInfoMeterBinder;
 import com.qudini.reactive.metrics.buildinfo.DefaultBuildInfoService;
+import com.qudini.reactive.metrics.health.DefaultLivenessEndpoint;
+import com.qudini.reactive.metrics.health.LivenessEndpoint;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.binder.MeterBinder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +23,15 @@ public class ReactiveMetricsAutoConfiguration {
     }
 
     @Bean
-    public MeterBinder buildInfoMeterBinder(BuildInfoService buildInfoService) {
-        return new BuildInfoMeterBinder(buildInfoService);
+    @ConditionalOnMissingBean
+    public BuildInfoMeterBinder buildInfoMeterBinder(BuildInfoService buildInfoService) {
+        return new DefaultBuildInfoMeterBinder(buildInfoService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public LivenessEndpoint livenessEndpoint() {
+        return new DefaultLivenessEndpoint();
     }
 
     @Bean
