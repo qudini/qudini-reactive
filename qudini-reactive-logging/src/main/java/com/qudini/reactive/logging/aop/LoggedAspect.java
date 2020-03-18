@@ -20,11 +20,11 @@ public class LoggedAspect {
     public void isAnnotated() {
     }
 
-    @Pointcut("execution(public reactor.core.publisher.Mono *(..))")
+    @Pointcut("execution(reactor.core.publisher.Mono *(..))")
     public void returnsMono() {
     }
 
-    @Pointcut("execution(public reactor.core.publisher.Flux *(..))")
+    @Pointcut("execution(reactor.core.publisher.Flux *(..))")
     public void returnsFlux() {
     }
 
