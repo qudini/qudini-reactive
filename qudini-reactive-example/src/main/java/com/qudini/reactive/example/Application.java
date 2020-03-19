@@ -17,7 +17,7 @@ public class Application {
     }
 
     @Logged
-    @Measured("qudini_index_duration_seconds")
+    @Measured("qudini_duration")
     @GetMapping("/")
     public Mono<String> index() {
         return Mono.just("hello reactive world");

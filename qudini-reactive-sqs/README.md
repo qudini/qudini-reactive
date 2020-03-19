@@ -6,25 +6,6 @@ Non-blocking SQS listeners based on AWS asynchronous SDK and long polling.
 
 ```xml
 <dependencies>
-    <!-- Spring dependencies needed: -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-webflux</artifactId>
-        <exclusions>
-            <exclusion>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-logging</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-log4j2</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-aop</artifactId>
-    </dependency>
     <!-- Qudini Reactive dependencies needed: -->
     <dependency>
         <groupId>com.qudini</groupId>

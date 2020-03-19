@@ -150,8 +150,8 @@ public class MeasuredAspect {
                 .tag("method_name", signature.getName())
                 .tag("status", status)
                 .publishPercentileHistogram(measured.publishPercentileHistogram())
-                .minimumExpectedValue(Duration.ofNanos(measured.minimumExpectedValueInNanos()))
-                .maximumExpectedValue(Duration.ofNanos(measured.maximumExpectedValueInNanos()))
+                .minimumExpectedValue(Duration.ofMillis(measured.minimumExpectedValueInMillis()))
+                .maximumExpectedValue(Duration.ofMillis(measured.maximumExpectedValueInMillis()))
                 .register(registry)
                 .record(nanos, NANOSECONDS);
     }

@@ -1,6 +1,6 @@
 # qudini-reactive-utils
 
-Utilities around the reactive stack of Spring (WebFlux with Project Reactor).
+Utilities around Project Reactor.
 
 ## Installation
 
