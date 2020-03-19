@@ -25,7 +25,7 @@ You can leave the defaults, everything will just work out of the box. You can al
 
 ### Build info
 
-A `Gauge` meter named `build_info` will be registered to expose the build name and version.
+A `Gauge` meter named `build_info` will be registered to expose the build name and version via tags.
 
 By default, those two values will be read from the JAR file's manifest, respectively `Implementation-Title` and `Implementation-Version`.
 
@@ -197,7 +197,7 @@ You can override those defaults via the annotation attributes:
 ```java
 @Measured(
     value = "yourapp_duration",
-    // below are the defaults your can override:
+    // below are the defaults you can override:
     description = "histogram",
     publishPercentileHistogram = true,
     minimumExpectedValueInMillis = 5,

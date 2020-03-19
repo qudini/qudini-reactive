@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <pre><code>
  * &#64;Measured(
  *     value = "yourapp_duration",
- *     // below are the defaults your can override:
+ *     // below are the defaults you can override:
  *     description = "histogram",
  *     publishPercentileHistogram = true,
  *     minimumExpectedValueInMillis = 5,

@@ -11,6 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p>Annotate a method with <code>@Logged</code> to make it logged when starting, and if an error occurs.</p>
  * <p>Example:</p>
  * <pre><code>
+ * &#64;Component
  * public class YourClass {
  *
  *     &#64;Logged
