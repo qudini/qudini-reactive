@@ -1,2 +1,17 @@
 server:
-  port: 8080
+  port: ${SERVICE_APP_PORT:8080}
+
+management:
+  server:
+    port: ${SERVICE_MNG_PORT:8081}
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: liveness,health,prometheus
+      path-mapping:
+        health: readiness
+        prometheus: metrics

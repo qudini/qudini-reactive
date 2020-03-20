@@ -5,14 +5,13 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * <p>Annotate a type or a method with <code>@Logged</code> to make it logged when starting, and if an error occurs.</p>
- * <p>Only public methods returning either a mono or a flux will be matched.</p>
+ * <p>Annotate a method with <code>@Logged</code> to make it logged when starting, and if an error occurs.</p>
  * <p>Example:</p>
  * <pre><code>
+ * &#64;Component
  * public class YourClass {
  *
  *     &#64;Logged
@@ -30,7 +29,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * )
  * }</pre>
  */
-@Target({TYPE, METHOD})
+@Target(METHOD)
 @Retention(RUNTIME)
 public @interface Logged {
 

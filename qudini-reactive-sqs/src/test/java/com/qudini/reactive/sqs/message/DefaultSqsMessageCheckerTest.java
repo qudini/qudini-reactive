@@ -26,7 +26,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public final class DefaultSqsMessageCheckerTest {
+@DisplayName("DefaultSqsMessageChecker")
+class DefaultSqsMessageCheckerTest {
 
     private final SqsListener<String> acknowledgingListener = new SqsListener<>() {
 

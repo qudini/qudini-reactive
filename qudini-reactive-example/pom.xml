@@ -42,13 +42,26 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.qudini</groupId>
+            <artifactId>qudini-reactive-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-logging</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
-            <artifactId>qudini-reactive-utils</artifactId>
+            <artifactId>qudini-reactive-metrics</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

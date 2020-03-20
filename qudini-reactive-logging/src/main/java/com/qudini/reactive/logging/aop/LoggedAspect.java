@@ -8,31 +8,34 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.Function;
+
+import static lombok.AccessLevel.PACKAGE;
+
 @Aspect
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = PACKAGE)
 public class LoggedAspect {
 
     private final JoinPointSerialiser joinPointSerialiser;
 
-    @Pointcut("@within(com.qudini.reactive.logging.Logged)")
-    public void classIsAnnotated() {
+    private final Function<Class<?>, Logger> loggerGetter;
+
+    public LoggedAspect(JoinPointSerialiser joinPointSerialiser) {
+        this(joinPointSerialiser, LoggerFactory::getLogger);
     }
 
     @Pointcut("@annotation(com.qudini.reactive.logging.Logged)")
-    public void methodIsAnnotated() {
-    }
-
-    @Pointcut("classIsAnnotated() || methodIsAnnotated()")
     public void isAnnotated() {
     }
 
-    @Pointcut("execution(public reactor.core.publisher.Mono *(..))")
+    @Pointcut("execution(reactor.core.publisher.Mono *(..))")
     public void returnsMono() {
     }
 
-    @Pointcut("execution(public reactor.core.publisher.Flux *(..))")
+    @Pointcut("execution(reactor.core.publisher.Flux *(..))")
     public void returnsFlux() {
     }
 
@@ -50,12 +53,22 @@ public class LoggedAspect {
                 .doOnEach(Log.onError(error -> logError(error, joinPoint)));
     }
 
+    @Around("isAnnotated() && !returnsMono() && !returnsFlux()")
+    public Object logSynchronously(ProceedingJoinPoint joinPoint) {
+        try {
+            return logAndProceed(joinPoint);
+        } catch (Throwable error) {
+            logError(error, joinPoint);
+            throw error;
+        }
+    }
+
     @SneakyThrows
     private <T> T logAndProceed(ProceedingJoinPoint joinPoint) {
         var serialisedJoinPoint = joinPointSerialiser.serialise(joinPoint);
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
-        var logger = LoggerFactory.getLogger(declaringType);
+        var logger = loggerGetter.apply(declaringType);
         logger.info(serialisedJoinPoint);
         return (T) joinPoint.proceed();
     }
@@ -63,8 +76,8 @@ public class LoggedAspect {
     private void logError(Throwable error, ProceedingJoinPoint joinPoint) {
         var signature = (MethodSignature) joinPoint.getSignature();
         var declaringType = signature.getDeclaringType();
-        var logger = LoggerFactory.getLogger(declaringType);
-        logger.error("{}#{} failed", declaringType.getSimpleName(), signature.getName(), error);
+        var logger = loggerGetter.apply(declaringType);
+        logger.error("{}#{} failed", declaringType.getName(), signature.getName(), error);
     }
 
 }

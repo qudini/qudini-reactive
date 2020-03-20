@@ -1,30 +1,11 @@
 # qudini-reactive-logging
 
-Helps logging in a reactive context.
+Fixes logging in a reactive stream, by handling the MDC inside the reactive context.
 
 ## Installation
 
 ```xml
 <dependencies>
-    <!-- Spring dependencies needed: -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-webflux</artifactId>
-        <exclusions>
-            <exclusion>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-logging</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-log4j2</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-aop</artifactId>
-    </dependency>
     <!-- Qudini Reactive dependencies needed: -->
     <dependency>
         <groupId>com.qudini</groupId>
@@ -275,15 +256,14 @@ int example(Context context) {
 
 ### com.qudini.reactive.logging.Logged
 
-Annotate a type or a method with `@Logged` to make it logged when starting, and if an error occurs.
-
-Only public methods returning either a mono or a flux will be matched.
+Annotate a method with `@Logged` to make it logged when starting, and if an error occurs.
 
 Parameters will be logged too, but you can exclude them by annotating them with `@Logged.Exclude`.
 
 #### Example
 
 ```java
+@Component
 public class YourClass {
 
     @Logged
