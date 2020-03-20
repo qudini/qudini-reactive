@@ -40,12 +40,12 @@ Below is our recommended configuration of Spring Boot Actuator, especially if or
 ```yaml
 server:
   # the "exposed" server port
-  port: 8080
+  port: ${SERVICE_APP_PORT:8080}
 
 management:
   server:
     # use a different "private" port for Spring Boot Actuator:
-    port: 8081
+    port: ${SERVICE_MNG_PORT:8081}
   endpoint:
     health:
       # make the health (aka readiness) probe display all details:
