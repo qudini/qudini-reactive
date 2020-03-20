@@ -30,7 +30,22 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * }
  * </code></pre>
- * <p>By default, histograms are published, with a minimum expected value of 5ms and a maximum expected value of 5s.</p>
+ * <p>Prometheus output:</p>
+ * <pre>{@literal
+ * # HELP yourapp_duration_seconds histogram
+ * # TYPE yourapp_duration_seconds histogram
+ * yourapp_duration_seconds_bucket{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",le="0.005",} 4.0
+ * yourapp_duration_seconds_bucket{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",le="0.005592405",} 4.0
+ * ...
+ * yourapp_duration_seconds_bucket{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",le="5.0",} 4.0
+ * yourapp_duration_seconds_bucket{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",le="+Inf",} 4.0
+ * yourapp_duration_seconds_count{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",} 4.0
+ * yourapp_duration_seconds_sum{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",} 0.004546575
+ * # HELP yourapp_duration_seconds_max histogram
+ * # TYPE yourapp_duration_seconds_max gauge
+ * yourapp_duration_seconds_max{class_name="your.package.to.YourClass",method_name="yourMethod",status="success",} 0.004407308
+ * }</pre>
+ * <p>As you can see, by default, histograms are published, with a minimum expected value of 5ms and a maximum expected value of 5s.</p>
  * <p>This can be overridden via attributes:</p>
  * <pre><code>
  * &#64;Measured(
