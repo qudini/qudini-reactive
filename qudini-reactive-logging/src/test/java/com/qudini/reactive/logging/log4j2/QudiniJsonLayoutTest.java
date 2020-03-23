@@ -70,9 +70,9 @@ class QudiniJsonLayoutTest {
         var json = getLogOutput();
         assertThat(json.get("timestamp")).isNotNull();
         assertThat(between(from(ISO_INSTANT.parse(json.get("timestamp"))), now()).get(SECONDS)).isEqualTo(0);
-        assertThat(json.get("log_level")).isEqualTo("INFO");
+        assertThat(json.get("level")).isEqualTo("INFO");
         assertThat(json.get("thread")).isEqualTo("main");
-        assertThat(json.get("logger_name")).isEqualTo("TEST_LOGGER");
+        assertThat(json.get("logger")).isEqualTo("TEST_LOGGER");
         assertThat(json.get("message")).isEqualTo("log message");
         assertThat(json.get("stacktrace")).isNull();
     }

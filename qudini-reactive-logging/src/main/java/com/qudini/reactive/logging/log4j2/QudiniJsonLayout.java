@@ -23,17 +23,17 @@ import static org.apache.logging.log4j.core.config.Node.CATEGORY;
 public final class QudiniJsonLayout extends AbstractStringLayout {
 
     private static final String TIMESTAMP_KEY = "timestamp";
-    private static final String LOG_LEVEL_KEY = "log_level";
+    private static final String LEVEL_KEY = "level";
     private static final String THREAD_KEY = "thread";
-    private static final String LOGGER_NAME_KEY = "logger_name";
+    private static final String LOGGER_KEY = "logger";
     private static final String MESSAGE_KEY = "message";
     private static final String STACKTRACE_KEY = "stacktrace";
 
     private static final Set<String> RESERVED_KEYS = Set.of(
             TIMESTAMP_KEY,
-            LOG_LEVEL_KEY,
+            LEVEL_KEY,
             THREAD_KEY,
-            LOGGER_NAME_KEY,
+            LOGGER_KEY,
             MESSAGE_KEY,
             STACKTRACE_KEY
     );
@@ -85,9 +85,9 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             generator.writeStartObject();
             mdc.forEach((key, value) -> writeMdcEntry(generator, key, value));
             generator.writeStringField(TIMESTAMP_KEY, ISO_INSTANT.format(ofEpochMilli(timestamp)));
-            generator.writeStringField(LOG_LEVEL_KEY, logLevel);
+            generator.writeStringField(LEVEL_KEY, logLevel);
             generator.writeStringField(THREAD_KEY, thread);
-            generator.writeStringField(LOGGER_NAME_KEY, loggerName);
+            generator.writeStringField(LOGGER_KEY, loggerName);
             generator.writeStringField(MESSAGE_KEY, message.toString());
             if (null != stacktrace) {
                 generator.writeStringField(STACKTRACE_KEY, stacktrace);
