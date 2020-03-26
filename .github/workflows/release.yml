@@ -22,7 +22,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Version
-        run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
+        run: |
+          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
+          cd qudini-reactive-example
+          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
+          cd ..
       - name: Release
         run: |
           echo "<settings><servers><server><id>github</id><username>qudini</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
