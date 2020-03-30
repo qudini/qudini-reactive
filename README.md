@@ -6,17 +6,6 @@ All these libraries are preconfigured: just adding them as dependencies is enoug
 
 ## Installation
 
-Add a Maven repository that points to `qudini-reactive` GitHub Packages:
-
-```xml
-<repositories>
-    <repository>
-      <id>qudini-reactive</id>
-      <url>https://maven.pkg.github.com/qudini/qudini-reactive</url>
-    </repository>
-</repositories>
-```
-
 Most of the libraries need the following dependencies to be provided:
 
 ```xml
