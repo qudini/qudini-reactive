@@ -24,6 +24,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Release
         run: |
+          git config --global user.email "release@qudini.com"
+          git config --global user.name "Release"
           mvn --settings ./.m2/settings.xml clean
           mvn --settings ./.m2/settings.xml release:prepare
           mvn --settings ./.m2/settings.xml release:perform
