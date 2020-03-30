@@ -25,10 +25,9 @@ jobs:
         run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
       - name: Release
         run: |
-          echo "<settings><profiles><profile><id>ossrh</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.passphrase>${GPG_PASSPHRASE}</gpg.passphrase></properties></profile></profiles><servers><server><id>ossrh</id><username>${JIRA_ID}</username><password>${JIRA_PASSWORD}</password></server></servers></settings>" > ~/.m2/settings.xml
-          mvn clean
-          mvn release:prepare
-          mvn release:perform
+          mvn --settings ./.m2/settings.xml clean
+          mvn --settings ./.m2/settings.xml release:prepare
+          mvn --settings ./.m2/settings.xml release:perform
         env:
           LOG_LEVEL: FATAL
           JIRA_ID: ${{ secrets.JIRA_ID }}
