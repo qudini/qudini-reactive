@@ -25,8 +25,12 @@ jobs:
         run: mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
       - name: Release
         run: |
-          echo "<settings><servers><server><id>github</id><username>qudini</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-          mvn -B clean deploy
+          echo "<settings><profiles><profile><id>ossrh</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.passphrase>${GPG_PASSPHRASE}</gpg.passphrase></properties></profile></profiles><servers><server><id>ossrh</id><username>${JIRA_ID}</username><password>${JIRA_PASSWORD}</password></server></servers></settings>" > ~/.m2/settings.xml
+          mvn clean
+          mvn release:prepare
+          mvn release:perform
         env:
           LOG_LEVEL: FATAL
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JIRA_ID: ${{ secrets.JIRA_ID }}
+          JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
