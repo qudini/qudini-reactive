@@ -23,9 +23,9 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Version
         run: |
-          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
+          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/}-SNAPSHOT -DgenerateBackupPoms=false
           cd qudini-reactive-example
-          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
+          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/}-SNAPSHOT -DgenerateBackupPoms=false
           cd ..
       - name: Release
         run: |
