@@ -29,8 +29,11 @@ jobs:
           cd ..
       - name: Release
         run: |
-          echo "<settings><servers><server><id>github</id><username>qudini</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-          mvn -B clean deploy
+          mvn --settings ./.m2/settings.xml clean
+          mvn --settings ./.m2/settings.xml release:prepare
+          mvn --settings ./.m2/settings.xml release:perform
         env:
           LOG_LEVEL: FATAL
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JIRA_ID: ${{ secrets.JIRA_ID }}
+          JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
