@@ -29,6 +29,7 @@ jobs:
           cd ..
       - name: Release
         run: |
+          export GPG_TTY=$(tty)
           echo $GPG_PUBLIC_KEY | base64 --decode > gpg-public-key && gpg --import gpg-public-key
           echo $GPG_PRIVATE_KEY | base64 --decode > gpg-private-key && gpg --batch --passphrase $GPG_PASSPHRASE --import gpg-private-key
           mvn -B --settings ./.m2/settings.xml -Pdeploy clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
@@ -42,6 +43,7 @@ jobs:
       - name: Clean
         if: always()
         run: |
+          export GPG_TTY=$(tty)
           rm gpg-public-key || true
           rm gpg-private-key || true
           gpg --batch --yes --delete-secret-key $GPG_KEY_ID || true
