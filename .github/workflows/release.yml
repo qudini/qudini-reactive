@@ -29,7 +29,7 @@ jobs:
           cd ..
       - name: Release
         run: |
-          mvn --settings ./.m2/settings.xml -B clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
+          mvn -B --settings ./.m2/settings.xml -Pdeploy clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
         env:
           LOG_LEVEL: FATAL
           JIRA_ID: ${{ secrets.JIRA_ID }}
