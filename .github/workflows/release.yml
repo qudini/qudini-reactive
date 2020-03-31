@@ -32,6 +32,8 @@ jobs:
           base64 --decode $GPG_PUBLIC_KEY > gpg-public-key && gpg --import gpg-public-key && rm gpg-public-key
           base64 --decode $GPG_PRIVATE_KEY > gpg-private-key && gpg --import gpg-private-key && rm gpg-private-key
           mvn -B --settings ./.m2/settings.xml -Pdeploy clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
+          gpg --delete-secret-key $GPG_KEY_ID
+          gpg --delete-key $GPG_KEY_ID
         env:
           LOG_LEVEL: FATAL
           JIRA_ID: ${{ secrets.JIRA_ID }}
