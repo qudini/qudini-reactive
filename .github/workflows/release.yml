@@ -29,8 +29,8 @@ jobs:
           cd ..
       - name: Release
         run: |
-          base64 --decode $GPG_PUBLIC_KEY > gpg-public-key && gpg --import gpg-public-key
-          base64 --decode $GPG_PRIVATE_KEY > gpg-private-key && gpg --import gpg-private-key
+          echo $GPG_PUBLIC_KEY | base64 --decode > gpg-public-key && gpg --import gpg-public-key
+          echo $GPG_PRIVATE_KEY | base64 --decode > gpg-private-key && gpg --import gpg-private-key
           mvn -B --settings ./.m2/settings.xml -Pdeploy clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
         env:
           LOG_LEVEL: FATAL
