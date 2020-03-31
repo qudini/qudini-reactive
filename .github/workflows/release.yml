@@ -47,4 +47,4 @@ jobs:
           gpg --batch --yes --delete-secret-key $GPG_KEY_ID || true
           gpg --batch --yes --delete-key $GPG_KEY_ID || true
         env:
-          GPG_KEY_ID: ${{ secrets.$GPG_KEY_ID }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
