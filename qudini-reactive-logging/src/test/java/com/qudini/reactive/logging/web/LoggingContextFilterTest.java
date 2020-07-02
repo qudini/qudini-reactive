@@ -10,15 +10,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,72 +49,6 @@ class LoggingContextFilterTest {
     @BeforeEach
     void prepareMocks() {
         filter = new LoggingContextFilter("header", loggingContextExtractor, reactiveLoggingContextCreator);
-    }
-
-    @Test
-    @DisplayName("should forward the correlation id to a request without a body")
-    void forwardWithoutBodyWithCorrelationId() {
-        var request = WebClient.create().get();
-        var updatedRequest = filter
-                .forwardOn(request)
-                .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
-                .block();
-        var called = new AtomicBoolean();
-        assertThat(updatedRequest).isNotNull();
-        updatedRequest.headers(headers -> {
-            assertThat(headers.get("header")).isEqualTo(List.of("correlation id"));
-            called.set(true);
-        });
-        assertThat(called.get()).isTrue();
-    }
-
-    @Test
-    @DisplayName("should not forward the correlation id if not found to a request without a body")
-    void forwardWithoutBodyWithoutCorrelationId() {
-        var request = WebClient.create().get();
-        var updatedRequest = filter
-                .forwardOn(request)
-                .block();
-        var called = new AtomicBoolean();
-        assertThat(updatedRequest).isNotNull();
-        updatedRequest.headers(headers -> {
-            assertThat(headers.containsKey("header")).isFalse();
-            called.set(true);
-        });
-        assertThat(called.get()).isTrue();
-    }
-
-    @Test
-    @DisplayName("should forward the correlation id to a request with a body")
-    void forwardWithBodyWithCorrelationId() {
-        var request = WebClient.create().post();
-        var updatedRequest = filter
-                .forwardOn(request)
-                .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
-                .block();
-        var called = new AtomicBoolean();
-        assertThat(updatedRequest).isNotNull();
-        updatedRequest.headers(headers -> {
-            assertThat(headers.get("header")).isEqualTo(List.of("correlation id"));
-            called.set(true);
-        });
-        assertThat(called.get()).isTrue();
-    }
-
-    @Test
-    @DisplayName("should not forward the correlation id to a request with a body")
-    void forwardWithBodyWithoutCorrelationId() {
-        var request = WebClient.create().post();
-        var updatedRequest = filter
-                .forwardOn(request)
-                .block();
-        var called = new AtomicBoolean();
-        assertThat(updatedRequest).isNotNull();
-        updatedRequest.headers(headers -> {
-            assertThat(headers.containsKey("header")).isFalse();
-            called.set(true);
-        });
-        assertThat(called.get()).isTrue();
     }
 
     @Test
