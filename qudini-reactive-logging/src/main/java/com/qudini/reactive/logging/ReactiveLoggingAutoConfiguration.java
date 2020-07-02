@@ -5,6 +5,8 @@ import com.qudini.reactive.logging.aop.JoinPointSerialiser;
 import com.qudini.reactive.logging.aop.LoggedAspect;
 import com.qudini.reactive.logging.correlation.CorrelationIdGenerator;
 import com.qudini.reactive.logging.correlation.DefaultCorrelationIdGenerator;
+import com.qudini.reactive.logging.web.CorrelationIdForwarder;
+import com.qudini.reactive.logging.web.DefaultCorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultLoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextFilter;
@@ -35,6 +37,14 @@ public class ReactiveLoggingAutoConfiguration {
     @ConditionalOnMissingBean
     public LoggingContextExtractor loggingContextExtractor() {
         return new DefaultLoggingContextExtractor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public CorrelationIdForwarder correlationIdForwarder(
+            @Value("${logging.correlation-id.header-name:X-Amzn-Trace-Id}") String correlationIdHeader
+    ) {
+        return new DefaultCorrelationIdForwarder(correlationIdHeader);
     }
 
     @Bean
