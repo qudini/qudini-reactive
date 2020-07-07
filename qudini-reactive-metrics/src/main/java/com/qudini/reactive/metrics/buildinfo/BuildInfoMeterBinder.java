@@ -10,10 +10,12 @@ public final class BuildInfoMeterBinder implements MeterBinder {
 
     private final BuildInfoService buildInfoService;
 
+    private final String gaugeNamePrefix;
+
     @Override
     public void bindTo(MeterRegistry registry) {
         Gauge
-                .builder("build_info", () -> 1)
+                .builder(gaugeNamePrefix + "_build_info", () -> 1)
                 .tag("name", buildInfoService.getName())
                 .tag("version", buildInfoService.getVersion())
                 .register(registry);

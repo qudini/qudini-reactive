@@ -6,6 +6,7 @@ import com.qudini.reactive.metrics.buildinfo.BuildInfoService;
 import com.qudini.reactive.metrics.buildinfo.DefaultBuildInfoService;
 import com.qudini.reactive.metrics.health.LivenessEndpoint;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +22,11 @@ public class ReactiveMetricsAutoConfiguration {
     }
 
     @Bean
-    public BuildInfoMeterBinder buildInfoMeterBinder(BuildInfoService buildInfoService) {
-        return new BuildInfoMeterBinder(buildInfoService);
+    public BuildInfoMeterBinder buildInfoMeterBinder(
+            BuildInfoService buildInfoService,
+            @Value("${metrics.build-info.gauge-name-prefix:app}") String gaugeNamePrefix
+    ) {
+        return new BuildInfoMeterBinder(buildInfoService, gaugeNamePrefix);
     }
 
     @Bean
