@@ -24,9 +24,9 @@ public class ReactiveMetricsAutoConfiguration {
     @Bean
     public BuildInfoMeterBinder buildInfoMeterBinder(
             BuildInfoService buildInfoService,
-            @Value("${metrics.build-info.gauge-name:build_info}") String gaugeName
+            @Value("${metrics.build-info.gauge-name-prefix:app}") String gaugeNamePrefix
     ) {
-        return new BuildInfoMeterBinder(buildInfoService, gaugeName);
+        return new BuildInfoMeterBinder(buildInfoService, gaugeNamePrefix);
     }
 
     @Bean
