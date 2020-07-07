@@ -25,7 +25,13 @@ You can leave the defaults, everything will just work out of the box. You can al
 
 ### Build info
 
-A `Gauge` meter named `build_info` will be registered to expose the build name and version via tags.
+A `Gauge` meter named `build_info` by default will be registered to expose the build name and version via tags. You can specify gauge name:
+
+```yaml
+metrics:
+  build-info:
+    gauge-name: your_gauge_name
+```
 
 By default, those two values will be read from the JAR file's manifest, respectively `Implementation-Title` and `Implementation-Version`.
 
