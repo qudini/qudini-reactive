@@ -39,9 +39,9 @@ You can override this behaviour by registering a component implementing `com.qud
 
 ### Probes
 
-A new `liveness` endpoint will be registered, simply returning 200 OK. It will be mapped to `/liveness` on the main server port.
+A new `liveness` HTTP endpoint will be registered, mapped to `GET /liveness` on the main server port, simply returning 200 OK with an empty body.
 
-You can also expose it via Spring Boot Actuator.
+The `readiness` and `metrics` endpoints should be exposed via Spring Boot Actuator on a separate management port though, as they could expose sensitive data.
 
 Below is our recommended configuration of Spring Boot Actuator, especially if orchestrated by Kubernetes:
 
@@ -52,7 +52,7 @@ server:
 
 management:
   server:
-    # use a different "private" port for Spring Boot Actuator:
+    # use a separate "private" management port for Spring Boot Actuator:
     port: ${SERVICE_MNG_PORT:8081}
   endpoint:
     health:
@@ -63,16 +63,14 @@ management:
       # change the base path to "/":
       base-path: /
       exposure:
-        # expose liveness, added by qudini-reactive-metrics,
         # expose health (aka readiness),
-        # expose the monitoring system you're using (Prometheus here):
-        include: liveness,health,prometheus
+        # expose the monitoring system you're using (e.g. Prometheus):
+        include: health,prometheus
       path-mapping:
         # remap /health to /readiness
         health: readiness
         # remap /prometheus to /metrics
         prometheus: metrics
-        # liveness already mapped to /liveness
 ```
 
 This will allow having the following endpoints available:
@@ -84,7 +82,6 @@ This will allow having the following endpoints available:
 
 - On the private port (exposed by Spring Boot Actuator):
 
-    - `http://localhost:8081/liveness`: your private liveness probe
     - `http://localhost:8081/readiness`: your private readiness probe
     - `http://localhost:8081/metrics`: your private metrics, ready to be scraped
 
