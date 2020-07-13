@@ -39,13 +39,15 @@ You can override this behaviour by registering a component implementing `com.qud
 
 ### Probes
 
-A new `liveness` endpoint will be registered, simply returning 200 OK. You'll need to expose it via Spring Boot Actuator.
+A new `liveness` endpoint will be registered, simply returning 200 OK. It will be mapped to `/liveness` on the main server port.
+
+You can also expose it via Spring Boot Actuator.
 
 Below is our recommended configuration of Spring Boot Actuator, especially if orchestrated by Kubernetes:
 
 ```yaml
 server:
-  # the "exposed" server port
+  # the main "public" server port
   port: ${SERVICE_APP_PORT:8080}
 
 management:
@@ -75,10 +77,16 @@ management:
 
 If run locally, this will allow having the following endpoints available:
 
-- `http://localhost:8080/`: your main app
-- `http://localhost:8081/liveness`: your liveness probe
-- `http://localhost:8081/readiness`: your readiness probe
-- `http://localhost:8081/metrics`: your metrics, ready to be scraped
+- On the public port:
+
+    - `http://localhost:8080/`: your main app
+    - `http://localhost:8080/liveness`: your public liveness probe
+
+- On the private port, exposed by Spring Boot Actuator:
+
+    - `http://localhost:8081/liveness`: your liveness probe
+    - `http://localhost:8081/readiness`: your readiness probe
+    - `http://localhost:8081/metrics`: your metrics, ready to be scraped
 
 ## Usage
 
