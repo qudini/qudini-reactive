@@ -75,18 +75,18 @@ management:
         # liveness already mapped to /liveness
 ```
 
-If run locally, this will allow having the following endpoints available:
+This will allow having the following endpoints available:
 
 - On the public port:
 
     - `http://localhost:8080/`: your main app
     - `http://localhost:8080/liveness`: your public liveness probe
 
-- On the private port, exposed by Spring Boot Actuator:
+- On the private port (exposed by Spring Boot Actuator):
 
-    - `http://localhost:8081/liveness`: your liveness probe
-    - `http://localhost:8081/readiness`: your readiness probe
-    - `http://localhost:8081/metrics`: your metrics, ready to be scraped
+    - `http://localhost:8081/liveness`: your private liveness probe
+    - `http://localhost:8081/readiness`: your private readiness probe
+    - `http://localhost:8081/metrics`: your private metrics, ready to be scraped
 
 ## Usage
 
