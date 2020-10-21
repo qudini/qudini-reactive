@@ -47,9 +47,12 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
         return new QudiniJsonLayout();
     }
 
+    public String toSerializable(LogEvent event) {
+        return toSerializable(QudiniLogEvent.of(event));
+    }
+
     @SneakyThrows
-    public String toSerializable(LogEvent logEvent) {
-        var event = QudiniLogEvent.of(logEvent);
+    private String toSerializable(QudiniLogEvent event) {
         try (
                 var writer = new StringWriter();
                 var generator = JSON_FACTORY.createGenerator(writer)

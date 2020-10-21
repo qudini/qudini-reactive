@@ -4,12 +4,12 @@
         <Console name="Console" target="SYSTEM_OUT">
             <QudiniJsonLayout/>
         </Console>
-        <ErrorTrackerAppender name="ErrorTrackerAppender"/>
+        <Trackers name="Trackers"/>
     </Appenders>
     <Loggers>
         <AsyncRoot level="${env:LOG_LEVEL:-INFO}">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="ErrorTrackerAppender"/>
+            <AppenderRef ref="Trackers" level="error"/>
         </AsyncRoot>
     </Loggers>
 </Configuration>
