@@ -34,9 +34,10 @@ public final class ErrorTrackerAppender extends AbstractAppender {
     }
 
     @Override
-    public void append(LogEvent event) {
-        if (event.getLevel().isMoreSpecificThan(ERROR)) {
-            trackers.forEach(appender -> appender.track(event));
+    public void append(LogEvent logEvent) {
+        var event = new QudiniLogEvent(logEvent);
+        if (event.getLevel().isMoreSpecificThan(ERROR) && !trackers.isEmpty()) {
+            trackers.forEach(tracker -> tracker.track(event));
         }
     }
 
