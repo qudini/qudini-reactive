@@ -49,21 +49,19 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
 
     @SneakyThrows
     public String toSerializable(LogEvent logEvent) {
-        var event = new QudiniLogEvent(logEvent);
+        var event = QudiniLogEvent.of(logEvent);
         try (
                 var writer = new StringWriter();
                 var generator = JSON_FACTORY.createGenerator(writer)
         ) {
             generator.writeStartObject();
             event.getContext().forEach((key, value) -> writeMdcEntry(generator, key, value));
-            generator.writeStringField(TIMESTAMP_KEY, ISO_INSTANT.format(event.getTimestamp()));
-            generator.writeStringField(LEVEL_KEY, event.getLevel().toString());
-            generator.writeStringField(THREAD_KEY, event.getThread());
-            generator.writeStringField(LOGGER_KEY, event.getLogger());
-            generator.writeStringField(MESSAGE_KEY, event.getMessage());
-            if (null != event.getError()) {
-                generator.writeStringField(STACKTRACE_KEY, readStackTrace(event.getError()));
-            }
+            writeEntry(generator, TIMESTAMP_KEY, ISO_INSTANT.format(event.getTimestamp()));
+            writeEntry(generator, LEVEL_KEY, event.getLevel().toString());
+            writeEntry(generator, MESSAGE_KEY, event.getMessage());
+            event.getThread().ifPresent(thread -> writeEntry(generator, THREAD_KEY, thread));
+            event.getLogger().ifPresent(logger -> writeEntry(generator, LOGGER_KEY, logger));
+            event.getError().map(this::readStackTrace).ifPresent(stacktrace -> writeEntry(generator, STACKTRACE_KEY, stacktrace));
             generator.writeEndObject();
             generator.flush();
             return writer + "\n";
@@ -82,11 +80,15 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
         }
     }
 
-    @SneakyThrows
     private void writeMdcEntry(JsonGenerator generator, String key, Object value) {
         if (!RESERVED_KEYS.contains(key)) {
-            generator.writeStringField(key, String.valueOf(value));
+            writeEntry(generator, key, String.valueOf(value));
         }
+    }
+
+    @SneakyThrows
+    private void writeEntry(JsonGenerator generator, String key, String value) {
+        generator.writeStringField(key, value);
     }
 
 }
