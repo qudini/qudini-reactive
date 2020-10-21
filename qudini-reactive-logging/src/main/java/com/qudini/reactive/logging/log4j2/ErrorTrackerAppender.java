@@ -25,13 +25,7 @@ public final class ErrorTrackerAppender extends AbstractAppender {
 
     private ErrorTrackerAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions, Property[] properties) {
         super(name, filter, layout, ignoreExceptions, properties);
-        this.trackers = Stream
-                .of(
-                        loadTracker("NewRelic", "com.newrelic.api.agent.NewRelic"),
-                        loadTracker("Sentry", "io.sentry.Sentry")
-                )
-                .flatMap(Optional::stream)
-                .collect(toUnmodifiableSet());
+        this.trackers = loadTrackers();
     }
 
     @PluginFactory
@@ -46,7 +40,17 @@ public final class ErrorTrackerAppender extends AbstractAppender {
         }
     }
 
-    private Optional<Tracker> loadTracker(String trackerName, String conditionalClassName) {
+    private static Set<Tracker> loadTrackers() {
+        return Stream
+                .of(
+                        loadTracker("NewRelic", "com.newrelic.api.agent.NewRelic"),
+                        loadTracker("Sentry", "io.sentry.Sentry")
+                )
+                .flatMap(Optional::stream)
+                .collect(toUnmodifiableSet());
+    }
+
+    private static Optional<Tracker> loadTracker(String trackerName, String conditionalClassName) {
         if (classExists(conditionalClassName)) {
             var trackerClassName = "com.qudini.reactive.logging.log4j2.trackers." + trackerName + "Tracker";
             try {
@@ -60,7 +64,7 @@ public final class ErrorTrackerAppender extends AbstractAppender {
         }
     }
 
-    private boolean classExists(String name) {
+    private static boolean classExists(String name) {
         try {
             Class.forName(name);
             return true;
