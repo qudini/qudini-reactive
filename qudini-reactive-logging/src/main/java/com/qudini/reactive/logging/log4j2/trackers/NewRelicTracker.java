@@ -8,10 +8,9 @@ public final class NewRelicTracker implements Tracker {
 
     @Override
     public void track(QudiniLogEvent event) {
-        event.getContext().forEach((key, value) -> NewRelic.addCustomParameter(key, String.valueOf(value)));
         event.getError().ifPresentOrElse(
-                NewRelic::noticeError,
-                () -> NewRelic.noticeError(event.getMessage())
+                error -> NewRelic.noticeError(error, event.getContext()),
+                () -> NewRelic.noticeError(event.getMessage(), event.getContext())
         );
     }
 

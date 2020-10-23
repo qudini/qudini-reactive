@@ -2,11 +2,11 @@ package com.qudini.reactive.logging.log4j2;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.impl.ContextDataFactory;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.util.ReadOnlyStringMap;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 
@@ -19,7 +19,7 @@ public final class QudiniLogEvent {
     private final Level level;
     private final Optional<Throwable> error;
     private final String message;
-    private final ReadOnlyStringMap context;
+    private final Map<String, String> context;
 
     private QudiniLogEvent(LogEvent event) {
 
@@ -29,7 +29,7 @@ public final class QudiniLogEvent {
         this.logger = Optional.ofNullable(event.getLoggerName());
         this.level = event.getLevel();
         this.error = Optional.ofNullable(event.getThrown());
-        this.context = Optional.ofNullable(event.getContextData()).orElseGet(ContextDataFactory::emptyFrozenContextData);
+        this.context = Optional.ofNullable(event.getContextData()).map(ReadOnlyStringMap::toMap).map(Map::copyOf).orElseGet(Map::of);
 
         var message = new StringJoiner(" / ");
         Optional.ofNullable(event.getMessage()).map(Message::getFormattedMessage).ifPresent(message::add);
@@ -75,7 +75,7 @@ public final class QudiniLogEvent {
         return message;
     }
 
-    public ReadOnlyStringMap getContext() {
+    public Map<String, String> getContext() {
         return context;
     }
 

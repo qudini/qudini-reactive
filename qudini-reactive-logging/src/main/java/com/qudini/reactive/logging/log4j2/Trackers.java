@@ -1,14 +1,14 @@
 package com.qudini.reactive.logging.log4j2;
 
 import org.apache.logging.log4j.core.Filter;
-import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
-import java.io.Serializable;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -22,14 +22,14 @@ public final class Trackers extends AbstractAppender {
 
     private final Set<Tracker> trackers;
 
-    private Trackers(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions, Property[] properties) {
-        super(name, filter, layout, ignoreExceptions, properties);
+    private Trackers(String name, Filter filter) {
+        super(name, filter, null, true, Property.EMPTY_ARRAY);
         this.trackers = loadTrackers();
     }
 
     @PluginFactory
-    public static Trackers newInstance(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions, Property[] properties) {
-        return new Trackers(name, filter, layout, ignoreExceptions, properties);
+    public static Trackers newInstance(@PluginAttribute("name") String name, @PluginElement("Filter") Filter filter) {
+        return new Trackers(name, filter);
     }
 
     @Override
