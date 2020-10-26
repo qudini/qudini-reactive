@@ -14,6 +14,18 @@ Utilities around Project Reactor.
 </dependencies>
 ```
 
+## Configuration
+
+You can leave the defaults, everything will just work out of the box. You can also reconfigure it to match your requirements, as explained in the following sections.
+
+### Build info
+
+`com.qudini.reactive.utils.build.BuildInfoService` will expose the build name and version.
+
+By default, those two values will be read from the JAR file's manifest, respectively `Implementation-Title` and `Implementation-Version`.
+
+You can override this behaviour by registering a component implementing `com.qudini.reactive.utils.build.BuildInfoService`.
+
 ## Usage
 
 ### com.qudini.reactive.utils.MoreMonos

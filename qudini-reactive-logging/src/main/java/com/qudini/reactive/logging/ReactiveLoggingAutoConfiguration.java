@@ -10,6 +10,7 @@ import com.qudini.reactive.logging.web.DefaultCorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultLoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextFilter;
+import com.qudini.reactive.utils.build.BuildInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +36,8 @@ public class ReactiveLoggingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public LoggingContextExtractor loggingContextExtractor() {
-        return new DefaultLoggingContextExtractor();
+    public LoggingContextExtractor loggingContextExtractor(BuildInfoService buildInfoService) {
+        return new DefaultLoggingContextExtractor(buildInfoService);
     }
 
     @Bean

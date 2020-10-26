@@ -1,4 +1,4 @@
-package com.qudini.reactive.metrics.buildinfo;
+package com.qudini.reactive.utils.build;
 
 public interface BuildInfoService {
 

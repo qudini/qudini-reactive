@@ -1,4 +1,4 @@
-package com.qudini.reactive.metrics.buildinfo;
+package com.qudini.reactive.utils.build;
 
 import lombok.Getter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

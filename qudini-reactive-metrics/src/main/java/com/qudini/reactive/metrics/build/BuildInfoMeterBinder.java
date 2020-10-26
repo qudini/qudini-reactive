@@ -1,5 +1,6 @@
-package com.qudini.reactive.metrics.buildinfo;
+package com.qudini.reactive.metrics.build;
 
+import com.qudini.reactive.utils.build.BuildInfoService;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.MeterBinder;

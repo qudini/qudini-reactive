@@ -6,6 +6,13 @@ Provides an easy integration of custom metrics, as well as health checks followi
 
 ```xml
 <dependencies>
+    <!-- Qudini Reactive dependencies needed: -->
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-utils</artifactId>
+        <version>${qudini-reactive.version}</version>
+    </dependency>
+    <!-- Main dependency: -->
     <dependency>
         <groupId>com.qudini</groupId>
         <artifactId>qudini-reactive-metrics</artifactId>
@@ -25,7 +32,7 @@ You can leave the defaults, everything will just work out of the box. You can al
 
 ### Build info
 
-A `Gauge` meter named `${prefix}_build_info` will be registered to expose the build name and version via tags. You can specify gauge name prefix:
+A `Gauge` meter named `${prefix}_build_info` will be registered to expose the build name and version via tags. You can specify gauge name prefix, defaulted to `app`:
 
 ```yaml
 metrics:
@@ -33,9 +40,7 @@ metrics:
     gauge-name-prefix: yourprefix
 ```
 
-By default, those two values will be read from the JAR file's manifest, respectively `Implementation-Title` and `Implementation-Version`.
-
-You can override this behaviour by registering a component implementing `com.qudini.reactive.metrics.buildinfo.BuildInfoService`.
+These two values will be read from `com.qudini.reactive.utils.build.BuildInfoService`, [see the defaults and how to override them if needed](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils).
 
 ### Probes
 
