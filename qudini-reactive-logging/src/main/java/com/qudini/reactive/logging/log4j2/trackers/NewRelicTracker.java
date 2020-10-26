@@ -18,9 +18,10 @@ public final class NewRelicTracker implements Tracker {
 
     @Override
     public void track(QudiniLogEvent event) {
+        var params = toNewRelicParams(event);
         event.getError().ifPresentOrElse(
-                error -> NewRelic.noticeError(error, toNewRelicParams(event)),
-                () -> NewRelic.noticeError(event.getMessage(), toNewRelicParams(event))
+                error -> NewRelic.noticeError(error, params),
+                () -> NewRelic.noticeError(event.getMessage(), params)
         );
     }
 
