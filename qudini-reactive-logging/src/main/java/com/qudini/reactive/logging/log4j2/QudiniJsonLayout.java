@@ -60,7 +60,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             generator.writeStartObject();
             event.getContext().forEach((key, value) -> writeMdcEntry(generator, key, value));
             writeEntry(generator, TIMESTAMP_KEY, ISO_INSTANT.format(event.getTimestamp()));
-            writeEntry(generator, LEVEL_KEY, event.getLevel().toString());
+            writeEntry(generator, LEVEL_KEY, event.getLevel().name());
             writeEntry(generator, MESSAGE_KEY, event.getMessage());
             event.getThread().ifPresent(thread -> writeEntry(generator, THREAD_KEY, thread));
             event.getLogger().ifPresent(logger -> writeEntry(generator, LOGGER_KEY, logger));
