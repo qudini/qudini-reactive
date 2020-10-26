@@ -121,7 +121,7 @@ You can provide your own implementation by registering a component implementing 
 
 By default, the build version will be added in the logging context, under the key `"build_version"`.
 
-This value will be read from `com.qudini.reactive.utils.build.BuildInfoService`, [see the defaults and how to override them if needed](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils).
+This value will be read from `com.qudini.reactive.utils.build.BuildInfoService`, [see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils).
 
 No additional logging context will be extracted from the incoming request.
 
