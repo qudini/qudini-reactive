@@ -10,6 +10,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class DefaultLoggingContextExtractor implements LoggingContextExtractor {
 
+    public static final String BUILD_NAME_KEY = "build_name";
     public static final String BUILD_VERSION_KEY = "build_version";
 
     private final BuildInfoService buildInfoService;
@@ -17,6 +18,7 @@ public final class DefaultLoggingContextExtractor implements LoggingContextExtra
     @Override
     public Mono<Map<String, String>> extract(ServerWebExchange exchange) {
         return Mono.just(Map.of(
+                BUILD_NAME_KEY, buildInfoService.getName(),
                 BUILD_VERSION_KEY, buildInfoService.getVersion()
         ));
     }
