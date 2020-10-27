@@ -40,7 +40,7 @@ metrics:
     gauge-name-prefix: yourprefix
 ```
 
-These two values will be read from `com.qudini.reactive.utils.build.BuildInfoService`, [see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils).
+These two values will be read from `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)).
 
 ### Probes
 

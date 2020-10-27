@@ -119,13 +119,15 @@ You can provide your own implementation by registering a component implementing 
 
 ### Additional logging context properties
 
-By default, the build version will be added in the logging context, under the key `"build_version"`.
+By default, the logging context will hold:
 
-This value will be read from `com.qudini.reactive.utils.build.BuildInfoService`, [see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils).
+- the environment, mapped to the key `"environment"`,
+- the build name, mapped to the key `"build_name"`,
+- the build version, mapped to the key `"build_version"`.
 
-No additional logging context will be extracted from the incoming request.
+Those values will be read from `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)).
 
-You can override these defaults by implementing `com.qudini.reactive.logging.web.LoggingContextExtractor`, for example if you need more domain-specific properties to be available in the MDC.
+You can override these defaults registering a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor`, for example if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
 
 ### Reactive context creation
 
