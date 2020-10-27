@@ -1,7 +1,8 @@
 package com.qudini.reactive.utils;
 
-import com.qudini.reactive.utils.build.BuildInfoService;
-import com.qudini.reactive.utils.build.DefaultBuildInfoService;
+import com.qudini.reactive.utils.metadata.MetadataService;
+import com.qudini.reactive.utils.metadata.DefaultMetadataService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +13,11 @@ public class ReactiveUtilsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public BuildInfoService buildInfoService(ApplicationContext applicationContext) {
-        return new DefaultBuildInfoService(applicationContext);
+    public MetadataService buildMetadataService(
+            ApplicationContext applicationContext,
+            @Value("${K8S_NAMESPACE}") String environment
+    ) {
+        return new DefaultMetadataService(environment, applicationContext);
     }
 
 }

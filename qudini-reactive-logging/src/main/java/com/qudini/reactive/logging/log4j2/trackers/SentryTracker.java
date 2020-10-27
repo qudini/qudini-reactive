@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.BUILD_VERSION_KEY;
+import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.ENVIRONMENT_KEY;
 
 public final class SentryTracker implements Tracker {
 
@@ -27,10 +28,10 @@ public final class SentryTracker implements Tracker {
         sentryEvent.setMessage(toSentryMessage(logEvent.getMessage()));
         sentryEvent.setLevel(toSentryLevel(logEvent.getLevel()));
         Optional.ofNullable(logEvent.getContext().get(BUILD_VERSION_KEY)).ifPresent(sentryEvent::setRelease);
+        Optional.ofNullable(logEvent.getContext().get(ENVIRONMENT_KEY)).ifPresent(sentryEvent::setEnvironment);
         sentryEvent.setContexts(toSentryContexts(logEvent.getContext()));
         logEvent.getLogger().ifPresent(sentryEvent::setLogger);
         logEvent.getError().ifPresent(sentryEvent::setThrowable);
-//        sentryEvent.setEnvironment();
         return sentryEvent;
     }
 
@@ -58,6 +59,7 @@ public final class SentryTracker implements Tracker {
         var contexts = new Contexts();
         logContext.forEach(contexts::put);
         contexts.remove(BUILD_VERSION_KEY);
+        contexts.remove(ENVIRONMENT_KEY);
         return contexts;
     }
 

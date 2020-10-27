@@ -1,6 +1,6 @@
 package com.qudini.reactive.logging.web;
 
-import com.qudini.reactive.utils.build.BuildInfoService;
+import com.qudini.reactive.utils.metadata.MetadataService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,17 +22,23 @@ class DefaultLoggingContextExtractorTest {
     private ServerWebExchange exchange;
 
     @Mock
-    private BuildInfoService buildInfoService;
+    private MetadataService metadataService;
 
     @InjectMocks
     private DefaultLoggingContextExtractor extractor;
 
     @Test
-    @DisplayName("should return a map holding the build version")
+    @DisplayName("should return a map holding the metadata")
     void emptyMap() {
-        given(buildInfoService.getVersion()).willReturn("42");
+        given(metadataService.getEnvironment()).willReturn("test env");
+        given(metadataService.getBuildName()).willReturn("build name");
+        given(metadataService.getBuildVersion()).willReturn("build version");
         var context = extractor.extract(exchange).block();
-        assertThat(context).isEqualTo(Map.of("build_version", "42"));
+        assertThat(context).isEqualTo(Map.of(
+                "environment", "test env",
+                "build_name", "build name",
+                "build_version", "build version"
+        ));
     }
 
 }
