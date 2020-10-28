@@ -25,14 +25,30 @@ Fixes logging in a reactive stream, by handling the MDC inside the reactive cont
 
 You can leave the defaults, everything will just work out of the box. You can also reconfigure it to match your requirements, as explained in the following sections.
 
-### JSON structured logging
+### Log4j 2
 
 By default, a custom Log4j 2 configuration will be used, with:
 
 - an asynchronous root logger,
 - the log level set from the environment variable `LOG_LEVEL`, defaulting to `INFO`,
-- a console appender targeting `SYSTEM_OUT`,
-- a custom JSON layout.
+- a console appender targeting `SYSTEM_OUT`, using a custom JSON layout,
+- a custom appender that pushes errors to third-party error trackers.
+
+If you want to use the default configuration Spring provides, update your `application.yml` with the following (might be useful for development environment):
+
+```yaml
+logging:
+  config: default
+```
+
+If you want to use another custom configuration of yours, use:
+
+```yaml
+logging:
+  config: classpath:your-log4j2-config.xml
+```
+
+### JSON structured logging
 
 The JSON layout will produce logs according to the following format:
 
@@ -48,20 +64,6 @@ The JSON layout will produce logs according to the following format:
   "<mdc key 2>": "<mdc value 2>",
   "...": "..."
 }
-```
-
-If you want to use the default configuration Spring provides, update your `application.yml` with the following (might be useful for development environment):
-
-```yaml
-logging:
-  config: default
-```
-
-If you want to use another custom configuration of yours, use:
-
-```yaml
-logging:
-  config: classpath:your-log4j2-config.xml
 ```
 
 ### Correlation id
@@ -119,7 +121,34 @@ You can provide your own implementation by registering a component implementing 
 
 ### Additional logging context properties
 
-By default, no additional logging context will be extracted from the incoming request, but you can implement `com.qudini.reactive.logging.web.LoggingContextExtractor` if you need more domain-specific properties to be available in the MDC.
+By default, the logging context will hold the build version, mapped to the key `"build_version"`.
+
+This value will be read from `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)).
+
+You can override these defaults by registering a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor`, for example if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
+
+### Third-party error trackers
+
+If the JDK of a supported third-party error tracker is found in the classpath, logs at level `ERROR` or above will be pushed to them.
+
+#### NewRelic
+
+If `com.newrelic.api.agent.NewRelic` is found in the classpath, errors will be pushed to [NewRelic](https://newrelic.com/) via `NewRelic.noticeError(errorOrMessage, params)`.
+
+The logging context will be passed through as `params`, as well as:
+
+- the timestamp,
+- the log level,
+- the logger,
+- the logged message.
+
+#### Sentry
+
+If `io.sentry.Sentry` is found in the classpath, errors will be pushed to [Sentry](https://sentry.io/) via `Sentry.captureEvent(event)`.
+
+Sentry's `environment` and `release` will be populated thanks to `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)). 
+
+The log event will be used to populate the Sentry event.
 
 ### Reactive context creation
 

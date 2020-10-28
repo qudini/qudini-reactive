@@ -46,7 +46,7 @@ public class ReactiveSqsAutoConfiguration {
     public void start(ApplicationReadyEvent applicationReadyEvent) {
         applicationReadyEvent
                 .getApplicationContext()
-                .getBean("sqsListeners", SqsListeners.class)
+                .getBean(SqsListeners.class)
                 .start();
     }
 

@@ -24,9 +24,9 @@ import static java.util.Collections.unmodifiableMap;
 @RequiredArgsConstructor
 public final class Log implements ReactiveLoggingContextCreator {
 
-    private static final String LOGGING_MDC_KEY = "LOGGING_MDC";
+    public static final String LOGGING_MDC_KEY = "LOGGING_MDC";
 
-    private static final String CORRELATION_ID_KEY = "correlation_id";
+    public static final String CORRELATION_ID_KEY = "correlation_id";
 
     private final CorrelationIdGenerator correlationIdGenerator;
 

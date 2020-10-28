@@ -1,13 +1,10 @@
 package com.qudini.reactive.metrics;
 
 import com.qudini.reactive.metrics.aop.MeasuredAspect;
-import com.qudini.reactive.metrics.buildinfo.BuildInfoMeterBinder;
-import com.qudini.reactive.metrics.buildinfo.BuildInfoService;
-import com.qudini.reactive.metrics.buildinfo.DefaultBuildInfoService;
+import com.qudini.reactive.metrics.build.BuildInfoMeterBinder;
+import com.qudini.reactive.utils.metadata.MetadataService;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -25,17 +22,11 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 public class ReactiveMetricsAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean
-    public BuildInfoService buildInfoService(ApplicationContext applicationContext) {
-        return new DefaultBuildInfoService(applicationContext);
-    }
-
-    @Bean
     public BuildInfoMeterBinder buildInfoMeterBinder(
-            BuildInfoService buildInfoService,
+            MetadataService metadataService,
             @Value("${metrics.build-info.gauge-name-prefix:app}") String gaugeNamePrefix
     ) {
-        return new BuildInfoMeterBinder(buildInfoService, gaugeNamePrefix);
+        return new BuildInfoMeterBinder(metadataService, gaugeNamePrefix);
     }
 
     @Bean
