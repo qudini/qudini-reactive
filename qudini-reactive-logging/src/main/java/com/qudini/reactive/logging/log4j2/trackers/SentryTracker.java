@@ -12,16 +12,15 @@ import org.apache.logging.log4j.Level;
 
 import java.sql.Date;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.BUILD_VERSION_KEY;
-import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.ENVIRONMENT_KEY;
 
 public final class SentryTracker implements Tracker {
 
     @Override
     public void init(MetadataService metadataService) {
         Sentry.init(options -> {
+            options.setEnableExternalConfiguration(true);
             options.setEnvironment(metadataService.getEnvironment());
             options.setRelease(metadataService.getBuildVersion());
         });
@@ -36,8 +35,6 @@ public final class SentryTracker implements Tracker {
         var sentryEvent = new SentryEvent(Date.from(logEvent.getTimestamp()));
         sentryEvent.setMessage(toSentryMessage(logEvent.getMessage()));
         sentryEvent.setLevel(toSentryLevel(logEvent.getLevel()));
-        Optional.ofNullable(logEvent.getContext().get(BUILD_VERSION_KEY)).ifPresent(sentryEvent::setRelease);
-        Optional.ofNullable(logEvent.getContext().get(ENVIRONMENT_KEY)).ifPresent(sentryEvent::setEnvironment);
         sentryEvent.setContexts(toSentryContexts(logEvent.getContext()));
         logEvent.getLogger().ifPresent(sentryEvent::setLogger);
         logEvent.getError().ifPresent(sentryEvent::setThrowable);
@@ -68,7 +65,6 @@ public final class SentryTracker implements Tracker {
         var contexts = new Contexts();
         logContext.forEach(contexts::put);
         contexts.remove(BUILD_VERSION_KEY);
-        contexts.remove(ENVIRONMENT_KEY);
         return contexts;
     }
 

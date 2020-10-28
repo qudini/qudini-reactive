@@ -28,17 +28,11 @@ class DefaultLoggingContextExtractorTest {
     private DefaultLoggingContextExtractor extractor;
 
     @Test
-    @DisplayName("should return a map holding the metadata")
+    @DisplayName("should return a map holding the build version")
     void emptyMap() {
-        given(metadataService.getEnvironment()).willReturn("test env");
-        given(metadataService.getBuildName()).willReturn("build name");
         given(metadataService.getBuildVersion()).willReturn("build version");
         var context = extractor.extract(exchange).block();
-        assertThat(context).isEqualTo(Map.of(
-                "environment", "test env",
-                "build_name", "build name",
-                "build_version", "build version"
-        ));
+        assertThat(context).isEqualTo(Map.of("build_version", "build version"));
     }
 
 }

@@ -121,15 +121,11 @@ You can provide your own implementation by registering a component implementing 
 
 ### Additional logging context properties
 
-By default, the logging context will hold:
+By default, the logging context will hold the build version, mapped to the key `"build_version"`.
 
-- the environment, mapped to the key `"environment"`,
-- the build name, mapped to the key `"build_name"`,
-- the build version, mapped to the key `"build_version"`.
+This value will be read from `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)).
 
-Those values will be read from `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)).
-
-You can override these defaults registering a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor`, for example if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
+You can override these defaults by registering a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor`, for example if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
 
 ### Third-party error trackers
 
@@ -150,13 +146,9 @@ The logging context will be passed through as `params`, as well as:
 
 If `io.sentry.Sentry` is found in the classpath, errors will be pushed to [Sentry](https://sentry.io/) via `Sentry.captureEvent(event)`.
 
+Sentry's `environment` and `release` will be populated thanks to `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)). 
+
 The log event will be used to populate the Sentry event.
-
-If the logging context has a key `"build_version"`, its value will be used for the Sentry `release`.
-
-If the logging context has a key `"environment"`, its value will be used for the Sentry `environment`.
-
-As explained in [Additional logging context properties](#additional-logging-context-properties), those two keys will already be available in the logging context by default.
 
 ### Reactive context creation
 
