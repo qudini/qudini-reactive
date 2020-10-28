@@ -2,6 +2,7 @@ package com.qudini.reactive.logging.log4j2.trackers;
 
 import com.qudini.reactive.logging.log4j2.QudiniLogEvent;
 import com.qudini.reactive.logging.log4j2.Tracker;
+import com.qudini.reactive.utils.metadata.MetadataService;
 import io.sentry.Sentry;
 import io.sentry.SentryEvent;
 import io.sentry.SentryLevel;
@@ -17,6 +18,14 @@ import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.BUI
 import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.ENVIRONMENT_KEY;
 
 public final class SentryTracker implements Tracker {
+
+    @Override
+    public void init(MetadataService metadataService) {
+        Sentry.init(options -> {
+            options.setEnvironment(metadataService.getEnvironment());
+            options.setRelease(metadataService.getBuildVersion());
+        });
+    }
 
     @Override
     public void track(QudiniLogEvent event) {

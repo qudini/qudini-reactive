@@ -1,5 +1,6 @@
 package com.qudini.reactive.logging.log4j2;
 
+import com.qudini.reactive.utils.metadata.MetadataService;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
@@ -20,11 +22,12 @@ import static org.apache.logging.log4j.core.Core.CATEGORY_NAME;
 @Plugin(name = "Trackers", category = CATEGORY_NAME, elementType = ELEMENT_TYPE)
 public final class Trackers extends AbstractAppender {
 
-    private final Set<Tracker> trackers;
+    private static final AtomicBoolean initialised = new AtomicBoolean(false);
+
+    private static final Set<Tracker> trackers = loadTrackers();
 
     private Trackers(String name, Filter filter) {
         super(name, filter, null, true, Property.EMPTY_ARRAY);
-        this.trackers = loadTrackers();
     }
 
     @PluginFactory
@@ -71,6 +74,12 @@ public final class Trackers extends AbstractAppender {
             return true;
         } catch (ClassNotFoundException e) {
             return false;
+        }
+    }
+
+    public static void init(MetadataService metadataService) {
+        if (initialised.compareAndSet(false, true)) {
+            trackers.forEach(tracker -> tracker.init(metadataService));
         }
     }
 
