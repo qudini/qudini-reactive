@@ -22,9 +22,11 @@ import static org.apache.logging.log4j.core.Core.CATEGORY_NAME;
 @Plugin(name = "Trackers", category = CATEGORY_NAME, elementType = ELEMENT_TYPE)
 public final class Trackers extends AbstractAppender {
 
-    private static final AtomicBoolean initialised = new AtomicBoolean(false);
+    private static final AtomicBoolean INSTANTIATED = new AtomicBoolean(false);
 
-    private static final Set<Tracker> trackers = loadTrackers();
+    private static final AtomicBoolean INITIALISED = new AtomicBoolean(false);
+
+    private static final Set<Tracker> TRACKERS = loadTrackers();
 
     private Trackers(String name, Filter filter) {
         super(name, filter, null, true, Property.EMPTY_ARRAY);
@@ -32,6 +34,7 @@ public final class Trackers extends AbstractAppender {
 
     @PluginFactory
     public static Trackers newInstance(@PluginAttribute("name") String name, @PluginElement("Filter") Filter filter) {
+        INSTANTIATED.set(true);
         return new Trackers(name, filter);
     }
 
@@ -41,7 +44,7 @@ public final class Trackers extends AbstractAppender {
     }
 
     private void append(QudiniLogEvent event) {
-        trackers.forEach(tracker -> tracker.track(event));
+        TRACKERS.forEach(tracker -> tracker.track(event));
     }
 
     private static Set<Tracker> loadTrackers() {
@@ -78,8 +81,8 @@ public final class Trackers extends AbstractAppender {
     }
 
     public static void init(MetadataService metadataService) {
-        if (initialised.compareAndSet(false, true)) {
-            trackers.forEach(tracker -> tracker.init(metadataService));
+        if (INSTANTIATED.get() && INITIALISED.compareAndSet(false, true)) {
+            TRACKERS.forEach(tracker -> tracker.init(metadataService));
         }
     }
 
