@@ -18,13 +18,11 @@
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-logging</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-utils</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
