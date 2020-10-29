@@ -18,7 +18,6 @@
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-utils</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.lmax</groupId>
@@ -28,7 +27,7 @@
         <dependency>
             <groupId>com.newrelic.agent.java</groupId>
             <artifactId>newrelic-api</artifactId>
-            <version>5.6.0</version>
+            <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
