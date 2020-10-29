@@ -7,9 +7,9 @@ import org.springframework.context.ApplicationContext;
 @Getter
 public final class DefaultMetadataService implements MetadataService {
 
-    private static final String DEFAULT_NAME = "unknown";
+    private static final String DEFAULT_BUILD_NAME = "unknown";
 
-    private static final String DEFAULT_VERSION = "unknown";
+    private static final String DEFAULT_BUILD_VERSION = "unknown";
 
     private final String environment;
 
@@ -28,10 +28,10 @@ public final class DefaultMetadataService implements MetadataService {
                 .map(Class::getPackage);
         this.buildName = applicationPackage
                 .map(Package::getImplementationTitle)
-                .orElse(DEFAULT_NAME);
+                .orElse(DEFAULT_BUILD_NAME);
         this.buildVersion = applicationPackage
                 .map(Package::getImplementationVersion)
-                .orElse(DEFAULT_VERSION);
+                .orElse(DEFAULT_BUILD_VERSION);
     }
 
 }
