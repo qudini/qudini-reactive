@@ -39,8 +39,8 @@ public class ReactiveLoggingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public LoggingContextExtractor loggingContextExtractor(MetadataService metadataService) {
-        return new DefaultLoggingContextExtractor(metadataService);
+    public LoggingContextExtractor loggingContextExtractor() {
+        return new DefaultLoggingContextExtractor();
     }
 
     @Bean

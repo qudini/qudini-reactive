@@ -13,8 +13,6 @@ import org.apache.logging.log4j.Level;
 import java.sql.Date;
 import java.util.Map;
 
-import static com.qudini.reactive.logging.web.DefaultLoggingContextExtractor.BUILD_VERSION_KEY;
-
 public final class SentryTracker implements Tracker {
 
     @Override
@@ -64,7 +62,6 @@ public final class SentryTracker implements Tracker {
     private static Contexts toSentryContexts(Map<String, String> logContext) {
         var contexts = new Contexts();
         logContext.forEach(contexts::put);
-        contexts.remove(BUILD_VERSION_KEY);
         return contexts;
     }
 
