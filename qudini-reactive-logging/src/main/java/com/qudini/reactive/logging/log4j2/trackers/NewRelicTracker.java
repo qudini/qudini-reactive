@@ -11,6 +11,7 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 
 public final class NewRelicTracker implements Tracker {
 
+    private static final String BUILD_VERSION = "build_version";
     private static final String TIMESTAMP_KEY = "timestamp";
     private static final String LEVEL_KEY = "level";
     private static final String LOGGER_KEY = "logger";
@@ -29,8 +30,9 @@ public final class NewRelicTracker implements Tracker {
         var params = new HashMap<>(event.getContext());
         params.put(TIMESTAMP_KEY, ISO_INSTANT.format(event.getTimestamp()));
         params.put(LEVEL_KEY, event.getLevel().name());
-        event.getLogger().ifPresent(logger -> params.put(LOGGER_KEY, logger));
         params.put(MESSAGE_KEY, event.getMessage());
+        event.getLogger().ifPresent(logger -> params.put(LOGGER_KEY, logger));
+        event.getBuildVersion().ifPresent(buildVersion -> params.put(BUILD_VERSION, buildVersion));
         return params;
     }
 

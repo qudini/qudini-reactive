@@ -2,7 +2,6 @@ package com.qudini.reactive.logging.log4j2.trackers;
 
 import com.qudini.reactive.logging.log4j2.QudiniLogEvent;
 import com.qudini.reactive.logging.log4j2.Tracker;
-import com.qudini.reactive.utils.metadata.MetadataService;
 import io.sentry.Sentry;
 import io.sentry.SentryEvent;
 import io.sentry.SentryLevel;
@@ -15,13 +14,8 @@ import java.util.Map;
 
 public final class SentryTracker implements Tracker {
 
-    @Override
-    public void init(MetadataService metadataService) {
-        Sentry.init(options -> {
-            options.setEnableExternalConfiguration(true);
-            options.setEnvironment(metadataService.getEnvironment());
-            options.setRelease(metadataService.getBuildVersion());
-        });
+    static {
+        Sentry.init(options -> options.setEnableExternalConfiguration(true));
     }
 
     @Override
@@ -33,7 +27,9 @@ public final class SentryTracker implements Tracker {
         var sentryEvent = new SentryEvent(Date.from(logEvent.getTimestamp()));
         sentryEvent.setMessage(toSentryMessage(logEvent.getMessage()));
         sentryEvent.setLevel(toSentryLevel(logEvent.getLevel()));
-        sentryEvent.setContexts(toSentryContexts(logEvent.getContext()));
+        sentryEvent.setContexts(toSentryContexts(logEvent));
+        logEvent.getEnvironment().ifPresent(sentryEvent::setEnvironment);
+        logEvent.getBuildVersion().ifPresent(sentryEvent::setRelease);
         logEvent.getLogger().ifPresent(sentryEvent::setLogger);
         logEvent.getError().ifPresent(sentryEvent::setThrowable);
         return sentryEvent;
@@ -59,10 +55,14 @@ public final class SentryTracker implements Tracker {
         }
     }
 
-    private static Contexts toSentryContexts(Map<String, String> logContext) {
+    private static Contexts toSentryContexts(QudiniLogEvent logEvent) {
         var contexts = new Contexts();
-        logContext.forEach(contexts::put);
+        logEvent.getContext().forEach((key, value) -> addContext(contexts, key, value));
         return contexts;
+    }
+
+    private static void addContext(Contexts contexts, String key, String value) {
+        contexts.put(key, Map.of("value", value));
     }
 
 }

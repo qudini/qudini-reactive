@@ -5,7 +5,7 @@ import com.qudini.reactive.logging.aop.JoinPointSerialiser;
 import com.qudini.reactive.logging.aop.LoggedAspect;
 import com.qudini.reactive.logging.correlation.CorrelationIdGenerator;
 import com.qudini.reactive.logging.correlation.DefaultCorrelationIdGenerator;
-import com.qudini.reactive.logging.log4j2.Trackers;
+import com.qudini.reactive.logging.log4j2.QudiniLogEvent;
 import com.qudini.reactive.logging.web.CorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultCorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultLoggingContextExtractor;
@@ -76,7 +76,7 @@ public class ReactiveLoggingAutoConfiguration {
         var metadataService = applicationReadyEvent
                 .getApplicationContext()
                 .getBean(MetadataService.class);
-        Trackers.init(metadataService);
+        QudiniLogEvent.init(metadataService);
     }
 
 }

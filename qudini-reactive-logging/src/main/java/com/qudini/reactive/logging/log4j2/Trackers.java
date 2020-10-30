@@ -1,6 +1,5 @@
 package com.qudini.reactive.logging.log4j2;
 
-import com.qudini.reactive.utils.metadata.MetadataService;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
@@ -12,7 +11,6 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
@@ -22,10 +20,6 @@ import static org.apache.logging.log4j.core.Core.CATEGORY_NAME;
 @Plugin(name = "Trackers", category = CATEGORY_NAME, elementType = ELEMENT_TYPE)
 public final class Trackers extends AbstractAppender {
 
-    private static final AtomicBoolean INSTANTIATED = new AtomicBoolean(false);
-
-    private static final AtomicBoolean INITIALISED = new AtomicBoolean(false);
-
     private static final Set<Tracker> TRACKERS = loadTrackers();
 
     private Trackers(String name, Filter filter) {
@@ -34,7 +28,6 @@ public final class Trackers extends AbstractAppender {
 
     @PluginFactory
     public static Trackers newInstance(@PluginAttribute("name") String name, @PluginElement("Filter") Filter filter) {
-        INSTANTIATED.set(true);
         return new Trackers(name, filter);
     }
 
@@ -64,7 +57,8 @@ public final class Trackers extends AbstractAppender {
                 var tracker = (Tracker) Class.forName(trackerClassName).getDeclaredConstructor().newInstance();
                 return Optional.of(tracker);
             } catch (Exception e) {
-                throw new IllegalStateException("Unable to load tracker " + trackerClassName, e);
+                System.err.println(e.getLocalizedMessage());
+                return Optional.empty();
             }
         } else {
             return Optional.empty();
@@ -77,12 +71,9 @@ public final class Trackers extends AbstractAppender {
             return true;
         } catch (ClassNotFoundException e) {
             return false;
-        }
-    }
-
-    public static void init(MetadataService metadataService) {
-        if (INSTANTIATED.get() && INITIALISED.compareAndSet(false, true)) {
-            TRACKERS.forEach(tracker -> tracker.init(metadataService));
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+            return false;
         }
     }
 
