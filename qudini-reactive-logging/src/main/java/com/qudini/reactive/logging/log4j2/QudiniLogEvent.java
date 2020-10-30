@@ -1,5 +1,6 @@
 package com.qudini.reactive.logging.log4j2;
 
+import com.qudini.reactive.utils.metadata.MetadataService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.message.Message;
@@ -9,8 +10,15 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class QudiniLogEvent {
+
+    private static final AtomicBoolean INITIALISED = new AtomicBoolean(false);
+
+    private static Optional<String> environment = Optional.empty();
+    private static Optional<String> buildName = Optional.empty();
+    private static Optional<String> buildVersion = Optional.empty();
 
     private final LogEvent originalEvent;
     private final Instant timestamp;
@@ -24,6 +32,7 @@ public final class QudiniLogEvent {
     private QudiniLogEvent(LogEvent event) {
 
         this.originalEvent = event;
+
         this.timestamp = Instant.ofEpochMilli(event.getTimeMillis());
         this.thread = Optional.ofNullable(event.getThreadName());
         this.logger = Optional.ofNullable(event.getLoggerName());
@@ -79,8 +88,28 @@ public final class QudiniLogEvent {
         return context;
     }
 
-    static QudiniLogEvent of(LogEvent event) {
+    public Optional<String> getEnvironment() {
+        return environment;
+    }
+
+    public Optional<String> getBuildName() {
+        return buildName;
+    }
+
+    public Optional<String> getBuildVersion() {
+        return buildVersion;
+    }
+
+    public static QudiniLogEvent of(LogEvent event) {
         return new QudiniLogEvent(event);
+    }
+
+    public static void init(MetadataService metadataService) {
+        if (INITIALISED.compareAndSet(false, true)) {
+            environment = Optional.of(metadataService.getEnvironment());
+            buildName = Optional.of(metadataService.getBuildName());
+            buildVersion = Optional.of(metadataService.getBuildVersion());
+        }
     }
 
 }

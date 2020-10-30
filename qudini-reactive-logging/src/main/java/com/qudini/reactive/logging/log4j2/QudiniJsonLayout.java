@@ -20,6 +20,7 @@ import static org.apache.logging.log4j.core.config.Node.CATEGORY;
 @Plugin(name = "QudiniJsonLayout", category = CATEGORY, elementType = ELEMENT_TYPE)
 public final class QudiniJsonLayout extends AbstractStringLayout {
 
+    private static final String BUILD_VERSION = "build_version";
     private static final String TIMESTAMP_KEY = "timestamp";
     private static final String LEVEL_KEY = "level";
     private static final String THREAD_KEY = "thread";
@@ -28,6 +29,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
     private static final String STACKTRACE_KEY = "stacktrace";
 
     private static final Set<String> RESERVED_KEYS = Set.of(
+            BUILD_VERSION,
             TIMESTAMP_KEY,
             LEVEL_KEY,
             THREAD_KEY,
@@ -62,6 +64,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             writeEntry(generator, TIMESTAMP_KEY, ISO_INSTANT.format(event.getTimestamp()));
             writeEntry(generator, LEVEL_KEY, event.getLevel().name());
             writeEntry(generator, MESSAGE_KEY, event.getMessage());
+            event.getBuildVersion().ifPresent(buildVersion -> writeEntry(generator, BUILD_VERSION, buildVersion));
             event.getThread().ifPresent(thread -> writeEntry(generator, THREAD_KEY, thread));
             event.getLogger().ifPresent(logger -> writeEntry(generator, LOGGER_KEY, logger));
             event.getError().map(this::readStackTrace).ifPresent(stacktrace -> writeEntry(generator, STACKTRACE_KEY, stacktrace));

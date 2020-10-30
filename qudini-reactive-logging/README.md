@@ -65,6 +65,7 @@ The JSON layout will produce logs according to the following format:
 
 ```json
 {
+  "build_version": "<build version>",
   "timestamp": "<UTC instant ISO formatted>",
   "level": "<logging level>",
   "thread": "<thread name>",
@@ -76,6 +77,8 @@ The JSON layout will produce logs according to the following format:
   "...": "..."
 }
 ```
+
+The property `build_version` will be populated thanks to `com.qudini.reactive.utils.metadata.MetadataService` once available ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)). 
 
 ### Correlation id
 
@@ -132,11 +135,9 @@ You can provide your own implementation by registering a component implementing 
 
 ### Additional logging context properties
 
-By default, the logging context will hold the build version, mapped to the key `"build_version"`.
-
-This value will be read from `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)).
-
-You can override these defaults by registering a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor`, for example if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
+By default, no additional logging context will be extracted from the incoming request.
+ 
+You can register a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor` if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
 
 ### Third-party error trackers
 
@@ -146,20 +147,11 @@ If the JDK of a supported third-party error tracker is found in the classpath, l
 
 If `com.newrelic.api.agent.NewRelic` is found in the classpath, errors will be pushed to [NewRelic](https://newrelic.com/) via `NewRelic.noticeError(errorOrMessage, params)`.
 
-The logging context will be passed through as `params`, as well as:
-
-- the timestamp,
-- the log level,
-- the logger,
-- the logged message.
-
 #### Sentry
 
 If `io.sentry.Sentry` is found in the classpath, errors will be pushed to [Sentry](https://sentry.io/) via `Sentry.captureEvent(event)`.
 
 Sentry's `environment` and `release` will be populated thanks to `com.qudini.reactive.utils.metadata.MetadataService` ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)). 
-
-The log event will be used to populate the Sentry event.
 
 ### Reactive context creation
 
