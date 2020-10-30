@@ -5,14 +5,14 @@ import com.qudini.reactive.logging.log4j2.Tracker;
 import io.sentry.Sentry;
 import io.sentry.SentryEvent;
 import io.sentry.SentryLevel;
-import io.sentry.protocol.Contexts;
 import io.sentry.protocol.Message;
 import org.apache.logging.log4j.Level;
 
 import java.sql.Date;
-import java.util.Map;
 
 public final class SentryTracker implements Tracker {
+
+    private static final String CONTEXT_KEY = "Context Data";
 
     static {
         Sentry.init(options -> options.setEnableExternalConfiguration(true));
@@ -27,7 +27,9 @@ public final class SentryTracker implements Tracker {
         var sentryEvent = new SentryEvent(Date.from(logEvent.getTimestamp()));
         sentryEvent.setMessage(toSentryMessage(logEvent.getMessage()));
         sentryEvent.setLevel(toSentryLevel(logEvent.getLevel()));
-        sentryEvent.setContexts(toSentryContexts(logEvent));
+        if (!logEvent.getContext().isEmpty()) {
+            sentryEvent.getContexts().put(CONTEXT_KEY, logEvent.getContext());
+        }
         logEvent.getEnvironment().ifPresent(sentryEvent::setEnvironment);
         logEvent.getBuildVersion().ifPresent(sentryEvent::setRelease);
         logEvent.getLogger().ifPresent(sentryEvent::setLogger);
@@ -53,16 +55,6 @@ public final class SentryTracker implements Tracker {
         } else {
             return SentryLevel.DEBUG;
         }
-    }
-
-    private static Contexts toSentryContexts(QudiniLogEvent logEvent) {
-        var contexts = new Contexts();
-        logEvent.getContext().forEach((key, value) -> addContext(contexts, key, value));
-        return contexts;
-    }
-
-    private static void addContext(Contexts contexts, String key, String value) {
-        contexts.put(key, Map.of("value", value));
     }
 
 }
