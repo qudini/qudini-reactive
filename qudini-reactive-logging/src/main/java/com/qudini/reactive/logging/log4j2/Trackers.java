@@ -56,7 +56,7 @@ public final class Trackers extends AbstractAppender {
             try {
                 var tracker = (Tracker) Class.forName(trackerClassName).getDeclaredConstructor().newInstance();
                 return Optional.of(tracker);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 System.err.println(e.getLocalizedMessage());
                 return Optional.empty();
             }
@@ -71,7 +71,7 @@ public final class Trackers extends AbstractAppender {
             return true;
         } catch (ClassNotFoundException e) {
             return false;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.err.println(e.getLocalizedMessage());
             return false;
         }
