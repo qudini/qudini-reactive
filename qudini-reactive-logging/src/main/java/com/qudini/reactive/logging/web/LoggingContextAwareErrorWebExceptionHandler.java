@@ -36,32 +36,14 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
         // reimplemented in #log
     }
 
-    private Mono<Void> log(ServerWebExchange exchange, Throwable throwable) {
+    private void log(ServerWebExchange exchange, Throwable throwable) {
         var request = exchange.getRequest();
         Optional
                 .ofNullable(exchange.getResponse().getStatusCode())
                 .ifPresentOrElse(
-                        status -> {
-                            log.error("An error made {} {} return {}", request.getMethod(), request.getPath(), status, throwable);
-//                            switch (status.series()) {
-//                                case INFORMATIONAL:
-//                                case SUCCESSFUL:
-//                                case REDIRECTION:
-//                                case CLIENT_ERROR:
-//                                    if (log.isDebugEnabled()) {
-//                                        log.debug("", throwable);
-//                                    }
-//                                    break;
-//                                case SERVER_ERROR:
-//                                    log.error("", throwable);
-//                                    break;
-//                            }
-                        },
-                        () -> {
-                            log.error("An error made {} {} return an unknown status", request.getMethod(), request.getPath(), throwable);
-                        }
+                        status -> log.error("{} {} returned {}", request.getMethod(), request.getPath(), status, throwable),
+                        () -> log.error("{} {} returned an unknown status", request.getMethod(), request.getPath(), throwable)
                 );
-        return Mono.empty();
     }
 
 }

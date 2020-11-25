@@ -11,13 +11,17 @@ import com.qudini.reactive.logging.web.DefaultCorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultLoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextAwareErrorWebExceptionHandler;
 import com.qudini.reactive.logging.web.LoggingContextExtractor;
-import com.qudini.reactive.logging.web.LoggingContextFilter;
+import com.qudini.reactive.logging.web.LoggingContextWebHandler;
 import com.qudini.reactive.utils.metadata.MetadataService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
+import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -27,12 +31,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.codec.ServerCodecConfigurer;
+import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.web.reactive.result.view.ViewResolver;
-import org.springframework.web.server.WebFilter;
 
 import static java.util.stream.Collectors.toList;
 
 @Configuration
+@AutoConfigureBefore({HttpHandlerAutoConfiguration.class, ErrorWebFluxAutoConfiguration.class})
 public class ReactiveLoggingAutoConfiguration {
 
     @Bean
@@ -64,23 +69,14 @@ public class ReactiveLoggingAutoConfiguration {
     }
 
     @Bean
-    public WebFilter loggingContextFilter(
-            @Value("${logging.correlation-id.header-name:X-Amzn-Trace-Id}") String correlationIdHeader,
-            LoggingContextExtractor loggingContextExtractor,
-            ReactiveLoggingContextCreator reactiveLoggingContextCreator
-    ) {
-        return new LoggingContextFilter(correlationIdHeader, loggingContextExtractor, reactiveLoggingContextCreator);
-    }
-
-    @Bean
     @ConditionalOnMissingBean
     public JoinPointSerialiser joinPointSerialiser() {
         return new DefaultJoinPointSerialiser();
     }
 
     @Bean
-    @Order(-2)
-    public ErrorWebExceptionHandler loggingContextAwareErrorWebExceptionHandler(
+    @Order(-1)
+    public ErrorWebExceptionHandler errorWebExceptionHandler(
             ErrorAttributes errorAttributes,
             ResourceProperties resourceProperties,
             ServerProperties serverProperties,
@@ -98,6 +94,23 @@ public class ReactiveLoggingAutoConfiguration {
         exceptionHandler.setMessageWriters(serverCodecConfigurer.getWriters());
         exceptionHandler.setMessageReaders(serverCodecConfigurer.getReaders());
         return exceptionHandler;
+    }
+
+    @Bean
+    public HttpHandler httpHandler(
+            ObjectProvider<WebFluxProperties> webFluxProperties,
+            ApplicationContext applicationContext,
+            @Value("${logging.correlation-id.header-name:X-Amzn-Trace-Id}") String correlationIdHeader,
+            LoggingContextExtractor loggingContextExtractor,
+            ReactiveLoggingContextCreator reactiveLoggingContextCreator
+    ) {
+        return LoggingContextWebHandler.createHttpHandler(
+                webFluxProperties,
+                applicationContext,
+                correlationIdHeader,
+                loggingContextExtractor,
+                reactiveLoggingContextCreator
+        );
     }
 
     @Bean

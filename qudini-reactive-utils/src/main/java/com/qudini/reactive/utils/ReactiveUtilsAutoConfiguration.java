@@ -13,7 +13,7 @@ public class ReactiveUtilsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public MetadataService buildMetadataService(
+    public MetadataService metadataService(
             @Value("${K8S_NAMESPACE:unknown}") String environment,
             ApplicationContext applicationContext
     ) {
