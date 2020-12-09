@@ -76,6 +76,7 @@ public class ReactiveLoggingAutoConfiguration {
 
     @Bean
     @Order(-1)
+    // overrides org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration.errorWebExceptionHandler
     public ErrorWebExceptionHandler errorWebExceptionHandler(
             ErrorAttributes errorAttributes,
             ResourceProperties resourceProperties,
@@ -84,6 +85,7 @@ public class ReactiveLoggingAutoConfiguration {
             ServerCodecConfigurer serverCodecConfigurer,
             ApplicationContext applicationContext
     ) {
+        // see org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration.errorWebExceptionHandler:
         var exceptionHandler = new LoggingContextAwareErrorWebExceptionHandler(
                 errorAttributes,
                 resourceProperties,
@@ -97,6 +99,7 @@ public class ReactiveLoggingAutoConfiguration {
     }
 
     @Bean
+    // overrides org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration.AnnotationConfig.httpHandler
     public HttpHandler httpHandler(
             ObjectProvider<WebFluxProperties> webFluxProperties,
             ApplicationContext applicationContext,

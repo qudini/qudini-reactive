@@ -75,7 +75,7 @@ public final class LoggingContextWebHandler implements WebHandler {
         Optional.ofNullable(originalHttpHandler.getForwardedHeaderTransformer()).ifPresent(loggingContextAwareHttpHandler::setForwardedHeaderTransformer);
         Optional.ofNullable(originalHttpHandler.getApplicationContext()).ifPresent(loggingContextAwareHttpHandler::setApplicationContext);
 
-        // see org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration.AnnotationConfig.httpHandler
+        // see org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration.AnnotationConfig.httpHandler:
         return Optional
                 .ofNullable(webFluxProperties.getIfAvailable())
                 .map(WebFluxProperties::getBasePath)
