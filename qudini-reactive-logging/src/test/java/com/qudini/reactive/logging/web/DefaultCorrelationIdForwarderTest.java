@@ -31,7 +31,7 @@ class DefaultCorrelationIdForwarderTest {
         var request = WebClient.create().get();
         var updatedRequest = forwarder
                 .forwardOn(request)
-                .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
+                .contextWrite(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
                 .block();
         var called = new AtomicBoolean();
         assertThat(updatedRequest).isNotNull();
@@ -64,7 +64,7 @@ class DefaultCorrelationIdForwarderTest {
         var request = WebClient.create().post();
         var updatedRequest = forwarder
                 .forwardOn(request)
-                .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
+                .contextWrite(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
                 .block();
         var called = new AtomicBoolean();
         assertThat(updatedRequest).isNotNull();

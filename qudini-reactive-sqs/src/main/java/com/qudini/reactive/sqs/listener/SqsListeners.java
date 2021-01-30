@@ -82,7 +82,7 @@ public final class SqsListeners {
                 .checkForMessages(queueUrl, listener)
                 .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, long polling will keep going", queueUrl, error)))
                 .onErrorResume(error -> Mono.empty())
-                .subscriberContext(context -> context.putAll(reactiveLoggingContextCreator.create(Optional.empty(), Map.of())))
+                .contextWrite(context -> context.putAll(reactiveLoggingContextCreator.create(Optional.empty(), Map.of())))
                 .repeat();
     }
 

@@ -29,7 +29,7 @@ public final class LoggingContextFilter implements WebFilter, Ordered {
                         loggingContextExtractor.extract(exchange)
                 )
                 .map(onBoth(reactiveLoggingContextCreator::create))
-                .flatMap(context -> chain.filter(exchange).subscriberContext(context));
+                .flatMap(context -> chain.filter(exchange).contextWrite(context));
     }
 
     private Optional<String> extractCorrelationId(ServerWebExchange exchange) {

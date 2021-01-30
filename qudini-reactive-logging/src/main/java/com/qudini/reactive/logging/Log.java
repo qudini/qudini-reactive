@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.core.publisher.SignalType;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public final class Log implements ReactiveLoggingContextCreator {
     private final CorrelationIdGenerator correlationIdGenerator;
 
     @Override
-    public Context create(Optional<String> correlationId, Map<String, String> loggingContext) {
+    public ContextView create(Optional<String> correlationId, Map<String, String> loggingContext) {
         Map<String, String> mdc = new HashMap<>(loggingContext);
         mdc.put(CORRELATION_ID_KEY, correlationId.orElseGet(correlationIdGenerator::generate));
         return Context.of(LOGGING_MDC_KEY, unmodifiableMap(mdc));
@@ -234,7 +235,7 @@ public final class Log implements ReactiveLoggingContextCreator {
     public static <T> Consumer<Signal<T>> on(Predicate<Signal<T>> event, BiConsumer<T, Throwable> logger) {
         return signal -> {
             if (event.test(signal)) {
-                withContext(signal.getContext(), () -> logger.accept(signal.get(), signal.getThrowable()));
+                withContext(signal.getContextView(), () -> logger.accept(signal.get(), signal.getThrowable()));
             }
         };
     }
@@ -249,7 +250,7 @@ public final class Log implements ReactiveLoggingContextCreator {
      * }
      * }</pre>
      */
-    public static void withContext(Context context, Runnable runnable) {
+    public static void withContext(ContextView context, Runnable runnable) {
         withContext(context, () -> {
             runnable.run();
             return null;
@@ -269,7 +270,7 @@ public final class Log implements ReactiveLoggingContextCreator {
      * }
      * }</pre>
      */
-    public static <R> R withContext(Context context, Supplier<R> supplier) {
+    public static <R> R withContext(ContextView context, Supplier<R> supplier) {
         try {
             Map<String, String> mdc = context.getOrDefault(LOGGING_MDC_KEY, Map.of());
             MDC.setContextMap(mdc);
@@ -296,8 +297,8 @@ public final class Log implements ReactiveLoggingContextCreator {
         return thenMono(() -> Mono.justOrEmpty(MDC.get(CORRELATION_ID_KEY)));
     }
 
-    private static Mono<Context> context() {
-        return Mono.subscriberContext();
+    private static Mono<ContextView> context() {
+        return Mono.deferContextual(Mono::just);
     }
 
 }
