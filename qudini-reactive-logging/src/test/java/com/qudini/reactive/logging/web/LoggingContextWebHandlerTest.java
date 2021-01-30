@@ -7,11 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.server.WebHandler;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
@@ -23,8 +22,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("LoggingContextFilter")
-class LoggingContextFilterTest {
+@DisplayName("LoggingContextWebHandler")
+class LoggingContextWebHandlerTest {
+
+    @Mock
+    private WebHandler delegate;
 
     @Mock
     private LoggingContextExtractor loggingContextExtractor;
@@ -41,14 +43,11 @@ class LoggingContextFilterTest {
     @Mock
     private HttpHeaders headers;
 
-    @Mock
-    private WebFilterChain chain;
-
-    private LoggingContextFilter filter;
+    private LoggingContextWebHandler handler;
 
     @BeforeEach
     void prepareMocks() {
-        filter = new LoggingContextFilter("header", loggingContextExtractor, reactiveLoggingContextCreator);
+        handler = new LoggingContextWebHandler(delegate, "header", loggingContextExtractor, reactiveLoggingContextCreator);
     }
 
     @Test
@@ -65,15 +64,9 @@ class LoggingContextFilterTest {
         given(headers.getFirst("header")).willReturn(null);
         given(loggingContextExtractor.extract(exchange)).willReturn(Mono.just(Map.of()));
         given(reactiveLoggingContextCreator.create(any(), any())).willReturn(reactiveContext);
-        given(chain.filter(exchange)).willReturn(filtered);
-        filter.filter(exchange, chain).block();
+        given(delegate.handle(exchange)).willReturn(filtered);
+        handler.handle(exchange).block();
         assertThat(contextValue.get()).isEqualTo("bar");
-    }
-
-    @Test
-    @DisplayName("should run as early as possible")
-    void highestPrecedence() {
-        assertThat(filter.getOrder()).isEqualTo(Ordered.HIGHEST_PRECEDENCE);
     }
 
 }
