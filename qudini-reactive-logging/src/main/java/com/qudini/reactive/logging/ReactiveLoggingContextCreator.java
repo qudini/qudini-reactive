@@ -12,4 +12,25 @@ public interface ReactiveLoggingContextCreator {
      */
     ContextView create(Optional<String> correlationId, Map<String, String> loggingContext);
 
+    /**
+     * <p>Prepares a reactive context with a correlation id.</p>
+     */
+    default ContextView create(Optional<String> correlationId) {
+        return create(correlationId, Map.of());
+    }
+
+    /**
+     * <p>Prepares a reactive context with a logging context.</p>
+     */
+    default ContextView create(Map<String, String> loggingContext) {
+        return create(Optional.empty(), loggingContext);
+    }
+
+    /**
+     * <p>Prepares a reactive context.</p>
+     */
+    default ContextView create() {
+        return create(Optional.empty(), Map.of());
+    }
+
 }

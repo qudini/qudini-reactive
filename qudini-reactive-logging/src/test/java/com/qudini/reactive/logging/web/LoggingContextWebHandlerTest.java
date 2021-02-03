@@ -8,9 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebHandler;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 class LoggingContextWebHandlerTest {
 
     @Mock
-    private WebHandler delegate;
+    private HttpHandler delegate;
 
     @Mock
     private LoggingContextExtractor loggingContextExtractor;
@@ -35,10 +35,10 @@ class LoggingContextWebHandlerTest {
     private ReactiveLoggingContextCreator reactiveLoggingContextCreator;
 
     @Mock
-    private ServerWebExchange exchange;
+    private ServerHttpRequest request;
 
     @Mock
-    private ServerHttpRequest request;
+    private ServerHttpResponse response;
 
     @Mock
     private HttpHeaders headers;
@@ -59,13 +59,12 @@ class LoggingContextWebHandlerTest {
                 .deferContextual(Mono::just)
                 .doOnNext(context -> contextValue.set(context.get("foo")))
                 .then();
-        given(exchange.getRequest()).willReturn(request);
         given(request.getHeaders()).willReturn(headers);
         given(headers.getFirst("header")).willReturn(null);
-        given(loggingContextExtractor.extract(exchange)).willReturn(Mono.just(Map.of()));
+        given(loggingContextExtractor.extract(request)).willReturn(Mono.just(Map.of()));
         given(reactiveLoggingContextCreator.create(any(), any())).willReturn(reactiveContext);
-        given(delegate.handle(exchange)).willReturn(filtered);
-        handler.handle(exchange).block();
+        given(delegate.handle(request, response)).willReturn(filtered);
+        handler.handle(request, response).block();
         assertThat(contextValue.get()).isEqualTo("bar");
     }
 

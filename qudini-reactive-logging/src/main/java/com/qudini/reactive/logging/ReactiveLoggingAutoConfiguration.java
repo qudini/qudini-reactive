@@ -87,7 +87,6 @@ public class ReactiveLoggingAutoConfiguration {
             ServerCodecConfigurer serverCodecConfigurer,
             ApplicationContext applicationContext
     ) {
-        // see org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration.errorWebExceptionHandler:
         var exceptionHandler = new LoggingContextAwareErrorWebExceptionHandler(
                 errorAttributes,
                 resourceProperties.hasBeenCustomized() ? resourceProperties : webProperties.getResources(),
@@ -109,13 +108,9 @@ public class ReactiveLoggingAutoConfiguration {
             LoggingContextExtractor loggingContextExtractor,
             ReactiveLoggingContextCreator reactiveLoggingContextCreator
     ) {
-        return LoggingContextWebHandler.createHttpHandler(
-                webFluxProperties,
-                applicationContext,
-                correlationIdHeader,
-                loggingContextExtractor,
-                reactiveLoggingContextCreator
-        );
+        var httpConfig = new HttpHandlerAutoConfiguration.AnnotationConfig(applicationContext);
+        var httpHandler = httpConfig.httpHandler(webFluxProperties);
+        return new LoggingContextWebHandler(httpHandler, correlationIdHeader, loggingContextExtractor, reactiveLoggingContextCreator);
     }
 
     @Bean

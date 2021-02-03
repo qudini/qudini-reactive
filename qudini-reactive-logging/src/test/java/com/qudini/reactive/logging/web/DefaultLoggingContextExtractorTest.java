@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ServerWebExchange;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultLoggingContextExtractorTest {
 
     @Mock
-    private ServerWebExchange exchange;
+    private ServerHttpRequest request;
 
     @InjectMocks
     private DefaultLoggingContextExtractor extractor;
@@ -23,7 +23,7 @@ class DefaultLoggingContextExtractorTest {
     @Test
     @DisplayName("should return an empty map")
     void emptyMap() {
-        var context = extractor.extract(exchange).block();
+        var context = extractor.extract(request).block();
         assertThat(context).isEmpty();
     }
 
