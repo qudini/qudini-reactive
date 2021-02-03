@@ -16,7 +16,6 @@ import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 import javax.annotation.PreDestroy;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.qudini.reactive.utils.MoreTuples.onBoth;
 import static com.qudini.reactive.utils.MoreTuples.onLeftWhen;
@@ -82,7 +81,7 @@ public final class SqsListeners {
                 .checkForMessages(queueUrl, listener)
                 .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, long polling will keep going", queueUrl, error)))
                 .onErrorResume(error -> Mono.empty())
-                .contextWrite(context -> context.putAll(reactiveLoggingContextCreator.create(Optional.empty(), Map.of())))
+                .contextWrite(context -> context.putAll(reactiveLoggingContextCreator.create()))
                 .repeat();
     }
 
