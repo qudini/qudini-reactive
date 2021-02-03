@@ -41,7 +41,7 @@ public final class LoggingContextWebHandler implements WebHandler {
                         extractLoggingContext(exchange)
                 )
                 .map(onBoth(reactiveLoggingContextCreator::create))
-                .flatMap(context -> delegate.handle(exchange).subscriberContext(context));
+                .flatMap(context -> delegate.handle(exchange).contextWrite(context));
     }
 
     private Optional<String> extractCorrelationId(ServerWebExchange exchange) {

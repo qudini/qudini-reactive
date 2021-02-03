@@ -11,6 +11,7 @@ import org.slf4j.MDC;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,7 @@ class LogTest {
     void valueSupplier() {
         var mdcValue = Log
                 .then(() -> MDC.get("key"))
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo("value");
     }
@@ -82,7 +83,7 @@ class LogTest {
     void monoSupplier() {
         var mdcValue = Log
                 .thenMono(() -> Mono.just(MDC.get("key")))
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo("value");
     }
@@ -93,7 +94,7 @@ class LogTest {
         var mdcValue = Log
                 .thenIterable(() -> List.of(MDC.get("key")))
                 .collectList()
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo(List.of("value"));
     }
@@ -104,7 +105,7 @@ class LogTest {
         var mdcValue = Log
                 .thenFlux(() -> Flux.just(MDC.get("key")))
                 .collectList()
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo(List.of("value"));
     }
@@ -119,7 +120,7 @@ class LogTest {
                     mdcValue.set(MDC.get("key"));
                     return i;
                 }))
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value).isEqualTo(42);
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -135,7 +136,7 @@ class LogTest {
                     mdcValue.set(MDC.get("key"));
                     return Mono.just(i);
                 }))
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value).isEqualTo(42);
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -152,7 +153,7 @@ class LogTest {
                     return List.of(i);
                 }))
                 .collectList()
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value).isEqualTo(List.of(42));
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -169,7 +170,7 @@ class LogTest {
                     return Flux.just(i);
                 }))
                 .collectList()
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value).isEqualTo(List.of(42));
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -186,7 +187,7 @@ class LogTest {
                     value.set(i);
                     mdcValue.set(MDC.get("key"));
                 }))
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value.get()).isEqualTo(42);
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -205,7 +206,7 @@ class LogTest {
                     mdcValue.set(MDC.get("key"));
                 }))
                 .onErrorResume(x -> Mono.empty())
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value.get()).isEqualTo(exception);
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -224,7 +225,7 @@ class LogTest {
                     mdcValue.set(MDC.get("key"));
                 }))
                 .onErrorResume(x -> Mono.empty())
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value.get()).isEqualTo(exception);
         assertThat(mdcValue.get()).isEqualTo("value");
@@ -243,7 +244,7 @@ class LogTest {
                     mdcValue.set(MDC.get("key"));
                 }))
                 .onErrorResume(x -> Mono.empty())
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(value.get()).isNull();
         assertThat(mdcValue.get()).isNull();
@@ -256,7 +257,7 @@ class LogTest {
         Mono
                 .just(42)
                 .doOnEach(Log.onComplete(() -> mdcValue.set(MDC.get("key"))))
-                .subscriberContext(createContext())
+                .contextWrite(createContext())
                 .block();
         assertThat(mdcValue.get()).isEqualTo("value");
     }
@@ -289,7 +290,7 @@ class LogTest {
     void correlationId() {
         var correlationId = Log
                 .getCorrelationId()
-                .subscriberContext(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
+                .contextWrite(Context.of("LOGGING_MDC", Map.of("correlation_id", "correlation id")))
                 .block();
         assertThat(correlationId).isEqualTo("correlation id");
     }
@@ -299,12 +300,12 @@ class LogTest {
     void emptyCorrelationId() {
         var correlationId = Log
                 .getCorrelationId()
-                .subscriberContext(Context.of("LOGGING_MDC", Map.of()))
+                .contextWrite(Context.of("LOGGING_MDC", Map.of()))
                 .block();
         assertThat(correlationId).isNull();
     }
 
-    private Context createContext() {
+    private ContextView createContext() {
         return Context.of("LOGGING_MDC", Map.of("key", "value"));
     }
 

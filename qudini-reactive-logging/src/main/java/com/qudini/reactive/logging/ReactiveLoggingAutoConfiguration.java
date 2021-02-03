@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
@@ -78,9 +79,10 @@ public class ReactiveLoggingAutoConfiguration {
     @Order(-1)
     // overrides org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration.errorWebExceptionHandler
     public ErrorWebExceptionHandler errorWebExceptionHandler(
+            ServerProperties serverProperties,
             ErrorAttributes errorAttributes,
             ResourceProperties resourceProperties,
-            ServerProperties serverProperties,
+            WebProperties webProperties,
             ObjectProvider<ViewResolver> viewResolvers,
             ServerCodecConfigurer serverCodecConfigurer,
             ApplicationContext applicationContext
@@ -88,7 +90,7 @@ public class ReactiveLoggingAutoConfiguration {
         // see org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration.errorWebExceptionHandler:
         var exceptionHandler = new LoggingContextAwareErrorWebExceptionHandler(
                 errorAttributes,
-                resourceProperties,
+                resourceProperties.hasBeenCustomized() ? resourceProperties : webProperties.getResources(),
                 serverProperties.getError(),
                 applicationContext
         );

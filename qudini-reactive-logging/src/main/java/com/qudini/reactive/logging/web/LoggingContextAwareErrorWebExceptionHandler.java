@@ -3,10 +3,11 @@ package com.qudini.reactive.logging.web;
 import com.qudini.reactive.logging.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -19,11 +20,11 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
 
     public LoggingContextAwareErrorWebExceptionHandler(
             ErrorAttributes errorAttributes,
-            ResourceProperties resourceProperties,
+            WebProperties.Resources resources,
             ErrorProperties errorProperties,
             ApplicationContext applicationContext
     ) {
-        super(errorAttributes, resourceProperties, errorProperties, applicationContext);
+        super(errorAttributes, resources, errorProperties, applicationContext);
     }
 
     @Override
@@ -40,10 +41,8 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
         var request = exchange.getRequest();
         Optional
                 .ofNullable(exchange.getResponse().getStatusCode())
-                .ifPresentOrElse(
-                        status -> log.error("{} {} returned {}", request.getMethod(), request.getPath(), status, throwable),
-                        () -> log.error("{} {} returned an unknown status", request.getMethod(), request.getPath(), throwable)
-                );
+                .filter(HttpStatus::is5xxServerError)
+                .ifPresent(status -> log.error("{} {} returned {}", request.getMethod(), request.getPath(), status, throwable));
     }
 
 }

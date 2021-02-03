@@ -56,7 +56,7 @@ class LoggingContextWebHandlerTest {
         var contextValue = new AtomicReference<>();
         var reactiveContext = Context.of("foo", "bar");
         var filtered = Mono
-                .subscriberContext()
+                .deferContextual(Mono::just)
                 .doOnNext(context -> contextValue.set(context.get("foo")))
                 .then();
         given(exchange.getRequest()).willReturn(request);
