@@ -90,11 +90,11 @@ class SqsListenersTest {
         var callCount = new AtomicInteger(0);
         var fakeMessageChecking = waitThenIncrement(callCount);
         given(sqsMessageChecker.checkForMessages("the-queue-url", listener)).willReturn(fakeMessageChecking);
-        given(reactiveLoggingContextCreator.create(any(), any())).willReturn(Context.empty());
+        given(reactiveLoggingContextCreator.create()).willReturn(Context.empty());
 
         startAndStop();
 
-        verify(reactiveLoggingContextCreator, atLeast(2)).create(any(), any());
+        verify(reactiveLoggingContextCreator, atLeast(2)).create();
         assertThat(callCount.get()).isGreaterThanOrEqualTo(2);
 
     }
@@ -114,11 +114,11 @@ class SqsListenersTest {
         var callCount = new AtomicInteger(0);
         var fakeMessageChecking = waitThenIncrement(callCount).then(Mono.<Void>error(new IllegalStateException("fake message checking error")));
         given(sqsMessageChecker.checkForMessages("the-queue-url", listener)).willReturn(fakeMessageChecking);
-        given(reactiveLoggingContextCreator.create(any(), any())).willReturn(Context.empty());
+        given(reactiveLoggingContextCreator.create()).willReturn(Context.empty());
 
         startAndStop();
 
-        verify(reactiveLoggingContextCreator, atLeast(2)).create(any(), any());
+        verify(reactiveLoggingContextCreator, atLeast(2)).create();
         assertThat(callCount.get()).isGreaterThanOrEqualTo(2);
 
     }
