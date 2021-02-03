@@ -11,7 +11,7 @@ management:
     web:
       base-path: /
       exposure:
-        include: liveness,health,prometheus
+        include: health,prometheus
       path-mapping:
         health: readiness
         prometheus: metrics
