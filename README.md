@@ -39,3 +39,4 @@ Most of the libraries need the following dependencies to be provided:
 - [`qudini-reactive-logging`](./qudini-reactive-logging/)
 - [`qudini-reactive-metrics`](./qudini-reactive-metrics/)
 - [`qudini-reactive-sqs`](./qudini-reactive-sqs/)
+- [`qudini-reactive-graphql`](./qudini-reactive-graphql/)

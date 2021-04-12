@@ -1,0 +1,25 @@
+scalar MyBoolean
+scalar MyString
+scalar MyInt
+scalar MyFloat
+
+interface MyFooBar {
+    name: String!
+}
+
+type MyFoo implements MyFooBar {
+    name: String!
+}
+
+type MyBar implements MyFooBar {
+    name: String!
+}
+
+type Query {
+    myFooBars: [MyFooBar!]!
+    myBoolean(in: MyBoolean!): String!
+    myString(in: MyString!): String!
+    myInt(in: MyInt!): String!
+    myFloat(in: MyFloat!): String!
+    context: String!
+}

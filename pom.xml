@@ -42,6 +42,7 @@
         <module>qudini-reactive-logging</module>
         <module>qudini-reactive-metrics</module>
         <module>qudini-reactive-sqs</module>
+        <module>qudini-reactive-graphql</module>
         <module>qudini-reactive-example</module>
     </modules>
 
