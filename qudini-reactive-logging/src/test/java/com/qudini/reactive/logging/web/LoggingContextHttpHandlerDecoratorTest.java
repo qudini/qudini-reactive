@@ -22,8 +22,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("LoggingContextWebHandler")
-class LoggingContextWebHandlerTest {
+@DisplayName("LoggingContextHttpHandlerDecorator")
+class LoggingContextHttpHandlerDecoratorTest {
 
     @Mock
     private HttpHandler delegate;
@@ -43,11 +43,11 @@ class LoggingContextWebHandlerTest {
     @Mock
     private HttpHeaders headers;
 
-    private LoggingContextWebHandler handler;
+    private LoggingContextHttpHandlerDecorator handler;
 
     @BeforeEach
     void prepareMocks() {
-        handler = new LoggingContextWebHandler(delegate, "header", loggingContextExtractor, reactiveLoggingContextCreator);
+        handler = new LoggingContextHttpHandlerDecorator(delegate, "header", loggingContextExtractor, reactiveLoggingContextCreator);
     }
 
     @Test
