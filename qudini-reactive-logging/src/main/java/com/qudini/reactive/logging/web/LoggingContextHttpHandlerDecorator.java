@@ -16,7 +16,7 @@ import static com.qudini.reactive.utils.MoreTuples.onBoth;
 
 @Slf4j
 @RequiredArgsConstructor
-public final class LoggingContextWebHandler implements HttpHandler {
+public final class LoggingContextHttpHandlerDecorator implements HttpHandler {
 
     private final HttpHandler delegate;
 
