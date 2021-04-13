@@ -19,4 +19,5 @@ public class MyStringScalar extends StringScalar<ScalarValue> {
     public ScalarValue parse(String input) {
         return ScalarValue.BY_STRING.get(input);
     }
+
 }

@@ -19,4 +19,5 @@ public class MyFloatScalar extends FloatScalar<ScalarValue> {
     public ScalarValue parse(Number input) {
         return ScalarValue.BY_FLOAT.get(input.floatValue());
     }
+
 }
