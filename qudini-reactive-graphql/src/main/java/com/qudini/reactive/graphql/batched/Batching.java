@@ -91,7 +91,9 @@ public final class Batching {
         return fksByInput
                 .entrySet()
                 .stream()
-                .collect(toUnmodifiableMap(Map.Entry::getKey, entry -> outputsByPk.get(entry.getValue())));
+                .map(entry -> Optional.ofNullable(outputsByPk.get(entry.getValue())).map(output -> Tuples.of(entry.getKey(), output)))
+                .flatMap(Optional::stream)
+                .collect(toUnmodifiableMap(Tuple2::getT1, Tuple2::getT2));
     }
 
     /**

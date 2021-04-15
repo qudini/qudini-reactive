@@ -80,6 +80,34 @@ class BatchingTest {
     }
 
     @Test
+    @DisplayName("should resolve to-one without outputs")
+    void toOneWithoutOutputs() {
+        @Value
+        class Output {
+            String id;
+        }
+        @Value
+        class Input {
+            String id;
+            Output output;
+        }
+        var o1 = new Output("o1");
+        var o2 = new Output("o2");
+        var i1 = new Input("i1", o1);
+        var i2 = new Input("i2", o2);
+        var results = Batching
+                .toOne(
+                        Set.of(i1, i2),
+                        Input::getOutput,
+                        x -> Flux.just(o2),
+                        identity()
+                )
+                .block();
+        assertThat(results).hasSize(1);
+        assertThat(results.get(i2)).isEqualTo(o2);
+    }
+
+    @Test
     @DisplayName("should resolve to-many relationships")
     void toMany() {
         @Value
