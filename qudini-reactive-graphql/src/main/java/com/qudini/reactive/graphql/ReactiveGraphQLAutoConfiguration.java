@@ -4,7 +4,9 @@ import com.qudini.gom.Converters;
 import com.qudini.gom.Gom;
 import com.qudini.gom.TypeResolver;
 import com.qudini.reactive.graphql.http.GraphQLHandler;
+import com.qudini.reactive.graphql.http.LoggingContextAwareExceptionHandler;
 import com.qudini.reactive.graphql.scalar.Scalar;
+import graphql.execution.DataFetcherExceptionHandler;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -79,8 +81,14 @@ public class ReactiveGraphQLAutoConfiguration {
     }
 
     @Bean
-    public GraphQLHandler graphqlHandler(Gom gom, GraphQLSchema graphqlSchema) {
-        return new GraphQLHandler(gom, graphqlSchema);
+    @ConditionalOnMissingBean
+    public DataFetcherExceptionHandler graphqlExceptionHandler() {
+        return new LoggingContextAwareExceptionHandler();
+    }
+
+    @Bean
+    public GraphQLHandler graphqlHandler(Gom gom, GraphQLSchema graphqlSchema, DataFetcherExceptionHandler graphqlExceptionHandler) {
+        return new GraphQLHandler(gom, graphqlSchema, graphqlExceptionHandler);
     }
 
     @Bean

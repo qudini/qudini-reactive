@@ -3,7 +3,6 @@ package com.qudini.reactive.sqs.message;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qudini.reactive.sqs.SqsListener;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
@@ -11,7 +10,6 @@ import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 import software.amazon.awssdk.services.sqs.model.Message;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageResponse;
 
-@Slf4j
 public final class DefaultSqsMessageChecker implements SqsMessageChecker {
 
     private final SqsAsyncClient sqsClient;
