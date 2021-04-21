@@ -13,6 +13,11 @@ GraphQL over WebFlux thanks to [GOM](https://github.com/qudini/gom).
         <artifactId>qudini-reactive-utils</artifactId>
         <version>${qudini-reactive.version}</version>
     </dependency>
+    <dependency>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive-logging</artifactId>
+        <version>${qudini-reactive.version}</version>
+    </dependency>
     <!-- Main dependency: -->
     <dependency>
         <groupId>com.qudini</groupId>
@@ -24,6 +29,8 @@ GraphQL over WebFlux thanks to [GOM](https://github.com/qudini/gom).
 
 ## Configuration
 
+### Schema
+
 Your GraphQL schema is expected to be available in the classpath, in a file named `schema.graphql`. You can overwrite this behaviour by registering the `TypeDefinitionRegistry` bean yourself:
 
 ```java
@@ -33,7 +40,22 @@ public TypeDefinitionRegistry graphqlRegistry(...) {
 }
 ```
 
-The `RuntimeWiring` bean can also bean overwritten if needed (e.g. if further customisation is needed):
+### Error
+
+The default `DataFetcherExceptionHandler` will log exceptions with `ERROR`, unless it's a subclass of `org.springframework.web.server.ResponseStatusException` and its status is 4xx, in which case `WARN` will be used.
+
+This can be overwritten if needed:
+
+```java
+@Bean
+public DataFetcherExceptionHandler graphqlExceptionHandler(...) {
+    return ...;
+}
+```
+
+### Wiring
+
+The `RuntimeWiring` bean can be overwritten if needed (e.g. if further customisation is needed):
 
 ```java
 @Bean

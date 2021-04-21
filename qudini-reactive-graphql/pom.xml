@@ -21,6 +21,11 @@
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
+            <artifactId>qudini-reactive-logging</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qudini</groupId>
             <artifactId>qudini-gom</artifactId>
             <version>6.2.1</version>
         </dependency>

@@ -3,6 +3,7 @@ package com.qudini.reactive.graphql.http;
 import com.qudini.gom.Gom;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.execution.DataFetcherExceptionHandler;
 import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentation;
 import graphql.schema.GraphQLSchema;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public final class GraphQLHandler {
 
     private final Gom gom;
     private final GraphQLSchema schema;
+    private final DataFetcherExceptionHandler exceptionHandler;
 
     public Mono<ServerResponse> postJson(ServerRequest request) {
         return Mono
@@ -40,6 +42,7 @@ public final class GraphQLHandler {
         var graphql = GraphQL
                 .newGraphQL(schema)
                 .instrumentation(new DataLoaderDispatcherInstrumentation())
+                .defaultDataFetcherExceptionHandler(exceptionHandler)
                 .build();
         return Mono
                 .fromFuture(() -> graphql.executeAsync(input))
