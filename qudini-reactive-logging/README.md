@@ -182,6 +182,13 @@ Mono<Integer> example() {
 }
 
 Mono<Integer> example() {
+    return Log.thenFuture(() -> {
+        log.debug("foobar");
+        return CompletableFuture.completedFuture(42);
+    });
+}
+
+Mono<Integer> example() {
     return Log.thenMono(() -> {
         log.debug("foobar");
         return Mono.just(42);
