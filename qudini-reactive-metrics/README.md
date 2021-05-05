@@ -90,6 +90,43 @@ This will allow having the following endpoints available:
     - `http://localhost:8081/readiness`: your private readiness probe
     - `http://localhost:8081/metrics`: your private metrics, ready to be scraped
 
+### Security
+
+If you're using Spring Security, you may want to have custom rules for the probes. If should be the case, you can use `com.qudini.reactive.metrics.security.ProbesMatcher` to match them, for example:
+
+```java
+@EnableWebFluxSecurity
+public class SecurityConfiguration {
+
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(
+            ServerHttpSecurity http,
+            @Value("${server.port}") int serverPort,
+            @Value("${management.server.port}") int managementServerPort
+    ) {
+        return http
+                .authorizeExchange()
+                .matchers(new ProbesMatcher(serverPort, managementServerPort)).permitAll()
+                .anyExchange().authenticated()
+                .and().build();
+    }
+
+}
+```
+
+By default, the paths `/liveness`, `/readiness` and `/metrics` will be allowed. If you used other ones, you can specify
+them via `com.qudini.reactive.metrics.security.Paths` when creating the `ProbesMatcher`:
+
+```java
+Paths paths = Paths
+    .builder()
+    .liveness("/your-liveness")
+    .readiness("/your-readiness")
+    .metrics("/your-metrics")
+    .build();
+ProbesMatcher matcher = new ProbesMatcher(serverPort, managementServerPort, paths);
+```
+
 ## Usage
 
 ### com.qudini.reactive.metrics.Measured 
