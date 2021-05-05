@@ -16,6 +16,7 @@ import reactor.util.context.ContextView;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,6 +74,16 @@ class LogTest {
     void valueSupplier() {
         var mdcValue = Log
                 .then(() -> MDC.get("key"))
+                .contextWrite(createContext())
+                .block();
+        assertThat(mdcValue).isEqualTo("value");
+    }
+
+    @Test
+    @DisplayName("should populate the reactive context when using the CompletableFuture supplier")
+    void futureSupplier() {
+        var mdcValue = Log
+                .thenFuture(() -> CompletableFuture.completedFuture(MDC.get("key")))
                 .contextWrite(createContext())
                 .block();
         assertThat(mdcValue).isEqualTo("value");

@@ -14,6 +14,7 @@ import reactor.util.context.ContextView;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -52,6 +53,22 @@ public final class Log implements ReactiveLoggingContextCreator {
      */
     public static <R> Mono<R> then(Supplier<R> supplier) {
         return context().map(context -> withContext(context, supplier));
+    }
+
+    /**
+     * <p>Runs the given supplier with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Integer> example() {
+     *     return Log.thenFuture(() -> {
+     *         log.debug("foobar");
+     *         return CompletableFuture.completedFuture(42);
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <R> Mono<R> thenFuture(Supplier<CompletableFuture<R>> supplier) {
+        return context().flatMap(content -> Mono.fromFuture(withContext(content, supplier)));
     }
 
     /**

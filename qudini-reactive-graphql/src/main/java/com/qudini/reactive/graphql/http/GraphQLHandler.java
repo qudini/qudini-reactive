@@ -1,6 +1,7 @@
 package com.qudini.reactive.graphql.http;
 
 import com.qudini.gom.Gom;
+import com.qudini.reactive.logging.Log;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.execution.DataFetcherExceptionHandler;
@@ -44,8 +45,8 @@ public final class GraphQLHandler {
                 .instrumentation(new DataLoaderDispatcherInstrumentation())
                 .defaultDataFetcherExceptionHandler(exceptionHandler)
                 .build();
-        return Mono
-                .fromFuture(() -> graphql.executeAsync(input))
+        return Log
+                .thenFuture(() -> graphql.executeAsync(input))
                 .map(ExecutionResult::toSpecification);
     }
 
