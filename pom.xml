@@ -140,7 +140,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
-                <version>1.18.16.0</version>
+                <version>1.18.20.0</version>
                 <executions>
                     <execution>
                         <id>delombok</id>
@@ -193,7 +193,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
+                <version>0.8.7</version>
                 <executions>
                     <execution>
                         <id>before-unit-test-execution</id>
