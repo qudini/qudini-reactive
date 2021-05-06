@@ -222,7 +222,7 @@ You can use custom annotations if you're feeling you're repeating yourself:
 ```java
 @Target(METHOD)
 @Retention(RUNTIME)
-@Measured("yourapp_duration", publishPercentileHistogram = false)
+@Measured(value = "yourapp_duration", publishPercentileHistogram = false)
 public @interface YourAppMeasured {
 }
 ```
