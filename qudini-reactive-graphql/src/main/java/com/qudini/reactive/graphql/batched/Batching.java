@@ -81,8 +81,10 @@ public final class Batching {
                 .map(input -> fkGetter.apply(input).map(fk -> Tuples.of(input, fk)))
                 .flatMap(Optional::stream)
                 .collect(toUnmodifiableMap(Tuple2::getT1, Tuple2::getT2));
-        return outputsGetter
-                .apply(Set.copyOf(fksByInput.values()))
+        Flux<O> outputs = fksByInput.isEmpty()
+                ? Flux.empty()
+                : outputsGetter.apply(Set.copyOf(fksByInput.values()));
+        return outputs
                 .collect(toUnmodifiableMap(pkGetter, identity()))
                 .map(outputsByPk -> toOne(fksByInput, outputsByPk));
     }
@@ -133,8 +135,10 @@ public final class Batching {
         var inputsByPk = inputs
                 .stream()
                 .collect(toUnmodifiableMap(pkGetter, identity()));
-        return outputsGetter
-                .apply(inputsByPk.keySet())
+        Flux<O> outputs = inputsByPk.isEmpty()
+                ? Flux.empty()
+                : outputsGetter.apply(inputsByPk.keySet());
+        return outputs
                 .collect(groupingBy(fkGetter, toUnmodifiableList()))
                 .map(outputsByFk -> toMany(inputsByPk, outputsByFk));
     }

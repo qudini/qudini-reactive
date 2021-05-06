@@ -1,6 +1,7 @@
 package com.qudini.reactive.graphql.batched;
 
 import lombok.Value;
+import org.assertj.core.internal.Failures;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -137,6 +138,57 @@ class BatchingTest {
         assertThat(results.get(i1)).containsExactlyElementsOf(List.of(o1));
         assertThat(results.get(i2)).containsExactlyElementsOf(List.of(o3, o2));
         assertThat(results.get(i3)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should not fetch outputs if there are no ids when resolving a to-one relationships")
+    void toOneWithoutOutputIds() {
+        @Value
+        class Output {
+            String id;
+        }
+        @Value
+        class Input {
+            String id;
+            Output output;
+        }
+        var i = new Input("i", null);
+        var results = Batching
+                .toOne(
+                        Set.of(i),
+                        Input::getOutput,
+                        x -> {
+                            throw Failures.instance().failure("should not have been called");
+                        },
+                        identity()
+                )
+                .block();
+        assertThat(results).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should not fetch outputs if there are no ids when resolving a to-many relationships")
+    void toManyWithoutOutputIds() {
+        @Value
+        class Input {
+            String id;
+        }
+        @Value
+        class Output {
+            String id;
+            Input input;
+        }
+        var results = Batching
+                .toMany(
+                        Set.of(),
+                        identity(),
+                        x -> {
+                            throw Failures.instance().failure("should not have been called");
+                        },
+                        Output::getInput
+                )
+                .block();
+        assertThat(results).isEmpty();
     }
 
 }
