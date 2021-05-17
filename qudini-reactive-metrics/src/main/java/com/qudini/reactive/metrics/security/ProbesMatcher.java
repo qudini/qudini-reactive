@@ -6,6 +6,8 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -15,18 +17,16 @@ public final class ProbesMatcher implements ServerWebExchangeMatcher {
 
     private final Set<Request> allowedRequests;
 
-    public ProbesMatcher(int serverPort, int managementServerPort) {
-        this(serverPort, managementServerPort, Paths.builder().build());
+    public ProbesMatcher(int managementServerPort) {
+        this(managementServerPort, Paths.builder().build());
     }
 
-    public ProbesMatcher(int serverPort, int managementServerPort, Paths paths) {
+    public ProbesMatcher(int managementServerPort, Paths paths) {
         this.allowedRequests = Set.of(
-                new Request(HEAD, paths.getLiveness(), serverPort),
-                new Request(GET, paths.getLiveness(), serverPort),
-                new Request(HEAD, paths.getLiveness(), managementServerPort),
-                new Request(GET, paths.getLiveness(), managementServerPort),
-                new Request(GET, paths.getReadiness(), managementServerPort),
-                new Request(GET, paths.getMetrics(), managementServerPort)
+                new Request(HEAD, paths.getLiveness(), Optional.empty()),
+                new Request(GET, paths.getLiveness(), Optional.empty()),
+                new Request(GET, paths.getReadiness(), Optional.of(managementServerPort)),
+                new Request(GET, paths.getMetrics(), Optional.of(managementServerPort))
         );
     }
 
@@ -42,18 +42,36 @@ public final class ProbesMatcher implements ServerWebExchangeMatcher {
 
         HttpMethod method;
         String path;
-        int port;
+        Optional<Integer> port;
+
+        @Override
+        public boolean equals(Object object) {
+            if (object == this) {
+                return true;
+            }
+            if (!(object instanceof Request)) {
+                return false;
+            }
+            var other = (Request) object;
+            return getMethod().equals(other.getMethod())
+                    && getPath().equals(other.getPath())
+                    && (getPort().isEmpty() || other.getPort().isEmpty() || getPort().equals(other.getPort()));
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getMethod(), getPath());
+        }
 
         private static Request fromExchange(ServerWebExchange exchange) {
             var request = exchange.getRequest();
             return new Request(
                     request.getMethod(),
                     request.getPath().pathWithinApplication().value(),
-                    request.getURI().getPort()
+                    Optional.of(request.getURI().getPort())
             );
         }
 
     }
-
 
 }

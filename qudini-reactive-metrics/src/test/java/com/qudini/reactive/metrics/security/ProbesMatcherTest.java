@@ -21,17 +21,15 @@ import static org.springframework.http.HttpMethod.POST;
 @DisplayName("ProbesMatcher")
 class ProbesMatcherTest {
 
-    private static final int SERVER_PORT = 1;
-    private static final int MANAGEMENT_SERVER_PORT = 2;
+    private static final int UNDEFINED_PORT = -1;
+    private static final int MANAGEMENT_SERVER_PORT = 1;
 
     @Test
     @DisplayName("should allow valid requests with default paths")
     void testValidDefaultPaths() {
-        var matcher = new ProbesMatcher(SERVER_PORT, MANAGEMENT_SERVER_PORT);
-        assertThat(process(matcher, mockExchange(HEAD, "/liveness", SERVER_PORT))).isNotNull();
-        assertThat(process(matcher, mockExchange(GET, "/liveness", SERVER_PORT))).isNotNull();
-        assertThat(process(matcher, mockExchange(HEAD, "/liveness", MANAGEMENT_SERVER_PORT))).isNotNull();
-        assertThat(process(matcher, mockExchange(GET, "/liveness", MANAGEMENT_SERVER_PORT))).isNotNull();
+        var matcher = new ProbesMatcher(MANAGEMENT_SERVER_PORT);
+        assertThat(process(matcher, mockExchange(HEAD, "/liveness", UNDEFINED_PORT))).isNotNull();
+        assertThat(process(matcher, mockExchange(GET, "/liveness", UNDEFINED_PORT))).isNotNull();
         assertThat(process(matcher, mockExchange(GET, "/readiness", MANAGEMENT_SERVER_PORT))).isNotNull();
         assertThat(process(matcher, mockExchange(GET, "/metrics", MANAGEMENT_SERVER_PORT))).isNotNull();
     }
@@ -39,20 +37,18 @@ class ProbesMatcherTest {
     @Test
     @DisplayName("should forbid invalid requests with default paths")
     void testInvalidDefaultPaths() {
-        var matcher = new ProbesMatcher(SERVER_PORT, MANAGEMENT_SERVER_PORT);
+        var matcher = new ProbesMatcher(MANAGEMENT_SERVER_PORT);
         assertThat(process(matcher, mockExchange(POST, "/metrics", MANAGEMENT_SERVER_PORT))).isNull();
         assertThat(process(matcher, mockExchange(GET, "/foobar", MANAGEMENT_SERVER_PORT))).isNull();
-        assertThat(process(matcher, mockExchange(GET, "/metrics", SERVER_PORT))).isNull();
+        assertThat(process(matcher, mockExchange(GET, "/metrics", UNDEFINED_PORT))).isNull();
     }
 
     @Test
     @DisplayName("should allow valid requests with custom paths")
     void testValidCustomPaths() {
-        var matcher = new ProbesMatcher(SERVER_PORT, MANAGEMENT_SERVER_PORT, Paths.builder().liveness("/l").readiness("/r").metrics("/m").build());
-        assertThat(process(matcher, mockExchange(HEAD, "/l", SERVER_PORT))).isNotNull();
-        assertThat(process(matcher, mockExchange(GET, "/l", SERVER_PORT))).isNotNull();
-        assertThat(process(matcher, mockExchange(HEAD, "/l", MANAGEMENT_SERVER_PORT))).isNotNull();
-        assertThat(process(matcher, mockExchange(GET, "/l", MANAGEMENT_SERVER_PORT))).isNotNull();
+        var matcher = new ProbesMatcher(MANAGEMENT_SERVER_PORT, Paths.builder().liveness("/l").readiness("/r").metrics("/m").build());
+        assertThat(process(matcher, mockExchange(HEAD, "/l", UNDEFINED_PORT))).isNotNull();
+        assertThat(process(matcher, mockExchange(GET, "/l", UNDEFINED_PORT))).isNotNull();
         assertThat(process(matcher, mockExchange(GET, "/r", MANAGEMENT_SERVER_PORT))).isNotNull();
         assertThat(process(matcher, mockExchange(GET, "/m", MANAGEMENT_SERVER_PORT))).isNotNull();
     }
@@ -60,10 +56,10 @@ class ProbesMatcherTest {
     @Test
     @DisplayName("should allow invalid requests with default paths")
     void testInvalidCustomPaths() {
-        var matcher = new ProbesMatcher(SERVER_PORT, MANAGEMENT_SERVER_PORT, Paths.builder().liveness("/l").readiness("/r").metrics("/m").build());
+        var matcher = new ProbesMatcher(MANAGEMENT_SERVER_PORT, Paths.builder().liveness("/l").readiness("/r").metrics("/m").build());
         assertThat(process(matcher, mockExchange(POST, "/m", MANAGEMENT_SERVER_PORT))).isNull();
         assertThat(process(matcher, mockExchange(GET, "/foobar", MANAGEMENT_SERVER_PORT))).isNull();
-        assertThat(process(matcher, mockExchange(GET, "/m", SERVER_PORT))).isNull();
+        assertThat(process(matcher, mockExchange(GET, "/m", UNDEFINED_PORT))).isNull();
     }
 
     private ServerWebExchange mockExchange(HttpMethod method, String path, int port) {
