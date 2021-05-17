@@ -101,12 +101,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(
             ServerHttpSecurity http,
-            @Value("${server.port}") int serverPort,
             @Value("${management.server.port}") int managementServerPort
     ) {
         return http
                 .authorizeExchange()
-                .matchers(new ProbesMatcher(serverPort, managementServerPort)).permitAll()
+                .matchers(new ProbesMatcher(managementServerPort)).permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }
