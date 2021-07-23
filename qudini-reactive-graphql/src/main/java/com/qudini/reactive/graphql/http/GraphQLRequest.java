@@ -6,6 +6,7 @@ import graphql.ExecutionInput;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.dataloader.DataLoaderRegistry;
+import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
 import java.util.Map;
@@ -35,7 +36,7 @@ public class GraphQLRequest {
                 .newExecutionInput()
                 .query(query)
                 .dataLoaderRegistry(registry)
-                .context(context);
+                .graphQLContext(builder -> builder.put(Context.class, context));
         operationName.ifPresent(input::operationName);
         variables.ifPresent(input::variables);
         return input.build();

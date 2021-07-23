@@ -7,6 +7,7 @@ import graphql.execution.DataFetcherExceptionHandlerParameters;
 import graphql.execution.DataFetcherExceptionHandlerResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
 @Slf4j
@@ -18,7 +19,7 @@ public final class LoggingContextAwareExceptionHandler implements DataFetcherExc
         var sourceLocation = handlerParameters.getSourceLocation();
         var path = handlerParameters.getPath();
         var error = new ExceptionWhileDataFetching(path, exception, sourceLocation);
-        ContextView context = handlerParameters.getDataFetchingEnvironment().getContext();
+        ContextView context = handlerParameters.getDataFetchingEnvironment().getGraphQlContext().getOrDefault(Context.class, Context.empty());
         if (exception instanceof ResponseStatusException && ((ResponseStatusException) exception).getStatus().is4xxClientError()) {
             Log.withContext(context, () -> log.warn(error.getMessage(), exception));
         } else {

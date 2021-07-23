@@ -45,8 +45,8 @@ public class ReactiveGraphQLAutoConfiguration {
                 .getBeansWithAnnotation(TypeResolver.class)
                 .values();
         var converters = Converters
-                .newConverters(Context.class)
-                .converter(Mono.class, (mono, context) -> mono.contextWrite(context).toFuture())
+                .newConverters()
+                .converter(Mono.class, (mono, context) -> mono.contextWrite(context.getOrDefault(Context.class, Context.empty())).toFuture())
                 .converter(Flux.class, (flux, context) -> flux.collect(toUnmodifiableList()))
                 .build();
         return Gom
