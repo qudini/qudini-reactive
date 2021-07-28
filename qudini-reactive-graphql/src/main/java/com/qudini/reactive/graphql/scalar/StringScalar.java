@@ -13,7 +13,7 @@ import graphql.schema.CoercingSerializeException;
  * public class YourStringBasedScalar extends StringScalar&lt;YourJavaType&gt; {
  *
  *     public YourStringBasedScalar() {
- *         super("YourScalarName", YourJavaType.class);
+ *         super("YourScalarName", "Your scalar description", YourJavaType.class);
  *     }
  *
  *     &#64;Override
@@ -31,8 +31,8 @@ import graphql.schema.CoercingSerializeException;
  */
 public abstract class StringScalar<T> extends Scalar<T, String, String> {
 
-    public StringScalar(String name, Class<T> type) {
-        super(name, type);
+    public StringScalar(String name, String description, Class<T> type) {
+        super(name, description, type);
     }
 
     @Override

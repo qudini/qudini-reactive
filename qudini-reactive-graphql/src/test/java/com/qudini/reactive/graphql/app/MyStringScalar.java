@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class MyStringScalar extends StringScalar<ScalarValue> {
 
     public MyStringScalar() {
-        super("MyString", ScalarValue.class);
+        super("MyString", "Description", ScalarValue.class);
     }
 
     @Override

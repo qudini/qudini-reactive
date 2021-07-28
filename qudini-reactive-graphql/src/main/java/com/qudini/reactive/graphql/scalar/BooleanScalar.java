@@ -13,7 +13,7 @@ import graphql.schema.CoercingSerializeException;
  * public class YourBooleanBasedScalar extends BooleanScalar&lt;YourJavaType&gt; {
  *
  *     public YourBooleanBasedScalar() {
- *         super("YourScalarName", YourJavaType.class);
+ *         super("YourScalarName", "Your scalar description", YourJavaType.class);
  *     }
  *
  *     &#64;Override
@@ -31,8 +31,8 @@ import graphql.schema.CoercingSerializeException;
  */
 public abstract class BooleanScalar<T> extends Scalar<T, Boolean, Boolean> {
 
-    public BooleanScalar(String name, Class<T> type) {
-        super(name, type);
+    public BooleanScalar(String name, String description, Class<T> type) {
+        super(name, description, type);
     }
 
     @Override

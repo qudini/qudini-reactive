@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class MyBooleanScalar extends BooleanScalar<ScalarValue> {
 
     public MyBooleanScalar() {
-        super("MyBoolean", ScalarValue.class);
+        super("MyBoolean", "Description", ScalarValue.class);
     }
 
     @Override

@@ -216,7 +216,7 @@ For example, if you need a `LocalDateTime` scalar:
 public class LocalDateTimeScalar extends StringScalar<LocalDateTime> {
 
     public LocalDateTimeScalar() {
-        super("LocalDateTime", LocalDateTime.class);
+        super("LocalDateTime", "Example: 2007-12-03T10:15:30", LocalDateTime.class);
     }
 
     @Override
