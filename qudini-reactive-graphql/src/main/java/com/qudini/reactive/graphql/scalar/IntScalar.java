@@ -13,7 +13,7 @@ import graphql.schema.CoercingSerializeException;
  * public class YourIntBasedScalar extends IntScalar&lt;YourJavaType&gt; {
  *
  *     public YourIntBasedScalar() {
- *         super("YourScalarName", YourJavaType.class);
+ *         super("YourScalarName", "Your scalar description", YourJavaType.class);
  *     }
  *
  *     &#64;Override
@@ -31,8 +31,8 @@ import graphql.schema.CoercingSerializeException;
  */
 public abstract class IntScalar<T> extends Scalar<T, Number, Integer> {
 
-    public IntScalar(String name, Class<T> type) {
-        super(name, type);
+    public IntScalar(String name, String description, Class<T> type) {
+        super(name, description, type);
     }
 
     @Override

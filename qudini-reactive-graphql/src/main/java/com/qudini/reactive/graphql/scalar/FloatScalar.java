@@ -13,7 +13,7 @@ import graphql.schema.CoercingSerializeException;
  * public class YourFloatBasedScalar extends FloatScalar&lt;YourJavaType&gt; {
  *
  *     public YourFloatBasedScalar() {
- *         super("YourScalarName", YourJavaType.class);
+ *         super("YourScalarName", "Your scalar description", YourJavaType.class);
  *     }
  *
  *     &#64;Override
@@ -31,8 +31,8 @@ import graphql.schema.CoercingSerializeException;
  */
 public abstract class FloatScalar<T> extends Scalar<T, Number, Float> {
 
-    public FloatScalar(String name, Class<T> type) {
-        super(name, type);
+    public FloatScalar(String name, String description, Class<T> type) {
+        super(name, description, type);
     }
 
     @Override

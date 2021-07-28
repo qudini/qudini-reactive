@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class MyFloatScalar extends FloatScalar<ScalarValue> {
 
     public MyFloatScalar() {
-        super("MyFloat", ScalarValue.class);
+        super("MyFloat", "Description", ScalarValue.class);
     }
 
     @Override

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 public abstract class Scalar<T, U, V extends U> implements Coercing<T, V> {
 
     protected final String name;
+    protected final String description;
     protected final Class<T> type;
 
     public final GraphQLScalarType build() {
