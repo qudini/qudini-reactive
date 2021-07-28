@@ -16,7 +16,7 @@ public abstract class Scalar<T, U, V extends U> implements Coercing<T, V> {
         return GraphQLScalarType
                 .newScalar()
                 .name(name)
-                .description(type.getSimpleName())
+                .description(description)
                 .coercing(this)
                 .build();
     }
