@@ -6,28 +6,18 @@ Fixes logging in a reactive stream, by handling the MDC inside the reactive cont
 
 ```xml
 <dependencies>
-    <!-- Qudini Reactive dependencies needed: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <!-- Main dependency: -->
     <dependency>
         <groupId>com.qudini</groupId>
         <artifactId>qudini-reactive-logging</artifactId>
-        <version>${qudini-reactive.version}</version>
     </dependency>
-    <!-- Depending on your monitoring system: -->
+    <!-- Depending on your monitoring systems: -->
     <dependency>
         <groupId>com.newrelic.agent.java</groupId>
         <artifactId>newrelic-api</artifactId>
-        <version>6.1.0</version>
     </dependency>
     <dependency>
         <groupId>io.sentry</groupId>
         <artifactId>sentry</artifactId>
-        <version>3.1.0</version>
     </dependency>
 </dependencies>
 ```

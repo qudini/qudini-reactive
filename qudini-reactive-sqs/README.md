@@ -6,22 +6,9 @@ Non-blocking SQS listeners based on AWS asynchronous SDK and long polling.
 
 ```xml
 <dependencies>
-    <!-- Qudini Reactive dependencies needed: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-logging</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <!-- Main dependency: -->
     <dependency>
         <groupId>com.qudini</groupId>
         <artifactId>qudini-reactive-sqs</artifactId>
-        <version>${qudini-reactive.version}</version>
     </dependency>
 </dependencies>
 ```

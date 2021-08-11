@@ -9,7 +9,6 @@ Utilities around Project Reactor.
     <dependency>
         <groupId>com.qudini</groupId>
         <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
     </dependency>
 </dependencies>
 ```
