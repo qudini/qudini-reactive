@@ -255,11 +255,24 @@
     <build>
         <sourceDirectory>target/generated-sources/delombok</sourceDirectory>
         <testSourceDirectory>target/generated-test-sources/delombok</testSourceDirectory>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${lombok-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
-                <version>${lombok-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>delombok</id>
@@ -312,7 +325,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>before-unit-test-execution</id>
