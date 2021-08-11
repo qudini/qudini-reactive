@@ -17,29 +17,24 @@
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-utils</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
-            <version>3.4.4</version>
         </dependency>
         <dependency>
             <groupId>com.newrelic.agent.java</groupId>
             <artifactId>newrelic-api</artifactId>
-            <version>7.1.1</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
-            <version>5.0.1</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-tests</artifactId>
-            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

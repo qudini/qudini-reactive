@@ -17,7 +17,6 @@
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-tests</artifactId>
-            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
