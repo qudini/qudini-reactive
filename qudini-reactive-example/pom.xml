@@ -5,60 +5,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.qudini</groupId>
     <artifactId>qudini-reactive-example</artifactId>
-    <version>0-SNAPSHOT</version>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.3</version>
-        <relativePath/>
+        <groupId>com.qudini</groupId>
+        <artifactId>qudini-reactive</artifactId>
+        <version>0-SNAPSHOT</version>
     </parent>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <organization>Qudini</organization>
-            <organizationUrl>https://www.qudini.com</organizationUrl>
-        </developer>
-    </developers>
-
-    <properties>
-        <java.version>11</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
-
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -66,17 +21,14 @@
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-utils</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-logging</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-metrics</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -89,11 +41,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerVersion>${java.version}</compilerVersion>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -101,10 +48,6 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

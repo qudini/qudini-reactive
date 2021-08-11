@@ -24,9 +24,7 @@ jobs:
       - name: Version
         run: |
           mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
-          cd qudini-reactive-example
-          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
-          cd ..
+          mvn versions:update-property -Dproperty=qudini-reactive.version -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
       - name: Release
         run: |
           export GPG_TTY=$(tty)

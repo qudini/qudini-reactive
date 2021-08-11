@@ -6,31 +6,12 @@ All these libraries are preconfigured: just adding them as dependencies is enoug
 
 ## Installation
 
-Most of the libraries need the following dependencies to be provided:
-
 ```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-webflux</artifactId>
-    <exclusions>
-        <exclusion>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-log4j2</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-actuator</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-aop</artifactId>
-</dependency>
+<parent>
+    <groupId>com.qudini</groupId>
+    <artifactId>qudini-reactive</artifactId>
+    <version>${qudini-reactive.version}</version>
+</parent>
 ```
 
 ## Libraries:

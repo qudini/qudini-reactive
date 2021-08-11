@@ -6,19 +6,11 @@ Provides an easy integration of custom metrics, as well as health checks followi
 
 ```xml
 <dependencies>
-    <!-- Qudini Reactive dependencies needed: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <!-- Main dependency: -->
     <dependency>
         <groupId>com.qudini</groupId>
         <artifactId>qudini-reactive-metrics</artifactId>
-        <version>${qudini-reactive.version}</version>
     </dependency>
-    <!-- Depending on your monitoring system: -->
+    <!-- Depending on your monitoring systems: -->
     <dependency>
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-registry-prometheus</artifactId>

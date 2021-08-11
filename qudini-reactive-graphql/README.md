@@ -5,24 +5,10 @@ GraphQL over WebFlux thanks to [GOM](https://github.com/qudini/gom).
 ## Installation
 
 ```xml
-
 <dependencies>
-    <!-- Qudini Reactive dependencies needed: -->
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-utils</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>com.qudini</groupId>
-        <artifactId>qudini-reactive-logging</artifactId>
-        <version>${qudini-reactive.version}</version>
-    </dependency>
-    <!-- Main dependency: -->
     <dependency>
         <groupId>com.qudini</groupId>
         <artifactId>qudini-reactive-graphql</artifactId>
-        <version>${qudini-reactive.version}</version>
     </dependency>
 </dependencies>
 ```
