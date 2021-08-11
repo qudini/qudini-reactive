@@ -201,7 +201,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <destFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</destFile>
+                            <destFile>${project.build.directory}/jacoco/ut.exec</destFile>
                             <propertyName>surefire.jacoco.args</propertyName>
                         </configuration>
                     </execution>
@@ -212,9 +212,8 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <dataFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-unit-test-coverage-report
-                            </outputDirectory>
+                            <dataFile>${project.build.directory}/jacoco/ut.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/coverage/ut</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -224,7 +223,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <destFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</destFile>
+                            <destFile>${project.build.directory}/jacoco/it.exec</destFile>
                             <propertyName>failsafe.jacoco.args</propertyName>
                         </configuration>
                     </execution>
@@ -235,8 +234,8 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <dataFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-integration-test-coverage-report</outputDirectory>
+                            <dataFile>${project.build.directory}/jacoco/it.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/coverage/it</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
