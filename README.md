@@ -6,6 +6,8 @@ All these libraries are preconfigured: just adding them as dependencies is enoug
 
 ## Installation
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.qudini/qudini-reactive.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.qudini%22%20AND%20a:%22qudini-reactive%22)
+
 ```xml
 <parent>
     <groupId>com.qudini</groupId>
