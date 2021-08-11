@@ -14,6 +14,15 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <this.version>0-SNAPSHOT</this.version>
+        <disruptor.version>3.4.4</disruptor.version>
+        <newrelic.version>7.1.1</newrelic.version>
+        <sentry.version>5.0.1</sentry.version>
+        <aws.version>2.17.3</aws.version>
+        <gom.version>7.1.0</gom.version>
+        <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
+        <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
+        <gpg-plugin.version>3.0.1</gpg-plugin.version>
     </properties>
 
     <parent>
@@ -72,7 +81,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>${gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -109,57 +118,57 @@
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-tests</artifactId>
-                <version>${project.version}</version>
+                <version>${this.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-utils</artifactId>
-                <version>${project.version}</version>
+                <version>${this.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-logging</artifactId>
-                <version>${project.version}</version>
+                <version>${this.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
-                <version>3.4.4</version>
+                <version>${disruptor.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.newrelic.agent.java</groupId>
                 <artifactId>newrelic-api</artifactId>
-                <version>7.1.1</version>
+                <version>${newrelic.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.sentry</groupId>
                 <artifactId>sentry</artifactId>
-                <version>5.0.1</version>
+                <version>${sentry.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-metrics</artifactId>
-                <version>${project.version}</version>
+                <version>${this.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-sqs</artifactId>
-                <version>${project.version}</version>
+                <version>${this.version}</version>
             </dependency>
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>sqs</artifactId>
-                <version>2.17.3</version>
+                <version>${aws.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-graphql</artifactId>
-                <version>${project.version}</version>
+                <version>${this.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-gom</artifactId>
-                <version>7.1.0</version>
+                <version>${gom.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -199,7 +208,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
-                <version>1.18.20.0</version>
+                <version>${lombok-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>delombok</id>
@@ -252,7 +261,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
+                <version>${jacoco-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>before-unit-test-execution</id>
