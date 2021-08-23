@@ -112,4 +112,12 @@ public final class QudiniLogEvent {
         }
     }
 
+    public static void reset() {
+        if (INITIALISED.compareAndSet(true, false)) {
+            environment = Optional.empty();
+            buildName = Optional.empty();
+            buildVersion = Optional.empty();
+        }
+    }
+
 }

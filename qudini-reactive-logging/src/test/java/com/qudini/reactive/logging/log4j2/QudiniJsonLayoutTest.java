@@ -2,6 +2,7 @@ package com.qudini.reactive.logging.log4j2;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qudini.reactive.utils.metadata.DefaultMetadataService;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,10 @@ class QudiniJsonLayoutTest {
     private static final LoggerContext LOGGER_CONTEXT = (LoggerContext) LogManager.getContext();
     private static final ResettableStringWriter LOG_OUTPUT = new ResettableStringWriter();
 
+    private static final String ENVIRONMENT = "test-env";
+    private static final String BUILD_NAME = "test-build";
+    private static final String BUILD_VERSION = "test-version";
+
     @BeforeAll
     static void prepareLogger() {
         var config = LOGGER_CONTEXT.getConfiguration();
@@ -53,9 +58,19 @@ class QudiniJsonLayoutTest {
         LOGGER_CONTEXT.updateLoggers();
     }
 
+    @BeforeAll
+    static void initLogEvent() {
+        QudiniLogEvent.init(new DefaultMetadataService(ENVIRONMENT, BUILD_NAME, BUILD_VERSION));
+    }
+
     @AfterAll
     static void closeOutput() throws Exception {
         LOG_OUTPUT.close();
+    }
+
+    @AfterAll
+    static void resetLogEvent() {
+        QudiniLogEvent.reset();
     }
 
     @AfterEach
@@ -75,6 +90,8 @@ class QudiniJsonLayoutTest {
         assertThat(json.get("logger")).isEqualTo("TEST_LOGGER");
         assertThat(json.get("message")).isEqualTo("log message");
         assertThat(json.get("stacktrace")).isNull();
+        assertThat(json.get("build_version")).isEqualTo(BUILD_VERSION);
+        assertThat(json.get("env")).isEqualTo(ENVIRONMENT);
     }
 
     @Test

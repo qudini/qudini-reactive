@@ -55,6 +55,7 @@ The JSON layout will produce logs according to the following format:
 
 ```json
 {
+  "env": "<environment>",
   "build_version": "<build version>",
   "timestamp": "<UTC instant ISO formatted>",
   "level": "<logging level>",
@@ -68,7 +69,7 @@ The JSON layout will produce logs according to the following format:
 }
 ```
 
-The property `build_version` will be populated thanks to `com.qudini.reactive.utils.metadata.MetadataService` once available ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)). 
+The properties `env` and `build_version` will be populated thanks to `com.qudini.reactive.utils.metadata.MetadataService` once available ([see the defaults and how to override them](https://github.com/qudini/qudini-reactive/tree/master/qudini-reactive-utils)). 
 
 ### Correlation id
 

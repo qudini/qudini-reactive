@@ -27,7 +27,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
     private static final String LOGGER_KEY = "logger";
     private static final String MESSAGE_KEY = "message";
     private static final String STACKTRACE_KEY = "stacktrace";
-    private static final String ENVIRONMENT_KEY= "env";
+    private static final String ENVIRONMENT_KEY = "env";
 
     private static final Set<String> RESERVED_KEYS = Set.of(
             BUILD_VERSION,
@@ -36,7 +36,8 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             THREAD_KEY,
             LOGGER_KEY,
             MESSAGE_KEY,
-            STACKTRACE_KEY
+            STACKTRACE_KEY,
+            ENVIRONMENT_KEY
     );
 
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
