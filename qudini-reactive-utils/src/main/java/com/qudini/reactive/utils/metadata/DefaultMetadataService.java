@@ -17,6 +17,12 @@ public final class DefaultMetadataService implements MetadataService {
 
     private final String buildVersion;
 
+    public DefaultMetadataService(String environment, String buildName, String buildVersion) {
+        this.environment = environment;
+        this.buildName = buildName;
+        this.buildVersion = buildVersion;
+    }
+
     public DefaultMetadataService(String environment, ApplicationContext applicationContext) {
         this.environment = environment;
         var applicationPackage = applicationContext

@@ -27,6 +27,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
     private static final String LOGGER_KEY = "logger";
     private static final String MESSAGE_KEY = "message";
     private static final String STACKTRACE_KEY = "stacktrace";
+    private static final String ENVIRONMENT_KEY = "env";
 
     private static final Set<String> RESERVED_KEYS = Set.of(
             BUILD_VERSION,
@@ -35,7 +36,8 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             THREAD_KEY,
             LOGGER_KEY,
             MESSAGE_KEY,
-            STACKTRACE_KEY
+            STACKTRACE_KEY,
+            ENVIRONMENT_KEY
     );
 
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
@@ -68,6 +70,7 @@ public final class QudiniJsonLayout extends AbstractStringLayout {
             event.getThread().ifPresent(thread -> writeEntry(generator, THREAD_KEY, thread));
             event.getLogger().ifPresent(logger -> writeEntry(generator, LOGGER_KEY, logger));
             event.getError().map(this::readStackTrace).ifPresent(stacktrace -> writeEntry(generator, STACKTRACE_KEY, stacktrace));
+            event.getEnvironment().ifPresent(environment -> writeEntry(generator, ENVIRONMENT_KEY, environment));
             generator.writeEndObject();
             generator.flush();
             return writer + "\n";
