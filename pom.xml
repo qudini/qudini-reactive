@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.4</version>
+        <version>2.5.5</version>
     </parent>
 
     <properties>
@@ -29,7 +29,7 @@
         <newrelic.version>7.1.1</newrelic.version>
         <sentry.version>5.0.1</sentry.version>
         <aws-sdk.version>2.17.3</aws-sdk.version>
-        <qudini-gom.version>7.2.0</qudini-gom.version>
+        <qudini-gom.version>7.3.0</qudini-gom.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
