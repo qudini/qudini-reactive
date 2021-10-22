@@ -364,6 +364,27 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>delombok-resources</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <resources>
+                                    <resource>
+                                        <directory>${project.basedir}/src/main/resources</directory>
+                                    </resource>
+                                </resources>
+                                <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <executions>
                         <execution>
@@ -373,8 +394,8 @@
                                 <goal>run</goal>
                             </goals>
                             <configuration>
+                                <skip>${noSources}</skip>
                                 <target>
-                                    <mkdir dir="${project.build.directory}/delombok"/>
                                     <jar basedir="${project.build.directory}/delombok"
                                          destfile="${project.build.directory}/${project.build.finalName}-sources.jar"/>
                                 </target>
@@ -387,12 +408,26 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <executions>
                         <execution>
+                            <id>no-sources</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>bsh-property</goal>
+                            </goals>
+                            <configuration>
+                                <source>noSources = !new File("${project.build.directory}/delombok").exists();</source>
+                                <properties>
+                                    <property>noSources</property>
+                                </properties>
+                            </configuration>
+                        </execution>
+                        <execution>
                             <id>attach-delomboked-sources-jar</id>
                             <phase>package</phase>
                             <goals>
                                 <goal>attach-artifact</goal>
                             </goals>
                             <configuration>
+                                <skipAttach>${noSources}</skipAttach>
                                 <artifacts>
                                     <artifact>
                                         <file>${project.build.directory}/${project.build.finalName}-sources.jar</file>
@@ -414,6 +449,7 @@
                                 <goal>jar</goal>
                             </goals>
                             <configuration>
+                                <skip>${noSources}</skip>
                                 <doclint>all,-missing</doclint>
                                 <sourcepath>${project.build.directory}/delombok</sourcepath>
                             </configuration>
@@ -442,6 +478,10 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
