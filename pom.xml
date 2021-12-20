@@ -35,7 +35,7 @@
         <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
         <!-- Spring-managed versions (https://docs.spring.io/spring-boot/docs/current/reference/html/dependency-versions.html#dependency-versions.properties): -->
-        <log4j2.version>2.16.0</log4j2.version>
+        <log4j2.version>2.17.0</log4j2.version>
     </properties>
 
     <licenses>
