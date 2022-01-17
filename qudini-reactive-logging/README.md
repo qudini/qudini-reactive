@@ -138,6 +138,40 @@ If the JDK of a supported third-party error tracker is found in the classpath, l
 
 If `com.newrelic.api.agent.NewRelic` is found in the classpath, errors will be pushed to [NewRelic](https://newrelic.com/) via `NewRelic.noticeError(errorOrMessage, params)`.
 
+The following [build plugin](https://maven.apache.org/guides/mini/guide-configuring-plugins.html#Configuring_Build_Plugins) can be used to download the NewRelic agent when packaging your Maven project:
+
+```xml
+ <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>newrelic-agent</id>
+            <phase>package</phase>
+            <goals>
+                <goal>run</goal>
+            </goals>
+            <configuration>
+                <target>
+                    <get src="https://download.newrelic.com/newrelic/java-agent/newrelic-agent/${newrelic.version}/newrelic-java-${newrelic.version}.zip"
+                         dest="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"/>
+                    <checksum file="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"
+                              property="ee96f091b7a46f92980020910a855ac0a1600fe2f8ff3de7b4c2a033e6c3cd72"
+                              algorithm="SHA-256" verifyproperty="checksumIsVerified"/>
+                    <fail unless="${checksumIsVerified}" message="Unexpected checksum of NewRelic agent"/>
+                    <unzip src="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"
+                           dest="${project.build.directory}/newrelic-agent-${newrelic.version}"/>
+                    <copy file="${project.build.directory}/newrelic-agent-${newrelic.version}/newrelic/newrelic.jar"
+                          tofile="${project.build.directory}/newrelic-agent.jar"/>
+                </target>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+Then, from within `${project.build.directory}` (defaulted to `target/`), run your app with `java -javaagent:newrelic-agent.jar -jar your-packaged-app.jar` while [overriding NewRelic settings](https://docs.newrelic.com/docs/apm/agents/java-agent/configuration/java-agent-configuration-config-file/#config-options-precedence).
+
 #### Sentry
 
 If `io.sentry.Sentry` is found in the classpath, errors will be pushed to [Sentry](https://sentry.io/) via `Sentry.captureEvent(event)`.
