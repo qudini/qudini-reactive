@@ -156,7 +156,7 @@ The following [build plugin](https://maven.apache.org/guides/mini/guide-configur
                     <get src="https://download.newrelic.com/newrelic/java-agent/newrelic-agent/${newrelic.version}/newrelic-java-${newrelic.version}.zip"
                          dest="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"/>
                     <checksum file="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"
-                              property="ee96f091b7a46f92980020910a855ac0a1600fe2f8ff3de7b4c2a033e6c3cd72"
+                              property="14ebab1946a78f54ada6adda7559e6388919323cfefde29bc7b1c2a0e27709dc"
                               algorithm="SHA-256" verifyproperty="checksumIsVerified"/>
                     <fail unless="${checksumIsVerified}" message="Unexpected checksum of NewRelic agent"/>
                     <unzip src="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"
