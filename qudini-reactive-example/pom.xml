@@ -41,6 +41,33 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>newrelic-agent</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <get src="https://download.newrelic.com/newrelic/java-agent/newrelic-agent/${newrelic.version}/newrelic-java-${newrelic.version}.zip"
+                                     dest="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"/>
+                                <checksum file="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"
+                                          property="${newrelic-agent.sha256-checksum}"
+                                          algorithm="SHA-256" verifyproperty="checksumIsValid"/>
+                                <fail unless="${checksumIsValid}" message="Invalid NewRelic agent"/>
+                                <unzip src="${project.build.directory}/newrelic-agent-${newrelic.version}.zip"
+                                       dest="${project.build.directory}/newrelic-agent-${newrelic.version}"/>
+                                <copy file="${project.build.directory}/newrelic-agent-${newrelic.version}/newrelic/newrelic.jar"
+                                      tofile="${project.build.directory}/newrelic-agent.jar"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
