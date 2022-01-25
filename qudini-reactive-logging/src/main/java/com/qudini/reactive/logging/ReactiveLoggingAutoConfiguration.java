@@ -8,7 +8,7 @@ import com.qudini.reactive.logging.correlation.DefaultCorrelationIdGenerator;
 import com.qudini.reactive.logging.log4j2.QudiniLogEvent;
 import com.qudini.reactive.logging.web.CorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultCorrelationIdForwarder;
-import com.qudini.reactive.logging.web.DefaultLoggingContextExtractor;
+import com.qudini.reactive.logging.web.HttpAwareLoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextAwareErrorWebExceptionHandler;
 import com.qudini.reactive.logging.web.LoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextHttpHandlerDecorator;
@@ -52,7 +52,7 @@ public class ReactiveLoggingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public LoggingContextExtractor loggingContextExtractor() {
-        return new DefaultLoggingContextExtractor();
+        return new HttpAwareLoggingContextExtractor();
     }
 
     @Bean

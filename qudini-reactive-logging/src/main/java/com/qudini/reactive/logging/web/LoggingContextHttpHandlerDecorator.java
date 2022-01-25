@@ -45,7 +45,7 @@ public final class LoggingContextHttpHandlerDecorator implements HttpHandler {
         return loggingContextExtractor
                 .extract(request)
                 .doOnEach(Log.onError(e -> log.error("An error occurred while extracting logging context", e)))
-                .onErrorResume(e -> DefaultLoggingContextExtractor.INSTANCE.extract(request));
+                .onErrorReturn(Map.of());
     }
 
 }
