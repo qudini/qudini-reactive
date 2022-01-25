@@ -126,7 +126,10 @@ You can provide your own implementation by registering a component implementing 
 
 ### Additional logging context properties
 
-By default, no additional logging context will be extracted from the incoming request.
+By default, the request method, path and user-agent will be extracted from the incoming request and made available in the MDC as follows:
+
+- key `request`, value `<method> <path>`, example `POST /blogs/1/articles`
+- key `user_agent`, value `<user agent>`, example `curl/42`
  
 You can register a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor` if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
 
