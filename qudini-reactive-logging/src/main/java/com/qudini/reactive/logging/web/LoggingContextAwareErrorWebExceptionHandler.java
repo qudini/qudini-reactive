@@ -41,8 +41,16 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
         var request = exchange.getRequest();
         Optional
                 .ofNullable(exchange.getResponse().getStatusCode())
-                .filter(HttpStatus::is5xxServerError)
-                .ifPresent(status -> log.error("{} {} returned {}", request.getMethod(), request.getPath(), status, throwable));
+                .filter(HttpStatus::isError)
+                .ifPresent(status -> {
+                    var method = request.getMethodValue();
+                    var path = request.getPath().pathWithinApplication().value();
+                    if (status.is4xxClientError()) {
+                        log.warn("{} {} returned {}", method, path, status, throwable);
+                    } else {
+                        log.error("{} {} returned {}", method, path, status, throwable);
+                    }
+                });
     }
 
 }
