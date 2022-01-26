@@ -45,10 +45,10 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
                 .ifPresent(status -> {
                     var method = request.getMethodValue();
                     var path = request.getPath().pathWithinApplication().value();
-                    if (status.is5xxServerError()) {
-                        log.error("{} {} returned {}", method, path, status, throwable);
-                    } else if (status.is4xxClientError()) {
+                    if (status.is4xxClientError()) {
                         log.warn("{} {} returned {}", method, path, status, throwable);
+                    } else {
+                        log.error("{} {} returned {}", method, path, status, throwable);
                     }
                 });
     }
