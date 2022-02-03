@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -18,9 +19,13 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 @Slf4j
-public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultErrorWebExceptionHandler implements WebFilter {
+public final class ExceptionHandlingFilter extends DefaultErrorWebExceptionHandler implements WebFilter, Ordered {
 
-    public LoggingContextAwareErrorWebExceptionHandler(
+    // before org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration.errorWebExceptionHandler,
+    // after org.springframework.security.config.annotation.web.reactive.WebFluxSecurityConfiguration.springSecurityWebFilterChainFilter:
+    public static final int ORDER = -50;
+
+    public ExceptionHandlingFilter(
             ErrorAttributes errorAttributes,
             WebProperties.Resources resources,
             ErrorProperties errorProperties,
@@ -37,6 +42,11 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
         return super.handle(exchange, throwable).doOnEach(Log.onComplete(() -> log(exchange, throwable)));
+    }
+
+    @Override
+    public int getOrder() {
+        return ORDER;
     }
 
     @Override

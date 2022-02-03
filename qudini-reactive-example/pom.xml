@@ -30,6 +30,10 @@
             <groupId>com.qudini</groupId>
             <artifactId>qudini-reactive-metrics</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.qudini</groupId>
+            <artifactId>qudini-reactive-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
