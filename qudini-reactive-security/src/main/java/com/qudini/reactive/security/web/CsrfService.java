@@ -11,12 +11,13 @@ import java.util.Optional;
 @Slf4j
 public class CsrfService {
 
+    // FIXME customisable
     private static final String COOKIE_NAME = "XSRF-TOKEN";
     private static final String HEADER_NAME = "X-Xsrf-Token";
 
     public boolean verify(ServerWebExchange exchange) {
-        Optional<String> optionalHeaderValue = getHeaderValue(exchange);
-        Optional<String> optionalCookieValue = getCookieValue(exchange);
+        var optionalHeaderValue = getHeaderValue(exchange);
+        var optionalCookieValue = getCookieValue(exchange);
         if (optionalHeaderValue.isPresent() && optionalHeaderValue.equals(optionalCookieValue)) {
             return true;
         } else {

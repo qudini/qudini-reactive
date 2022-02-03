@@ -23,8 +23,7 @@ public final class LoggingContextPopulatingFilter implements WebFilter, Ordered 
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         return Authentications
                 .current()
-                .map(auth -> Optional.ofNullable(auth.getName()).orElse("unknown"))
-                .map(principal -> Map.of("principal", principal))
+                .map(auth -> Map.of("principal", Optional.ofNullable(auth.getName()).orElse("unknown")))
                 .defaultIfEmpty(Map.of())
                 .flatMap(context -> chain.filter(exchange).contextWrite(withLoggingContext(context)));
     }
