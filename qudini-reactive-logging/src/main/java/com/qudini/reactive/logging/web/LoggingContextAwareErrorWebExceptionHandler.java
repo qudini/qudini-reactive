@@ -11,12 +11,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
 @Slf4j
-public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultErrorWebExceptionHandler {
+public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultErrorWebExceptionHandler implements WebFilter {
 
     public LoggingContextAwareErrorWebExceptionHandler(
             ErrorAttributes errorAttributes,
@@ -25,6 +27,11 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
             ApplicationContext applicationContext
     ) {
         super(errorAttributes, resources, errorProperties, applicationContext);
+    }
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        return chain.filter(exchange).onErrorResume(e -> handle(exchange, e));
     }
 
     @Override
@@ -46,9 +53,9 @@ public final class LoggingContextAwareErrorWebExceptionHandler extends DefaultEr
                     var method = request.getMethodValue();
                     var path = request.getPath().pathWithinApplication().value();
                     if (status.is4xxClientError()) {
-                        log.warn("{} {} returned {}", method, path, status, throwable);
+                        log.warn("'{} {}' returned {}", method, path, status, throwable);
                     } else {
-                        log.error("{} {} returned {}", method, path, status, throwable);
+                        log.error("'{} {}' returned {}", method, path, status, throwable);
                     }
                 });
     }
