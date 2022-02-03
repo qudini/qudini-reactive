@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static java.util.Collections.unmodifiableMap;
+import static java.util.function.UnaryOperator.identity;
 
 @RequiredArgsConstructor
 public final class Log implements ReactiveLoggingContextCreator {
@@ -295,6 +296,28 @@ public final class Log implements ReactiveLoggingContextCreator {
         } finally {
             MDC.clear();
         }
+    }
+
+    /**
+     * <p>Adds the given logging context to the existing one, without overwriting existing values if any.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Entity> example(String principal) {
+     *     return service
+     *         .proceed()
+     *         .contextWrite(Log.withLoggingContext(Map.of("principal", principal)));
+     * }
+     * }</pre>
+     */
+    public static Function<Context, Context> withLoggingContext(Map<String, String> loggingContext) {
+        if (loggingContext.isEmpty()) {
+            return identity();
+        }
+        return context -> {
+            Map<String, String> mdc = new HashMap<>(loggingContext);
+            context.<Map<String, String>>getOrEmpty(LOGGING_MDC_KEY).ifPresent(mdc::putAll);
+            return context.put(LOGGING_MDC_KEY, Map.copyOf(mdc));
+        };
     }
 
     /**

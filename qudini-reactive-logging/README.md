@@ -294,6 +294,16 @@ Mono<String> example(Mono<String> mono) {
 }
 ```
 
+#### Adding to the context
+
+```java
+Mono<Entity> example(String principal) {
+    return service
+        .proceed()
+        .contextWrite(Log.withLoggingContext(Map.of("principal", principal)));
+}
+```
+
 #### Getting the correlation id
 
 ```java

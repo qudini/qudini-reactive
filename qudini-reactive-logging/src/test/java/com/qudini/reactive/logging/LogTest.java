@@ -297,6 +297,17 @@ class LogTest {
     }
 
     @Test
+    @DisplayName("should allow adding to the MDC")
+    void addContext() {
+        var mdc = Mono
+                .deferContextual(context -> Mono.just(context.<Map<String, String>>get("LOGGING_MDC")))
+                .contextWrite(Log.withLoggingContext(Map.of("key2", "value2")))
+                .contextWrite(createContext())
+                .block();
+        assertThat(mdc).containsExactlyInAnyOrderEntriesOf(Map.of("key", "value", "key2", "value2"));
+    }
+
+    @Test
     @DisplayName("should expose the correlation id")
     void correlationId() {
         var correlationId = Log
