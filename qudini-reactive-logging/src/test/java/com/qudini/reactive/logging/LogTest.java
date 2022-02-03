@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.qudini.reactive.logging.Log.withLoggingContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -301,7 +302,7 @@ class LogTest {
     void addContext() {
         var mdc = Mono
                 .deferContextual(context -> Mono.just(context.<Map<String, String>>get("LOGGING_MDC")))
-                .contextWrite(Log.withLoggingContext(Map.of("key2", "value2")))
+                .contextWrite(withLoggingContext(Map.of("key", "not overwritten", "key2", "value2")))
                 .contextWrite(createContext())
                 .block();
         assertThat(mdc).containsExactlyInAnyOrderEntriesOf(Map.of("key", "value", "key2", "value2"));
