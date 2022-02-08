@@ -1,6 +1,7 @@
 package com.qudini.reactive.logging.web;
 
 import com.qudini.reactive.logging.Log;
+import com.qudini.reactive.logging.WithLoggingContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -16,7 +17,10 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Optional;
+
+import static com.qudini.reactive.logging.Log.withLoggingContext;
 
 @Slf4j
 public final class ExceptionHandlingFilter extends DefaultErrorWebExceptionHandler implements WebFilter, Ordered {
@@ -36,12 +40,22 @@ public final class ExceptionHandlingFilter extends DefaultErrorWebExceptionHandl
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        return chain.filter(exchange).onErrorResume(e -> handle(exchange, e));
+        return chain
+                .filter(exchange)
+                .onErrorResume(e -> handle(exchange, e));
     }
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
-        return super.handle(exchange, throwable).doOnEach(Log.onComplete(() -> log(exchange, throwable)));
+        var loggingContext = Optional.of(throwable)
+                .filter(WithLoggingContext.class::isInstance)
+                .map(WithLoggingContext.class::cast)
+                .map(WithLoggingContext::getLoggingContext)
+                .orElseGet(Map::of);
+        return super
+                .handle(exchange, throwable)
+                .doOnEach(Log.onComplete(() -> log(exchange, throwable)))
+                .contextWrite(withLoggingContext(loggingContext));
     }
 
     @Override
