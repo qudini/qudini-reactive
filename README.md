@@ -23,3 +23,4 @@ All these libraries are preconfigured: just adding them as dependencies is enoug
 - [`qudini-reactive-metrics`](./qudini-reactive-metrics/)
 - [`qudini-reactive-sqs`](./qudini-reactive-sqs/)
 - [`qudini-reactive-graphql`](./qudini-reactive-graphql/)
+- [`qudini-reactive-security`](./qudini-reactive-security/)

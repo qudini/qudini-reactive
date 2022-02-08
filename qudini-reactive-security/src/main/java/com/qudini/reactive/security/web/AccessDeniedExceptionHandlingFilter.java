@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RequiredArgsConstructor
-public final class AccessDeniedExceptionTransformingFilter implements WebFilter, Ordered {
+public final class AccessDeniedExceptionHandlingFilter implements WebFilter, Ordered {
 
     public static final int ORDER = ExceptionHandlingFilter.ORDER + 10;
 

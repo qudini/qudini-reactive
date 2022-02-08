@@ -1,19 +1,18 @@
 package com.qudini.reactive.security.web;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpCookie;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.util.Optional;
 
-@Service
 @Slf4j
-public class CsrfService {
+@RequiredArgsConstructor
+public final class CsrfVerifier {
 
-    // FIXME customisable
-    private static final String COOKIE_NAME = "XSRF-TOKEN";
-    private static final String HEADER_NAME = "X-Xsrf-Token";
+    private final String headerName;
+    private final String cookieName;
 
     public boolean verify(ServerWebExchange exchange) {
         var optionalHeaderValue = getHeaderValue(exchange);
@@ -21,17 +20,17 @@ public class CsrfService {
         if (optionalHeaderValue.isPresent() && optionalHeaderValue.equals(optionalCookieValue)) {
             return true;
         } else {
-            log.warn("CSRF verification failed, received header {}={} and cookie {}={}", HEADER_NAME, optionalHeaderValue, COOKIE_NAME, optionalCookieValue);
+            log.warn("CSRF verification failed, received header {}={} and cookie {}={}", headerName, optionalHeaderValue, cookieName, optionalCookieValue);
             return false;
         }
     }
 
     private Optional<String> getHeaderValue(ServerWebExchange exchange) {
-        return Optional.ofNullable(exchange.getRequest().getHeaders().getFirst(HEADER_NAME));
+        return Optional.ofNullable(exchange.getRequest().getHeaders().getFirst(headerName));
     }
 
     private Optional<String> getCookieValue(ServerWebExchange exchange) {
-        return Optional.ofNullable(exchange.getRequest().getCookies().getFirst(COOKIE_NAME)).map(HttpCookie::getValue);
+        return Optional.ofNullable(exchange.getRequest().getCookies().getFirst(cookieName)).map(HttpCookie::getValue);
     }
 
 }

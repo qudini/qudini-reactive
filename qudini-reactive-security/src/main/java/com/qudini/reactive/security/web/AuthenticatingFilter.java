@@ -18,11 +18,11 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 import static org.springframework.security.core.context.ReactiveSecurityContextHolder.withAuthentication;
 
 @Slf4j
-public final class AuthenticationFilter implements WebFilter {
+public final class AuthenticatingFilter implements WebFilter {
 
     private final Collection<AuthenticationService<?>> authenticationServices;
 
-    public AuthenticationFilter(Collection<AuthenticationService<?>> authenticationServices) {
+    public AuthenticatingFilter(Collection<AuthenticationService<?>> authenticationServices) {
         this.authenticationServices = authenticationServices;
     }
 
@@ -45,7 +45,9 @@ public final class AuthenticationFilter implements WebFilter {
                 .flatMap(authenticationService -> authenticationService.authenticate(exchange))
                 .collect(toUnmodifiableSet())
                 .flatMap(Log.then(this::chooseAuthentication))
-                .flatMap(Mono::justOrEmpty);
+                .flatMap(Mono::justOrEmpty)
+                .doOnEach(Log.onError(e -> log.warn("An error occurred while authenticating, request will be considered anonymous", e)))
+                .onErrorResume(e -> Mono.empty());
     }
 
     private Optional<Authentication> chooseAuthentication(Set<? extends Authentication> authentications) {
