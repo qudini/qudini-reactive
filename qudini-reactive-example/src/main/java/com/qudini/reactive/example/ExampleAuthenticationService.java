@@ -25,10 +25,10 @@ public class ExampleAuthenticationService implements AuthenticationService<Examp
 
         private static final long serialVersionUID = 1L;
 
-        private static final Collection<? extends GrantedAuthority> AUTHORITIES = Set.of(new SimpleGrantedAuthority("EXAMPLE"));
+        private static final Collection<SimpleGrantedAuthority> AUTHORITIES = Set.of(new SimpleGrantedAuthority("EXAMPLE"));
 
         @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
+        public Collection<SimpleGrantedAuthority> getAuthorities() {
             return AUTHORITIES;
         }
 

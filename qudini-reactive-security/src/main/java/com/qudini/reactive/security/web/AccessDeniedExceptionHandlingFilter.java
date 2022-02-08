@@ -28,7 +28,7 @@ public final class AccessDeniedExceptionHandlingFilter implements WebFilter, Ord
 
     private Mono<Void> handleException(AccessDeniedException e) {
         return currentAuthenticationName()
-                .flatMap(name -> Mono.<Void>error(() -> new AuthenticatedResponseStatusException(name, FORBIDDEN, e.getMessage(), e)))
+                .flatMap(principal -> Mono.<Void>error(() -> new AuthenticatedResponseStatusException(principal, FORBIDDEN, e.getMessage(), e)))
                 .switchIfEmpty(Mono.error(() -> new ResponseStatusException(UNAUTHORIZED, e.getMessage(), e)));
     }
 
