@@ -8,10 +8,13 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
+import reactor.util.context.ContextView;
 
 import java.util.Map;
 import java.util.Optional;
 
+import static com.qudini.reactive.logging.Log.CORRELATION_ID_KEY;
+import static com.qudini.reactive.logging.Log.LOGGING_MDC_KEY;
 import static com.qudini.reactive.utils.MoreTuples.onBoth;
 
 @Slf4j
@@ -19,11 +22,8 @@ import static com.qudini.reactive.utils.MoreTuples.onBoth;
 public final class LoggingContextHttpHandlerDecorator implements HttpHandler {
 
     private final HttpHandler delegate;
-
     private final String correlationIdHeader;
-
     private final LoggingContextExtractor loggingContextExtractor;
-
     private final ReactiveLoggingContextCreator reactiveLoggingContextCreator;
 
     @Override
@@ -34,7 +34,17 @@ public final class LoggingContextHttpHandlerDecorator implements HttpHandler {
                         extractLoggingContext(request)
                 )
                 .map(onBoth(reactiveLoggingContextCreator::create))
-                .flatMap(context -> delegate.handle(request, response).contextWrite(context));
+                .flatMap(context -> handle(request, response, context));
+    }
+
+    private Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response, ContextView context) {
+        context
+                .<Map<String, String>>getOrEmpty(LOGGING_MDC_KEY)
+                .map(mdc -> mdc.get(CORRELATION_ID_KEY))
+                .ifPresent(correlationId -> response.getHeaders().add(correlationIdHeader, correlationId));
+        return delegate
+                .handle(request, response)
+                .contextWrite(context);
     }
 
     private Optional<String> extractCorrelationId(ServerHttpRequest request) {
