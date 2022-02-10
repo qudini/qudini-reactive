@@ -47,25 +47,28 @@ class LoggingContextHttpHandlerDecoratorTest {
 
     @BeforeEach
     void prepareMocks() {
-        handler = new LoggingContextHttpHandlerDecorator(delegate, "header", loggingContextExtractor, reactiveLoggingContextCreator);
+        handler = new LoggingContextHttpHandlerDecorator(delegate, "X-Header", loggingContextExtractor, reactiveLoggingContextCreator);
     }
 
     @Test
     @DisplayName("should populate the reactive context")
     void populateReactiveContext() {
-        var contextValue = new AtomicReference<>();
-        var reactiveContext = Context.of("foo", "bar");
+        var contextValue = new AtomicReference<Map<String, String>>();
+        var reactiveContext = Context.of("LOGGING_MDC", Map.of("correlation_id", "foobar"));
         var filtered = Mono
                 .deferContextual(Mono::just)
-                .doOnNext(context -> contextValue.set(context.get("foo")))
+                .doOnNext(context -> contextValue.set(context.get("LOGGING_MDC")))
                 .then();
         given(request.getHeaders()).willReturn(headers);
-        given(headers.getFirst("header")).willReturn(null);
+        given(headers.getFirst("X-Header")).willReturn(null);
+        var responseHeaders = new HttpHeaders();
+        given(response.getHeaders()).willReturn(responseHeaders);
         given(loggingContextExtractor.extract(request)).willReturn(Mono.just(Map.of()));
         given(reactiveLoggingContextCreator.create(any(), any())).willReturn(reactiveContext);
         given(delegate.handle(request, response)).willReturn(filtered);
         handler.handle(request, response).block();
-        assertThat(contextValue.get()).isEqualTo("bar");
+        assertThat(contextValue.get()).containsExactlyInAnyOrderEntriesOf(Map.of("correlation_id", "foobar"));
+        assertThat(responseHeaders.getFirst("X-Header")).isEqualTo("foobar");
     }
 
 }

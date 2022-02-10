@@ -91,6 +91,8 @@ logging:
 
 If no matching request header is found, a correlation id will be generated instead.
 
+This correlation id will also be added in an HTTP response header named identically.
+
 #### Correlation id generation
 
 The default generator mimics AWS algorithm by generating a correlation id following the format:
