@@ -6,6 +6,9 @@ import reactor.core.publisher.Mono;
 
 public interface AuthenticationService<A extends Authentication> {
 
+    /**
+     * <p>Tries to authenticate the given exchange, returns an empty mono if it could not.</p>
+     */
     Mono<A> authenticate(ServerWebExchange exchange);
 
 }

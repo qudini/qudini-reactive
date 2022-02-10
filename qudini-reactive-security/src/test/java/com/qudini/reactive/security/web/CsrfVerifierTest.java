@@ -47,7 +47,7 @@ class CsrfVerifierTest {
     @Test
     @DisplayName("should fail if header is absent and cookie is absent")
     void shouldFailIfHeaderAbsentCookieAbsent() {
-        var result = csrfService.verify(exchange);
+        var result = csrfService.verify(exchange).block();
         assertThat(result).isFalse();
     }
 
@@ -55,7 +55,7 @@ class CsrfVerifierTest {
     @DisplayName("should fail if header is present but cookie is absent")
     void shouldFailIfHeaderPresentCookieAbsent() {
         addHeader("token");
-        var result = csrfService.verify(exchange);
+        var result = csrfService.verify(exchange).block();
         assertThat(result).isFalse();
     }
 
@@ -63,7 +63,7 @@ class CsrfVerifierTest {
     @DisplayName("should fail if header is absent but cookie is present")
     void shouldFailIfHeaderAbsentCookiePresent() {
         addCookie("token");
-        var result = csrfService.verify(exchange);
+        var result = csrfService.verify(exchange).block();
         assertThat(result).isFalse();
     }
 
@@ -72,7 +72,7 @@ class CsrfVerifierTest {
     void shouldFailIfBothPresentButNotEqual() {
         addHeader("foo");
         addCookie("bar");
-        var result = csrfService.verify(exchange);
+        var result = csrfService.verify(exchange).block();
         assertThat(result).isFalse();
     }
 
@@ -81,7 +81,7 @@ class CsrfVerifierTest {
     void shouldPassIfBothPresentAndEqual() {
         addHeader("token");
         addCookie("token");
-        var result = csrfService.verify(exchange);
+        var result = csrfService.verify(exchange).block();
         assertThat(result).isTrue();
     }
 

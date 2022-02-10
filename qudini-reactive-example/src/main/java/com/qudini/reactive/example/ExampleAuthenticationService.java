@@ -2,7 +2,6 @@ package com.qudini.reactive.example;
 
 import com.qudini.reactive.security.web.AuthenticationService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
