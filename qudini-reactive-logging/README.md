@@ -133,7 +133,7 @@ By default, the request method, path and user-agent will be extracted from the i
  
 You can register a component implementing `com.qudini.reactive.logging.web.LoggingContextExtractor` if you need more domain-specific properties to be available in the MDC (you'll have access to the incoming HTTP request).
 
-Also, an exception can provide an additional context to use when it will be logged by implementing `com.qudini.reactive.logging.WithLoggingContext`.
+Also, an exception can provide an additional context to use when logged by implementing `com.qudini.reactive.logging.WithLoggingContext`.
 
 ### Third-party error trackers
 
