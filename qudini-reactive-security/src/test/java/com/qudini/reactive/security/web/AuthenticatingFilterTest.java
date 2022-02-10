@@ -25,8 +25,8 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("AuthenticatingFilter")
 class AuthenticatingFilterTest {
 
-    private static final UsernamePasswordAuthenticationToken FOO_AUTHENTICATION = new UsernamePasswordAuthenticationToken("foo", "foo");
-    private static final UsernamePasswordAuthenticationToken BAR_AUTHENTICATION = new UsernamePasswordAuthenticationToken("bar", "bar");
+    private static final UsernamePasswordAuthenticationToken FOO_AUTHENTICATION = new UsernamePasswordAuthenticationToken("foo", "foo", Set.of());
+    private static final UsernamePasswordAuthenticationToken BAR_AUTHENTICATION = new UsernamePasswordAuthenticationToken("bar", "bar", Set.of());
 
     @Mock
     private AuthenticationService<UsernamePasswordAuthenticationToken> firstAuthenticationService;
