@@ -131,7 +131,7 @@ It works by ensuring the request brings the same value in both a header and a co
 
 The header that will be checked by default is `X-Xsrf-Token`, but can be modified via the `csrf.header-name` property.
 
-The cookie that will be checked  by default is `XSRF-TOKEN`, but can be modified via the `csrf.cookie-name` property.
+The cookie that will be checked by default is `XSRF-TOKEN`, but can be modified via the `csrf.cookie-name` property.
 
 ### GrantedAuthorityDefaults
 
