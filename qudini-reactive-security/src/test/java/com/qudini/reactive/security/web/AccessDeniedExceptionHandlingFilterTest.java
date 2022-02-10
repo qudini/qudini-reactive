@@ -61,7 +61,7 @@ class AccessDeniedExceptionHandlingFilterTest {
         var completion = filter.filter(exchange, chain).contextWrite(withAuthentication(AUTHENTICATION));
         var thrown = assertThrows(AuthenticatedResponseStatusException.class, completion::block);
         assertThat(thrown.getStatus()).isEqualTo(FORBIDDEN);
-        assertThat(thrown.getLoggingContext()).isEqualTo(Map.of("principal", "foo"));
+        assertThat(thrown.getLoggingContext()).containsExactlyInAnyOrderEntriesOf(Map.of("principal", "foo"));
     }
 
     @Test

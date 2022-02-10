@@ -16,6 +16,7 @@ import static com.qudini.reactive.security.support.Authentications.currentAuthen
 @RequiredArgsConstructor
 public final class LoggingContextPopulatingFilter implements WebFilter, Ordered {
 
+    // before com.qudini.reactive.logging.web.ExceptionHandlingFilter:
     public static final int ORDER = ExceptionHandlingFilter.ORDER - 10;
 
     public static final String PRINCIPAL_KEY = "principal";

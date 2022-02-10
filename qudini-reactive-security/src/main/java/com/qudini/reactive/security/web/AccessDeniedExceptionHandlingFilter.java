@@ -17,6 +17,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequiredArgsConstructor
 public final class AccessDeniedExceptionHandlingFilter implements WebFilter, Ordered {
 
+    // after com.qudini.reactive.logging.web.ExceptionHandlingFilter:
     public static final int ORDER = ExceptionHandlingFilter.ORDER + 10;
 
     @Override

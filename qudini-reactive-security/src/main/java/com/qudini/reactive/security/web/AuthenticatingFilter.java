@@ -46,7 +46,7 @@ public final class AuthenticatingFilter implements WebFilter {
                 .collect(toUnmodifiableSet())
                 .flatMap(Log.then(this::chooseAuthentication))
                 .flatMap(Mono::justOrEmpty)
-                .doOnEach(Log.onError(e -> log.warn("An error occurred while authenticating, request will be considered anonymous", e)))
+                .doOnEach(Log.onError(e -> log.warn("An error occurred while authenticating, request will be considered unauthenticated", e)))
                 .onErrorResume(e -> Mono.empty());
     }
 
@@ -57,7 +57,7 @@ public final class AuthenticatingFilter implements WebFilter {
         }
         var authentication = iterator.next();
         if (iterator.hasNext()) {
-            log.warn("Unable to authenticate, found {} valid authentications: {}", authentications.size(), authentications);
+            log.warn("Unable to authenticate, found {} valid authentications, request will be considered unauthenticated: {}", authentications.size(), authentications);
             return Optional.empty();
         }
         return Optional.of(authentication);

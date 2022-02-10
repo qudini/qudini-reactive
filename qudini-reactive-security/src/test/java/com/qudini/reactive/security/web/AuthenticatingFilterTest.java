@@ -49,7 +49,7 @@ class AuthenticatingFilterTest {
 
     @Test
     @DisplayName("should not authenticate when no authentication is found")
-    void shouldSetAnonymousWhenNoAuthentication() {
+    void shouldSetUnauthenticatedWhenNoAuthentication() {
         given(firstAuthenticationService.authenticate(exchange)).willReturn(Mono.empty());
         given(secondAuthenticationService.authenticate(exchange)).willReturn(Mono.empty());
         verifyAuthentication(Unauthenticated.class);
@@ -81,7 +81,7 @@ class AuthenticatingFilterTest {
 
     @Test
     @DisplayName("should not authenticate when two distinct authentications are found")
-    void shouldSetAnonymousWhenTwoDistinctAuthentications() {
+    void shouldSetUnauthenticatedWhenTwoDistinctAuthentications() {
         given(firstAuthenticationService.authenticate(exchange)).willReturn(Mono.just(FOO_AUTHENTICATION));
         given(secondAuthenticationService.authenticate(exchange)).willReturn(Mono.just(BAR_AUTHENTICATION));
         verifyAuthentication(Unauthenticated.class);
