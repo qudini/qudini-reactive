@@ -1,7 +1,7 @@
 package com.qudini.reactive.security.web;
 
 import com.qudini.reactive.logging.Log;
-import com.qudini.reactive.security.support.AnonymousAuthentication;
+import com.qudini.reactive.security.support.Unauthenticated;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.server.ServerWebExchange;
@@ -29,7 +29,7 @@ public final class AuthenticatingFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         return findAuthentication(exchange)
-                .defaultIfEmpty(new AnonymousAuthentication())
+                .defaultIfEmpty(Unauthenticated.INSTANCE)
                 .flatMap(authentication -> filter(exchange, chain, authentication));
     }
 

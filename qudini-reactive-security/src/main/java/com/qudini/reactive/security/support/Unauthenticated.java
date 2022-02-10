@@ -1,12 +1,18 @@
 package com.qudini.reactive.security.support;
 
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.Set;
 
-public final class AnonymousAuthentication implements Authentication {
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
+public final class Unauthenticated implements Authentication {
+
+    public static final Unauthenticated INSTANCE = new Unauthenticated();
 
     private static final long serialVersionUID = 1L;
 
