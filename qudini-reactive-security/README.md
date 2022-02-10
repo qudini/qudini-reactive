@@ -29,7 +29,7 @@ By default, the `SecurityWebFilterChain` will be configured as follows:
 .addFilterBefore(new AccessDeniedExceptionHandlingFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
 ```
 
-You can provide your custom `SecurityWebFilterChain` if needed, but we recommend keeping an `AccessDeniedExceptionHandlingFilter` before `SecurityWebFiltersOrder.AUTHORIZATION` so that `AccessDeniedException` are successfully converted into [403 FORBIDDEN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) or [401 UNAUTHORIZED](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401) depending on whether the request is authenticated or not.
+You can provide your custom `SecurityWebFilterChain` if needed, but we recommend keeping an `com.qudini.reactive.security.web.AccessDeniedExceptionHandlingFilter` before `SecurityWebFiltersOrder.AUTHORIZATION` so that `AccessDeniedException`s are successfully converted into [403 FORBIDDEN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) or [401 UNAUTHORIZED](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401) depending on whether the request is authenticated or not.
 
 ### AuthenticatingFilter
 
@@ -37,7 +37,7 @@ You can provide your custom `SecurityWebFilterChain` if needed, but we recommend
 
 It works by providing implementations of `com.qudini.reactive.security.web.AuthenticationService`, which, given a `ServerWebExchange`, return an `Authentication` that will be directly used in the reactive security context, so that your usual authorisation checks can be run (e.g. with `@PreAuthorize`).
 
-#### Example:
+#### Example
 
 ```java
 @Service
@@ -63,7 +63,7 @@ public final class MyUserAuthentication implements Authentication {
     private final MyUser myUser;
 
     @Override
-    public Collection<SimpleGrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return myUser.getAuthorities();
     }
 
@@ -106,7 +106,7 @@ If successful, the returned authentication will be made available via the usual 
 
 ### CSRF
 
-You can inject `com.qudini.reactive.security.web.CsrfVerifier` into your cookie-based authentication services to protect yourself against CSRF attacks, for example:
+You can inject `com.qudini.reactive.security.web.CsrfVerifier` into your cookie-based authentication services to protect against CSRF attacks, for example:
 
 ```java
 @Service
@@ -127,8 +127,12 @@ public class MyCookieBasedUserAuthenticationService implements AuthenticationSer
 }
 ```
 
-It works by ensuring the request brings the same value in both a header and a cookie, as explained in [this OWASP cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie).
+It works by ensuring the request brings the same value in both a header and a cookie, as explained by [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie).
 
 The header that will be checked by default is `X-Xsrf-Token`, but can be modified via the `csrf.header-name` property.
 
 The cookie that will be checked  by default is `XSRF-TOKEN`, but can be modified via the `csrf.cookie-name` property.
+
+### GrantedAuthorityDefaults
+
+A bean of type `org.springframework.security.config.core.GrantedAuthorityDefaults` will be registered by default to remove the `ROLE_` default prefix from the role names, but you can modify this behaviour by registering your own.
