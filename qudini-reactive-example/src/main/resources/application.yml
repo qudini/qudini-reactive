@@ -15,3 +15,7 @@ management:
       path-mapping:
         health: readiness
         prometheus: metrics
+
+logging:
+  level:
+    root: INFO

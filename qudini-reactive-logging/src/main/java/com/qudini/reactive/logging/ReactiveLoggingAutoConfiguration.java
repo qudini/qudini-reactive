@@ -8,8 +8,8 @@ import com.qudini.reactive.logging.correlation.DefaultCorrelationIdGenerator;
 import com.qudini.reactive.logging.log4j2.QudiniLogEvent;
 import com.qudini.reactive.logging.web.CorrelationIdForwarder;
 import com.qudini.reactive.logging.web.DefaultCorrelationIdForwarder;
+import com.qudini.reactive.logging.web.ExceptionHandlingFilter;
 import com.qudini.reactive.logging.web.HttpAwareLoggingContextExtractor;
-import com.qudini.reactive.logging.web.LoggingContextAwareErrorWebExceptionHandler;
 import com.qudini.reactive.logging.web.LoggingContextExtractor;
 import com.qudini.reactive.logging.web.LoggingContextHttpHandlerDecorator;
 import com.qudini.reactive.utils.metadata.MetadataService;
@@ -25,7 +25,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.server.reactive.HttpHandlerDecoratorFactory;
 import org.springframework.web.reactive.result.view.ViewResolver;
@@ -70,8 +69,7 @@ public class ReactiveLoggingAutoConfiguration {
     }
 
     @Bean
-    @Order(-2)
-    public ErrorWebExceptionHandler loggingContextAwareErrorWebExceptionHandler(
+    public ErrorWebExceptionHandler exceptionHandlingFilter(
             ErrorAttributes errorAttributes,
             WebProperties webProperties,
             ServerProperties serverProperties,
@@ -79,7 +77,7 @@ public class ReactiveLoggingAutoConfiguration {
             ObjectProvider<ViewResolver> viewResolvers,
             ServerCodecConfigurer serverCodecConfigurer
     ) {
-        var exceptionHandler = new LoggingContextAwareErrorWebExceptionHandler(
+        var exceptionHandler = new ExceptionHandlingFilter(
                 errorAttributes,
                 webProperties.getResources(),
                 serverProperties.getError(),

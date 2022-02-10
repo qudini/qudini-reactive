@@ -59,6 +59,7 @@
         <module>qudini-reactive-metrics</module>
         <module>qudini-reactive-sqs</module>
         <module>qudini-reactive-graphql</module>
+        <module>qudini-reactive-security</module>
         <module>qudini-reactive-example</module>
     </modules>
 
@@ -239,6 +240,11 @@
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-gom</artifactId>
                 <version>${qudini-gom.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qudini</groupId>
+                <artifactId>qudini-reactive-security</artifactId>
+                <version>${qudini-reactive.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
