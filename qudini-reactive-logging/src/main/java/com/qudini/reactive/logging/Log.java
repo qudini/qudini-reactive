@@ -57,6 +57,54 @@ public final class Log implements ReactiveLoggingContextCreator {
     }
 
     /**
+     * <p>Runs the given mapper with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Integer> example(Mono<String> mono) {
+     *     return mono.flatMap(Log.then(s -> {
+     *         log.debug("s:{}", s);
+     *         return 42;
+     *     }));
+     * }
+     * }</pre>
+     */
+    public static <T, R> Function<T, Mono<R>> then(Function<T, R> mapper) {
+        return value -> context().map(context -> withContext(context, () -> mapper.apply(value)));
+    }
+
+    /**
+     * <p>Runs the given supplier with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Integer> example() {
+     *     return Log.thenOptional(() -> {
+     *         log.debug("foobar");
+     *         return Optional.of(42);
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <R> Mono<R> thenOptional(Supplier<Optional<R>> supplier) {
+        return context().flatMap(content -> Mono.justOrEmpty(withContext(content, supplier)));
+    }
+
+    /**
+     * <p>Runs the given mapper with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Integer> example(Mono<String> mono) {
+     *     return mono.flatMap(Log.thenOptional(s -> {
+     *         log.debug("s:{}", s);
+     *         return Optional.of(42);
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <T, R> Function<T, Mono<R>> thenOptional(Function<T, Optional<R>> mapper) {
+        return value -> context().flatMap(content -> Mono.justOrEmpty(withContext(content, () -> mapper.apply(value))));
+    }
+
+    /**
      * <p>Runs the given supplier with the MDC available.</p>
      * <p>Example:</p>
      * <pre>{@literal
@@ -70,6 +118,22 @@ public final class Log implements ReactiveLoggingContextCreator {
      */
     public static <R> Mono<R> thenFuture(Supplier<CompletableFuture<R>> supplier) {
         return context().flatMap(content -> Mono.fromFuture(withContext(content, supplier)));
+    }
+
+    /**
+     * <p>Runs the given mapper with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Integer> example(Mono<String> mono) {
+     *     return mono.flatMap(Log.thenFuture(s -> {
+     *         log.debug("s:{}", s);
+     *         return CompletableFuture.completedFuture(42);
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <T, R> Function<T, Mono<R>> thenFuture(Function<T, CompletableFuture<R>> mapper) {
+        return value -> context().flatMap(content -> Mono.fromFuture(withContext(content, () -> mapper.apply(value))));
     }
 
     /**
@@ -89,54 +153,6 @@ public final class Log implements ReactiveLoggingContextCreator {
     }
 
     /**
-     * <p>Runs the given supplier with the MDC available.</p>
-     * <p>Example:</p>
-     * <pre>{@literal
-     * Flux<Integer> example() {
-     *     return Log.thenIterable(() -> {
-     *         log.debug("foobar");
-     *         return List.of(42);
-     *     });
-     * }
-     * }</pre>
-     */
-    public static <R> Flux<R> thenIterable(Supplier<Iterable<R>> supplier) {
-        return context().flatMapIterable(context -> withContext(context, supplier));
-    }
-
-    /**
-     * <p>Runs the given supplier with the MDC available.</p>
-     * <p>Example:</p>
-     * <pre>{@literal
-     * Flux<Integer> example() {
-     *     return Log.thenFlux(() -> {
-     *         log.debug("foobar");
-     *         return Flux.fromStream(Stream.of(42));
-     *     });
-     * }
-     * }</pre>
-     */
-    public static <R> Flux<R> thenFlux(Supplier<Publisher<R>> supplier) {
-        return context().flatMapMany(context -> withContext(context, supplier));
-    }
-
-    /**
-     * <p>Runs the given mapper with the MDC available.</p>
-     * <p>Example:</p>
-     * <pre>{@literal
-     * Mono<Integer> example(Mono<String> mono) {
-     *     return mono.flatMap(Log.then(s -> {
-     *         log.debug("s:{}", s);
-     *         return 42;
-     *     }));
-     * }
-     * }</pre>
-     */
-    public static <T, R> Function<T, Mono<R>> then(Function<T, R> mapper) {
-        return value -> context().map(context -> withContext(context, () -> mapper.apply(value)));
-    }
-
-    /**
      * <p>Runs the given mapper with the MDC available.</p>
      * <p>Example:</p>
      * <pre>{@literal
@@ -153,6 +169,22 @@ public final class Log implements ReactiveLoggingContextCreator {
     }
 
     /**
+     * <p>Runs the given supplier with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Flux<Integer> example() {
+     *     return Log.thenIterable(() -> {
+     *         log.debug("foobar");
+     *         return List.of(42);
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <R> Flux<R> thenIterable(Supplier<Iterable<R>> supplier) {
+        return context().flatMapIterable(context -> withContext(context, supplier));
+    }
+
+    /**
      * <p>Runs the given mapper with the MDC available.</p>
      * <p>Example:</p>
      * <pre>{@literal
@@ -166,6 +198,22 @@ public final class Log implements ReactiveLoggingContextCreator {
      */
     public static <T, R> Function<T, Flux<R>> thenIterable(Function<T, Iterable<R>> mapper) {
         return value -> context().flatMapIterable(context -> withContext(context, () -> mapper.apply(value)));
+    }
+
+    /**
+     * <p>Runs the given supplier with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Flux<Integer> example() {
+     *     return Log.thenFlux(() -> {
+     *         log.debug("foobar");
+     *         return Flux.fromStream(Stream.of(42));
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <R> Flux<R> thenFlux(Supplier<Publisher<R>> supplier) {
+        return context().flatMapMany(context -> withContext(context, supplier));
     }
 
     /**

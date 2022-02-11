@@ -81,6 +81,16 @@ class LogTest {
     }
 
     @Test
+    @DisplayName("should populate the reactive context when using the Optional supplier")
+    void optionalSupplier() {
+        var mdcValue = Log
+                .thenOptional(() -> Optional.of(MDC.get("key")))
+                .contextWrite(createContext())
+                .block();
+        assertThat(mdcValue).isEqualTo("value");
+    }
+
+    @Test
     @DisplayName("should populate the reactive context when using the CompletableFuture supplier")
     void futureSupplier() {
         var mdcValue = Log
@@ -131,6 +141,38 @@ class LogTest {
                 .flatMap(Log.then(i -> {
                     mdcValue.set(MDC.get("key"));
                     return i;
+                }))
+                .contextWrite(createContext())
+                .block();
+        assertThat(value).isEqualTo(42);
+        assertThat(mdcValue.get()).isEqualTo("value");
+    }
+
+    @Test
+    @DisplayName("should populate the reactive context when using the Optional mapper")
+    void optionalMapper() {
+        var mdcValue = new AtomicReference<>();
+        var value = Mono
+                .just(42)
+                .flatMap(Log.thenOptional(i -> {
+                    mdcValue.set(MDC.get("key"));
+                    return Optional.of(i);
+                }))
+                .contextWrite(createContext())
+                .block();
+        assertThat(value).isEqualTo(42);
+        assertThat(mdcValue.get()).isEqualTo("value");
+    }
+
+    @Test
+    @DisplayName("should populate the reactive context when using the CompletableFuture mapper")
+    void futureMapper() {
+        var mdcValue = new AtomicReference<>();
+        var value = Mono
+                .just(42)
+                .flatMap(Log.thenFuture(i -> {
+                    mdcValue.set(MDC.get("key"));
+                    return CompletableFuture.completedFuture(i);
                 }))
                 .contextWrite(createContext())
                 .block();

@@ -214,6 +214,13 @@ Mono<Integer> example() {
 }
 
 Mono<Integer> example() {
+    return Log.thenOptional(() -> {
+        log.debug("foobar");
+        return Optional.of(42);
+    });
+}
+
+Mono<Integer> example() {
     return Log.thenFuture(() -> {
         log.debug("foobar");
         return CompletableFuture.completedFuture(42);
@@ -249,6 +256,20 @@ Mono<Integer> example(Mono<String> mono) {
     return mono.flatMap(Log.then(s -> {
         log.debug("s:{}", s);
         return 42;
+    }));
+}
+
+Mono<Integer> example(Mono<String> mono) {
+    return mono.flatMap(Log.thenOptional(s -> {
+        log.debug("s:{}", s);
+        return Optional.of(42);
+    }));
+}
+
+Mono<Integer> example(Mono<String> mono) {
+    return mono.flatMap(Log.thenFuture(s -> {
+        log.debug("s:{}", s);
+        return CompletableFuture.completedFuture(42);
     }));
 }
 
