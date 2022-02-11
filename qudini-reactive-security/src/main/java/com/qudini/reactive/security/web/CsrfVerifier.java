@@ -1,7 +1,7 @@
 package com.qudini.reactive.security.web;
 
 import com.qudini.reactive.logging.Log;
-import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpCookie;
 import org.springframework.web.server.ServerWebExchange;
@@ -10,11 +10,11 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
-public final class CsrfVerifier {
+@Value
+public class CsrfVerifier {
 
-    private final String headerName;
-    private final String cookieName;
+    String headerName;
+    String cookieName;
 
     public Mono<Boolean> verify(ServerWebExchange exchange) {
         return Log.then(() -> {
