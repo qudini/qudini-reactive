@@ -89,6 +89,22 @@ public final class Log implements ReactiveLoggingContextCreator {
     }
 
     /**
+     * <p>Runs the given mapper with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Integer> example(Mono<String> mono) {
+     *     return mono.flatMap(Log.thenFuture(s -> {
+     *         log.debug("s:{}", s);
+     *         return CompletableFuture.completedFuture(42);
+     *     });
+     * }
+     * }</pre>
+     */
+    public static <T, R> Function<T, Mono<R>> thenFuture(Function<T, CompletableFuture<R>> mapper) {
+        return value -> context().flatMap(content -> Mono.fromFuture(withContext(content, () -> mapper.apply(value))));
+    }
+
+    /**
      * <p>Runs the given supplier with the MDC available.</p>
      * <p>Example:</p>
      * <pre>{@literal

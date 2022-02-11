@@ -139,6 +139,22 @@ class LogTest {
     }
 
     @Test
+    @DisplayName("should populate the reactive context when using the CompletableFuture mapper")
+    void futureMapper() {
+        var mdcValue = new AtomicReference<>();
+        var value = Mono
+                .just(42)
+                .flatMap(Log.thenFuture(i -> {
+                    mdcValue.set(MDC.get("key"));
+                    return CompletableFuture.completedFuture(i);
+                }))
+                .contextWrite(createContext())
+                .block();
+        assertThat(value).isEqualTo(42);
+        assertThat(mdcValue.get()).isEqualTo("value");
+    }
+
+    @Test
     @DisplayName("should populate the reactive context when using the Mono mapper")
     void monoMapper() {
         var mdcValue = new AtomicReference<>();

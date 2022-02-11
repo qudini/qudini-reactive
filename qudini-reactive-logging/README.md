@@ -253,6 +253,13 @@ Mono<Integer> example(Mono<String> mono) {
 }
 
 Mono<Integer> example(Mono<String> mono) {
+    return mono.flatMap(Log.thenFuture(s -> {
+        log.debug("s:{}", s);
+        return CompletableFuture.completedFuture(42);
+    }));
+}
+
+Mono<Integer> example(Mono<String> mono) {
     return mono.flatMap(Log.thenMono(s -> {
         log.debug("s:{}", s);
         return Mono.just(42);
