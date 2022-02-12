@@ -24,7 +24,10 @@ If authenticated, the principal's name (from `java.security.Principal.getName`) 
 By default, the `SecurityWebFilterChain` will be configured as follows:
 
 ```java
+.securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
 .csrf().disable()
+.requestCache().disable()
+.logout().disable()
 .addFilterAt(new AuthenticatingFilter(authenticationServices), SecurityWebFiltersOrder.AUTHENTICATION)
 .addFilterBefore(new AccessDeniedExceptionHandlingFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
 ```

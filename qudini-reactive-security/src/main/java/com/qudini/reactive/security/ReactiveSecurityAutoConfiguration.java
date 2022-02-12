@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 
 import java.util.Collection;
 
@@ -36,7 +37,10 @@ public class ReactiveSecurityAutoConfiguration {
             Collection<AuthenticationService<?>> authenticationServices
     ) {
         return serverHttpSecurity
+                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .csrf().disable()
+                .requestCache().disable()
+                .logout().disable()
                 .addFilterAt(new AuthenticatingFilter(authenticationServices), AUTHENTICATION)
                 .addFilterBefore(new AccessDeniedExceptionHandlingFilter(), AUTHORIZATION)
                 .build();
