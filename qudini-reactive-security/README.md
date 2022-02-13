@@ -109,7 +109,7 @@ If successful, the returned authentication will be made available via the usual 
 
 ### CSRF
 
-You can inject `com.qudini.reactive.security.web.CsrfVerifier` into your cookie-based authentication services to protect against CSRF attacks, for example:
+You can inject `com.qudini.reactive.security.web.csrf.CsrfVerifier` into your cookie-based authentication services to protect against CSRF attacks, for example:
 
 ```java
 @Service
@@ -123,7 +123,7 @@ public class MyCookieBasedUserAuthenticationService implements AuthenticationSer
     public Mono<MyUserAuthentication> authenticate(ServerWebExchange exchange) {
         return myUserService
                 .findUser(exchange.getRequest().getCookies)
-                .filterWhen(x -> csrfVerifier.verify(exchange))
+                .doOnNext(x -> csrfVerifier.verify(exchange))
                 .map(MyUserAuthentication::new);
     }
 
