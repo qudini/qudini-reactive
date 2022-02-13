@@ -1,4 +1,4 @@
-package com.qudini.reactive.security.web;
+package com.qudini.reactive.security.web.csrf;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -47,24 +48,24 @@ class CsrfVerifierTest {
     @Test
     @DisplayName("should fail if header is absent and cookie is absent")
     void shouldFailIfHeaderAbsentCookieAbsent() {
-        var result = csrfService.verify(exchange).block();
-        assertThat(result).isFalse();
+        var thrown = assertThrows(CsrfValuesNotFoundException.class, () -> csrfService.verify(exchange));
+        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
     @Test
     @DisplayName("should fail if header is present but cookie is absent")
     void shouldFailIfHeaderPresentCookieAbsent() {
         addHeader("token");
-        var result = csrfService.verify(exchange).block();
-        assertThat(result).isFalse();
+        var thrown = assertThrows(CsrfValuesNotFoundException.class, () -> csrfService.verify(exchange));
+        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
     @Test
     @DisplayName("should fail if header is absent but cookie is present")
     void shouldFailIfHeaderAbsentCookiePresent() {
         addCookie("token");
-        var result = csrfService.verify(exchange).block();
-        assertThat(result).isFalse();
+        var thrown = assertThrows(CsrfValuesNotFoundException.class, () -> csrfService.verify(exchange));
+        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
     @Test
@@ -72,8 +73,8 @@ class CsrfVerifierTest {
     void shouldFailIfBothPresentButNotEqual() {
         addHeader("foo");
         addCookie("bar");
-        var result = csrfService.verify(exchange).block();
-        assertThat(result).isFalse();
+        var thrown = assertThrows(CsrfValuesNotEqualException.class, () -> csrfService.verify(exchange));
+        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be equal");
     }
 
     @Test
@@ -81,8 +82,7 @@ class CsrfVerifierTest {
     void shouldPassIfBothPresentAndEqual() {
         addHeader("token");
         addCookie("token");
-        var result = csrfService.verify(exchange).block();
-        assertThat(result).isTrue();
+        csrfService.verify(exchange);
     }
 
     private void addHeader(String value) {
