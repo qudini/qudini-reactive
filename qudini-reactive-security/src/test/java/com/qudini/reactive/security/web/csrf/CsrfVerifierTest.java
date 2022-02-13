@@ -48,7 +48,7 @@ class CsrfVerifierTest {
     @Test
     @DisplayName("should fail if header is absent and cookie is absent")
     void shouldFailIfHeaderAbsentCookieAbsent() {
-        var thrown = assertThrows(CsrfValuesNotFoundException.class, () -> csrfService.verify(exchange));
+        var thrown = assertThrows(CsrfTokensNotFoundException.class, () -> csrfService.verify(exchange));
         assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
@@ -56,7 +56,7 @@ class CsrfVerifierTest {
     @DisplayName("should fail if header is present but cookie is absent")
     void shouldFailIfHeaderPresentCookieAbsent() {
         addHeader("token");
-        var thrown = assertThrows(CsrfValuesNotFoundException.class, () -> csrfService.verify(exchange));
+        var thrown = assertThrows(CsrfTokensNotFoundException.class, () -> csrfService.verify(exchange));
         assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
@@ -64,7 +64,7 @@ class CsrfVerifierTest {
     @DisplayName("should fail if header is absent but cookie is present")
     void shouldFailIfHeaderAbsentCookiePresent() {
         addCookie("token");
-        var thrown = assertThrows(CsrfValuesNotFoundException.class, () -> csrfService.verify(exchange));
+        var thrown = assertThrows(CsrfTokensNotFoundException.class, () -> csrfService.verify(exchange));
         assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
@@ -73,7 +73,7 @@ class CsrfVerifierTest {
     void shouldFailIfBothPresentButNotEqual() {
         addHeader("foo");
         addCookie("bar");
-        var thrown = assertThrows(CsrfValuesNotEqualException.class, () -> csrfService.verify(exchange));
+        var thrown = assertThrows(CsrfTokensNotEqualException.class, () -> csrfService.verify(exchange));
         assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be equal");
     }
 

@@ -15,16 +15,16 @@ public class CsrfVerifier {
     String cookieName;
 
     /**
-     * <p>Throws {@link CsrfValuesNotFoundException} if either the header or the cookie is not found.</p>
-     * <p>Throws {@link CsrfValuesNotEqualException} if the header and the cookie are found but not equal.</p>
+     * <p>Throws {@link CsrfTokensNotFoundException} if either the header or the cookie is not found.</p>
+     * <p>Throws {@link CsrfTokensNotEqualException} if the header and the cookie are found but not equal.</p>
      */
     public void verify(ServerWebExchange exchange) {
         var optionalHeaderValue = getHeaderValue(exchange);
         var optionalCookieValue = getCookieValue(exchange);
         if (optionalHeaderValue.isEmpty() || optionalCookieValue.isEmpty()) {
-            throw new CsrfValuesNotFoundException(headerName, cookieName);
+            throw new CsrfTokensNotFoundException(headerName, cookieName);
         } else if (!optionalHeaderValue.equals(optionalCookieValue)) {
-            throw new CsrfValuesNotEqualException(headerName, cookieName);
+            throw new CsrfTokensNotEqualException(headerName, cookieName);
         }
     }
 
