@@ -87,14 +87,6 @@ class AuthenticatingFilterTest {
         verifyAuthentication(Unauthenticated.class);
     }
 
-    @Test
-    @DisplayName("should not authenticate when an error occurs")
-    void shouldSetUnauthenticatedOnError() {
-        given(firstAuthenticationService.authenticate(exchange)).willReturn(Mono.error(new IllegalStateException("test")));
-        given(secondAuthenticationService.authenticate(exchange)).willReturn(Mono.error(new IllegalStateException("test")));
-        verifyAuthentication(Unauthenticated.class);
-    }
-
     private void verifyAuthentication(Class<? extends Authentication> expectedAuthenticationType) {
         var authentication = new AtomicReference<Authentication>();
         var authenticationCatcher = ReactiveSecurityContextHolder

@@ -40,17 +40,10 @@ public final class AuthenticatingFilter implements WebFilter {
     private Mono<Authentication> findAuthentication(ServerWebExchange exchange) {
         return Flux
                 .fromIterable(authenticationServices)
-                .flatMap(authenticationService -> findAuthentication(authenticationService, exchange))
+                .flatMap(authenticationService -> authenticationService.authenticate(exchange))
                 .collect(toUnmodifiableSet())
                 .flatMap(Log.then(this::chooseAuthentication))
                 .flatMap(Mono::justOrEmpty);
-    }
-
-    private Mono<? extends Authentication> findAuthentication(AuthenticationService<? extends Authentication> authenticationService, ServerWebExchange exchange) {
-        return authenticationService
-                .authenticate(exchange)
-                .doOnEach(Log.onError(e -> log.warn("An error occurred while authenticating", e)))
-                .onErrorResume(e -> Mono.empty());
     }
 
     private Optional<Authentication> chooseAuthentication(Set<? extends Authentication> authentications) {
