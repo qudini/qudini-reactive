@@ -49,7 +49,7 @@ class CsrfVerifierTest {
     @DisplayName("should fail if header is absent and cookie is absent")
     void shouldFailIfHeaderAbsentCookieAbsent() {
         var thrown = assertThrows(CsrfTokensNotFoundException.class, () -> csrfService.verify(exchange));
-        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
+        assertThat(thrown.getMessage()).contains("Expected both header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
     @Test
@@ -57,7 +57,7 @@ class CsrfVerifierTest {
     void shouldFailIfHeaderPresentCookieAbsent() {
         addHeader("token");
         var thrown = assertThrows(CsrfTokensNotFoundException.class, () -> csrfService.verify(exchange));
-        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
+        assertThat(thrown.getMessage()).contains("Expected both header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
     @Test
@@ -65,7 +65,7 @@ class CsrfVerifierTest {
     void shouldFailIfHeaderAbsentCookiePresent() {
         addCookie("token");
         var thrown = assertThrows(CsrfTokensNotFoundException.class, () -> csrfService.verify(exchange));
-        assertThat(thrown.getMessage()).contains("Expected header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
+        assertThat(thrown.getMessage()).contains("Expected both header 'X-Xsrf-Token' and cookie 'XSRF-TOKEN' to be present");
     }
 
     @Test
