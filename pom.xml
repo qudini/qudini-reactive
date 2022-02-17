@@ -22,6 +22,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <qudini-reactive.version>0-SNAPSHOT</qudini-reactive.version>
         <java-sources>src/main/java</java-sources>
+        <skip-coverage>false</skip-coverage>
         <!-- Qudini-managed versions: -->
         <jsr305.version>3.0.2</jsr305.version>
         <guava.version>31.0.1-jre</guava.version>
@@ -84,9 +85,10 @@
 
     <profiles>
         <profile>
-            <id>deploy</id>
+            <id>release</id>
             <properties>
                 <java-sources>${project.build.directory}/delombok</java-sources>
+                <skip-coverage>true</skip-coverage>
             </properties>
             <build>
                 <plugins>
@@ -121,29 +123,6 @@
                                         <javaLangAsFQN>generate</javaLangAsFQN>
                                     </formatPreferences>
                                 </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>jacoco-before-ut</id>
-                                <phase>none</phase>
-                            </execution>
-                            <execution>
-                                <id>jacoco-after-ut</id>
-                                <phase>none</phase>
-                            </execution>
-                            <execution>
-                                <id>jacoco-before-it</id>
-                                <phase>none</phase>
-                            </execution>
-                            <execution>
-                                <id>jacoco-after-it</id>
-                                <phase>none</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -384,6 +363,7 @@
                                 <goal>prepare-agent</goal>
                             </goals>
                             <configuration>
+                                <skip>${skip-coverage}</skip>
                                 <destFile>${project.build.directory}/jacoco/ut.exec</destFile>
                                 <propertyName>surefire.jacoco.args</propertyName>
                             </configuration>
@@ -395,6 +375,7 @@
                                 <goal>report</goal>
                             </goals>
                             <configuration>
+                                <skip>${skip-coverage}</skip>
                                 <dataFile>${project.build.directory}/jacoco/ut.exec</dataFile>
                                 <outputDirectory>${project.reporting.outputDirectory}/coverage/ut</outputDirectory>
                             </configuration>
@@ -406,6 +387,7 @@
                                 <goal>prepare-agent</goal>
                             </goals>
                             <configuration>
+                                <skip>${skip-coverage}</skip>
                                 <destFile>${project.build.directory}/jacoco/it.exec</destFile>
                                 <propertyName>failsafe.jacoco.args</propertyName>
                             </configuration>
@@ -417,6 +399,7 @@
                                 <goal>report</goal>
                             </goals>
                             <configuration>
+                                <skip>${skip-coverage}</skip>
                                 <dataFile>${project.build.directory}/jacoco/it.exec</dataFile>
                                 <outputDirectory>${project.reporting.outputDirectory}/coverage/it</outputDirectory>
                             </configuration>

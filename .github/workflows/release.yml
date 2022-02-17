@@ -23,14 +23,14 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Version
         run: |
-          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false -Pdeploy
-          mvn versions:update-property -Dproperty=qudini-reactive.version -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false -Pdeploy
+          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false -Prelease
+          mvn versions:update-property -Dproperty=qudini-reactive.version -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false -Prelease
       - name: Release
         run: |
           export GPG_TTY=$(tty)
           echo $GPG_PUBLIC_KEY | base64 --decode > gpg-public-key && gpg --import gpg-public-key
           echo $GPG_PRIVATE_KEY | base64 --decode > gpg-private-key && gpg --batch --passphrase $GPG_PASSPHRASE --import gpg-private-key
-          mvn -B --settings ./.m2/settings.xml -Pdeploy clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
+          mvn -B --settings ./.m2/settings.xml clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE -Prelease
         env:
           LOG_LEVEL: FATAL
           JIRA_ID: ${{ secrets.JIRA_ID }}
