@@ -23,8 +23,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Version
         run: |
-          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
-          mvn versions:update-property -Dproperty=qudini-reactive.version -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false
+          mvn versions:set -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false -Pdeploy
+          mvn versions:update-property -Dproperty=qudini-reactive.version -DnewVersion=${GITHUB_REF/refs\/tags\/v/} -DgenerateBackupPoms=false -Pdeploy
       - name: Release
         run: |
           export GPG_TTY=$(tty)
