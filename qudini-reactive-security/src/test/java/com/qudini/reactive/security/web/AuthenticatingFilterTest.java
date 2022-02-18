@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.core.context.ReactiveSecurityContextHolder.withAuthentication;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AuthenticatingFilter")
@@ -87,7 +89,33 @@ class AuthenticatingFilterTest {
         verifyAuthentication(Unauthenticated.class);
     }
 
+    @Test
+    @DisplayName("should not overwrite any existing authentication")
+    void shouldNotOverwriteExisting() {
+        var authentication = prepareAuthenticationCatcher();
+        var existingAuthentication = new TestingAuthenticationToken("authenticated", "pwd", "role");
+        filter.filter(exchange, chain).contextWrite(withAuthentication(existingAuthentication)).block();
+        assertThat(authentication.get()).isEqualTo(existingAuthentication);
+    }
+
+    @Test
+    @DisplayName("should reuse unauthenticated instance if any")
+    void shouldReuseExistingUnauthenticated() {
+        var authentication = prepareAuthenticationCatcher();
+        var existingAuthentication = new TestingAuthenticationToken("unauthenticated", "pwd");
+        given(firstAuthenticationService.authenticate(exchange)).willReturn(Mono.empty());
+        given(secondAuthenticationService.authenticate(exchange)).willReturn(Mono.empty());
+        filter.filter(exchange, chain).contextWrite(withAuthentication(existingAuthentication)).block();
+        assertThat(authentication.get()).isEqualTo(existingAuthentication);
+    }
+
     private void verifyAuthentication(Class<? extends Authentication> expectedAuthenticationType) {
+        var authentication = prepareAuthenticationCatcher();
+        filter.filter(exchange, chain).block();
+        assertThat(authentication.get()).isInstanceOf(expectedAuthenticationType);
+    }
+
+    private AtomicReference<Authentication> prepareAuthenticationCatcher() {
         var authentication = new AtomicReference<Authentication>();
         var authenticationCatcher = ReactiveSecurityContextHolder
                 .getContext()
@@ -95,8 +123,7 @@ class AuthenticatingFilterTest {
                 .doOnNext(authentication::set)
                 .then();
         given(chain.filter(exchange)).willReturn(authenticationCatcher);
-        filter.filter(exchange, chain).block();
-        assertThat(authentication.get()).isInstanceOf(expectedAuthenticationType);
+        return authentication;
     }
 
 }
