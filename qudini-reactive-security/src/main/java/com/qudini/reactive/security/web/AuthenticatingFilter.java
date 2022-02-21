@@ -5,6 +5,8 @@ import com.qudini.reactive.security.support.Unauthenticated;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -26,24 +28,22 @@ public final class AuthenticatingFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        return findAuthentication(exchange)
-                .defaultIfEmpty(Unauthenticated.INSTANCE)
+        return ReactiveSecurityContextHolder
+                .getContext()
+                .mapNotNull(SecurityContext::getAuthentication)
+                .flatMap(authentication -> authentication.isAuthenticated() ? Mono.just(authentication) : findAuthentication(exchange, authentication))
+                .switchIfEmpty(Mono.defer(() -> findAuthentication(exchange, Unauthenticated.INSTANCE)))
                 .flatMap(authentication -> filter(exchange, chain, authentication));
     }
 
-    private Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain, Authentication authentication) {
-        return chain
-                .filter(exchange)
-                .contextWrite(withAuthentication(authentication));
-    }
-
-    private Mono<Authentication> findAuthentication(ServerWebExchange exchange) {
+    private Mono<Authentication> findAuthentication(ServerWebExchange exchange, Authentication fallback) {
         return Flux
                 .fromIterable(authenticationServices)
                 .flatMap(authenticationService -> authenticationService.authenticate(exchange))
                 .collect(toUnmodifiableSet())
                 .flatMap(Log.then(this::chooseAuthentication))
-                .flatMap(Mono::justOrEmpty);
+                .flatMap(Mono::justOrEmpty)
+                .defaultIfEmpty(fallback);
     }
 
     private Optional<Authentication> chooseAuthentication(Set<? extends Authentication> authentications) {
@@ -57,6 +57,12 @@ public final class AuthenticatingFilter implements WebFilter {
             return Optional.empty();
         }
         return Optional.of(authentication);
+    }
+
+    private Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain, Authentication authentication) {
+        return chain
+                .filter(exchange)
+                .contextWrite(withAuthentication(authentication));
     }
 
 }
