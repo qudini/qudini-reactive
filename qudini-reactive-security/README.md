@@ -139,3 +139,7 @@ The cookie that will be checked by default is `XSRF-TOKEN`, but can be modified 
 ### GrantedAuthorityDefaults
 
 A bean of type `org.springframework.security.config.core.GrantedAuthorityDefaults` will be registered by default to remove the `ROLE_` default prefix from the role names, but you can modify this behaviour by registering your own.
+
+### Bouncy Castle
+
+The Bouncy Castle provider will be installed (see [Bouncy Castle specifications](https://www.bouncycastle.org/specifications.html), section 6).
