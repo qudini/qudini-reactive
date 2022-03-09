@@ -8,6 +8,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Clock;
+
 @Configuration
 public class ReactiveUtilsAutoConfiguration {
 
@@ -18,6 +20,12 @@ public class ReactiveUtilsAutoConfiguration {
             ApplicationContext applicationContext
     ) {
         return new DefaultMetadataService(environment, applicationContext);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public Clock clock() {
+        return Clock.systemUTC();
     }
 
 }
