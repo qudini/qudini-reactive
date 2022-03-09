@@ -41,6 +41,21 @@ public final class Log implements ReactiveLoggingContextCreator {
     }
 
     /**
+     * <p>Runs the given runnable with the MDC available.</p>
+     * <p>Example:</p>
+     * <pre>{@literal
+     * Mono<Void> example() {
+     *     return Log.then(() -> {
+     *         log.debug("foobar");
+     *     });
+     * }
+     * }</pre>
+     */
+    public static Mono<Void> then(Runnable runnable) {
+        return context().doOnNext(context -> withContext(context, runnable)).then();
+    }
+
+    /**
      * <p>Runs the given supplier with the MDC available.</p>
      * <p>Example:</p>
      * <pre>{@literal

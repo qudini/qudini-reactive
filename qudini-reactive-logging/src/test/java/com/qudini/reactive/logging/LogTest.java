@@ -71,6 +71,17 @@ class LogTest {
     }
 
     @Test
+    @DisplayName("should populate the reactive context when using the runnable")
+    void runnable() {
+        var mdcValue = new AtomicReference<String>();
+        Log
+                .then(() -> mdcValue.set(MDC.get("key")))
+                .contextWrite(createContext())
+                .block();
+        assertThat(mdcValue.get()).isEqualTo("value");
+    }
+
+    @Test
     @DisplayName("should populate the reactive context when using the value supplier")
     void valueSupplier() {
         var mdcValue = Log
