@@ -34,6 +34,7 @@
         <sentry.version>5.6.2</sentry.version>
         <aws-sdk.version>2.17.145</aws-sdk.version>
         <qudini-gom.version>7.3.3</qudini-gom.version>
+        <bouncycastle.version>1.70</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
@@ -308,6 +309,11 @@
                 <groupId>com.qudini</groupId>
                 <artifactId>qudini-reactive-security</artifactId>
                 <version>${qudini-reactive.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

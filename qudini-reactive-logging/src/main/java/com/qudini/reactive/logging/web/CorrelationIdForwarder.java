@@ -12,7 +12,8 @@ public interface CorrelationIdForwarder {
      * var request = WebClient.create().post();
      * return correlationIdForwarder
      *     .forwardOn(request)
-     *     .flatMap(WebClient.RequestHeadersSpec::exchange);
+     *     .map(WebClient.RequestHeadersSpec::retrieve)
+     *     .flatMap(response -> response.bodyToMono(String.class));
      * }</pre>
      */
     Mono<WebClient.RequestBodySpec> forwardOn(WebClient.RequestBodySpec webClient);
@@ -24,7 +25,8 @@ public interface CorrelationIdForwarder {
      * var request = WebClient.create().get();
      * return correlationIdForwarder
      *     .forwardOn(request)
-     *     .flatMap(WebClient.RequestHeadersSpec::exchange);
+     *     .map(WebClient.RequestHeadersSpec::retrieve)
+     *     .flatMap(response -> response.bodyToMono(String.class));
      * }</pre>
      */
     Mono<WebClient.RequestHeadersSpec<?>> forwardOn(WebClient.RequestHeadersSpec<?> webClient);
