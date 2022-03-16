@@ -10,11 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
+import java.util.concurrent.CompletableFuture;
+
 @Slf4j
 public final class LoggingContextAwareExceptionHandler implements DataFetcherExceptionHandler {
 
     @Override
-    public DataFetcherExceptionHandlerResult onException(DataFetcherExceptionHandlerParameters handlerParameters) {
+    public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(DataFetcherExceptionHandlerParameters handlerParameters) {
         var exception = handlerParameters.getException();
         var sourceLocation = handlerParameters.getSourceLocation();
         var path = handlerParameters.getPath();
@@ -25,7 +27,8 @@ public final class LoggingContextAwareExceptionHandler implements DataFetcherExc
         } else {
             Log.withContext(context, () -> log.error(error.getMessage(), exception));
         }
-        return DataFetcherExceptionHandlerResult.newResult().error(error).build();
+        var result = DataFetcherExceptionHandlerResult.newResult().error(error).build();
+        return CompletableFuture.completedFuture(result);
     }
 
 }
