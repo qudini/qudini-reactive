@@ -214,7 +214,19 @@ Utilities around collectors:
 - `#toLinkedSet(...)`: collects into a `LinkedHashSet`,
 - `#toUnmodifiableLinkedSet(...)`: collects into an unmodifiable `LinkedHashSet`,
 - `#toTreeSet(...)`: collects into a `TreeSet`,
-- `#toUnmodifiableTreeSet(...)`: collects into an unmodifiable `TreeSet`. -`#throwingMerger(...)`: throws an exception (useful when a merger is expected by the API but won't ever get called).
+- `#toUnmodifiableTreeSet(...)`: collects into an unmodifiable `TreeSet`,
+- `#throwingMerger(...)`: throws an exception (useful when a merger is expected by the API but won't ever get called).
+
+### com.qudini.reactive.utils.MoreComparables
+
+Utilities around comparables to avoid dealing with the result of `compareTo` manually:
+
+- `T leastBetween(T a, T b)`
+- `T greatestBetween(T a, T b)`
+- `boolean isLessThan(T a, T b)`
+- `boolean isLessThanOrEqualTo(T a, T b)`
+- `boolean isGreaterThan(T a, T b)`
+- `boolean isGreaterThanOrEqualTo(T a, T b)`
 
 ### com.qudini.reactive.utils.MoreIntervals
 

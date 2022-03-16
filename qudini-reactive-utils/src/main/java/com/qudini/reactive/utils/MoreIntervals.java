@@ -23,7 +23,7 @@ public final class MoreIntervals {
      * <p>Ensures all intervals are within the given bounds, removing/reshaping them if needed.
      * Will not remove resulting duplicates if any, use {@link #merge(List)} if needed.</p>
      */
-    public static <E extends Comparable<E>, T extends UpdatableInterval<E, T>> List<T> enclose(List<T> intervals, Interval<E, ?> bounds) {
+    public static <E extends Comparable<? super E>, T extends UpdatableInterval<E, T>> List<T> enclose(List<T> intervals, Interval<E, ?> bounds) {
         return intervals
                 .stream()
                 .filter(interval -> isGreaterThan(interval.getEnd(), bounds.getStart()))
@@ -36,7 +36,7 @@ public final class MoreIntervals {
     /**
      * <p>Merges overlapping/contiguous intervals if any.</p>
      */
-    public static <E extends Comparable<E>, T extends UpdatableInterval<E, T>> List<T> merge(List<T> intervals) {
+    public static <E extends Comparable<? super E>, T extends UpdatableInterval<E, T>> List<T> merge(List<T> intervals) {
         if (intervals.size() <= 1) {
             return intervals;
         }
@@ -62,7 +62,7 @@ public final class MoreIntervals {
      * so that none of the resulting intervals overlaps with any of the subtrahends.
      * Will not remove resulting duplicates if any, use {@link #merge(List)} if needed.</p>
      */
-    public static <E extends Comparable<E>, T extends UpdatableInterval<E, T>> List<T> subtract(List<T> intervals, List<? extends Interval<E, ?>> subtrahends) {
+    public static <E extends Comparable<? super E>, T extends UpdatableInterval<E, T>> List<T> subtract(List<T> intervals, List<? extends Interval<E, ?>> subtrahends) {
         return subtrahends
                 .stream()
                 .reduce(
@@ -77,7 +77,7 @@ public final class MoreIntervals {
      * so that none of the resulting intervals overlaps with the subtrahend.
      * Will not remove resulting duplicates if any, use {@link #merge(List)} if needed.</p>
      */
-    public static <E extends Comparable<E>, T extends UpdatableInterval<E, T>> List<T> subtract(List<T> intervals, Interval<E, ?> subtrahend) {
+    public static <E extends Comparable<? super E>, T extends UpdatableInterval<E, T>> List<T> subtract(List<T> intervals, Interval<E, ?> subtrahend) {
         return intervals
                 .stream()
                 .flatMap(interval -> subtract(interval, subtrahend))
@@ -87,7 +87,7 @@ public final class MoreIntervals {
     /**
      * <p>Removes the subtrahend from the given interval, resulting in 0, 1 or 2 intervals.</p>
      */
-    private static <E extends Comparable<E>, T extends UpdatableInterval<E, T>> Stream<T> subtract(T interval, Interval<E, ?> subtrahend) {
+    private static <E extends Comparable<? super E>, T extends UpdatableInterval<E, T>> Stream<T> subtract(T interval, Interval<E, ?> subtrahend) {
         if (subtrahend.contains(interval)) {
             return Stream.of();
         } else if (interval.contains(subtrahend)) {

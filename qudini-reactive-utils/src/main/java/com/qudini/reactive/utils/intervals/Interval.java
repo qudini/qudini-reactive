@@ -34,7 +34,7 @@ public interface Interval<E extends Comparable<? super E>, T extends Interval<E,
     }
 
     /**
-     * Whether this interval overlaps with the given one, for example:
+     * <p>Whether this interval overlaps with the given one, for example:</p>
      * <ul>
      * <li>1-3 and 2-4: true</li>
      * <li>1-4 and 2-3: true (see also {@link #contains(Interval)})</li>
@@ -47,7 +47,7 @@ public interface Interval<E extends Comparable<? super E>, T extends Interval<E,
     }
 
     /**
-     * Whether this interval is contiguous with the given one, for example:
+     * <p>Whether this interval is contiguous with the given one, for example:</p>
      * <ul>
      * <li>1-2 and 2-3: true</li>
      * <li>1-3 and 2-4: false (see also {@link #overlaps(Interval)})</li>
@@ -59,7 +59,7 @@ public interface Interval<E extends Comparable<? super E>, T extends Interval<E,
     }
 
     /**
-     * Whether this interval entirely contains the given one, for example:
+     * <p>Whether this interval entirely contains the given one, for example:</p>
      * <ul>
      * <li>1-3 and 1-2: true</li>
      * <li>1-3 and 1-3: true</li>
