@@ -113,8 +113,8 @@ public final class MoreCollectors {
         );
     }
 
-    private static <T> T throwingMerger(T x, T y) {
-        throw new IllegalStateException("Unable to merge " + x + " and " + y + ", use Collectors.toMap(...) instead");
+    public static <T> T throwingMerger(T x, T y) {
+        throw new IllegalStateException("Unable to merge " + x + " and " + y);
     }
 
 }

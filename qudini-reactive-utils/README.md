@@ -202,3 +202,53 @@ Mono<Tuple2<Integer, String>> example(Mono<Tuple2<Integer, String>> mono) {
     return mono.doOnNext(takeBoth((i, s) -> log.debug("i:{} s:{}", i, s)));
 }
 ```
+
+### com.qudini.reactive.utils.MoreCollectors
+
+Utilities around collectors:
+
+- `#toLinkedMap(...)`: collects into a `LinkedHashMap`,
+- `#toUnmodifiableLinkedMap(...)`: collects into an unmodifiable `LinkedHashMap`,
+- `#toTreeMap(...)`: collects into a `TreeMap`,
+- `#toUnmodifiableTreeMap(...)`: collects into an unmodifiable `TreeMap`,
+- `#toLinkedSet(...)`: collects into a `LinkedHashSet`,
+- `#toUnmodifiableLinkedSet(...)`: collects into an unmodifiable `LinkedHashSet`,
+- `#toTreeSet(...)`: collects into a `TreeSet`,
+- `#toUnmodifiableTreeSet(...)`: collects into an unmodifiable `TreeSet`,
+- `#throwingMerger(...)`: throws an exception (useful when a merger is expected by the API but won't ever get called).
+
+### com.qudini.reactive.utils.MoreComparables
+
+Utilities around comparables to avoid dealing with the result of `compareTo` manually:
+
+- `T leastBetween(T a, T b)`
+- `T greatestBetween(T a, T b)`
+- `boolean isLessThan(T a, T b)`
+- `boolean isLessThanOrEqualTo(T a, T b)`
+- `boolean isGreaterThan(T a, T b)`
+- `boolean isGreaterThanOrEqualTo(T a, T b)`
+
+### com.qudini.reactive.utils.MoreIntervals
+
+Utilities around intervals such as enclosing/merging/subtracting.
+
+#### Available predefined interval classes
+
+##### In com.qudini.reactive.utils.intervals.number:
+
+- `ByteInterval`
+- `DoubleInterval`
+- `FloatInterval`
+- `IntInterval`
+- `LongInterval`
+- `ShortInterval`
+
+##### In com.qudini.reactive.utils.intervals.temporal:
+  
+- `LocalDateInterval`
+- `LocalTimeInterval`
+- `LocalDateTimeInterval`
+- `OffsetTimeInterval`
+- `OffsetDateTimeInterval`
+- `ZonedDateTimeInterval`
+- `InstantInterval`
