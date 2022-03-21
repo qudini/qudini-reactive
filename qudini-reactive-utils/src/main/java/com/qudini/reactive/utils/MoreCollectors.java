@@ -11,10 +11,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toMap;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -24,18 +24,54 @@ import static lombok.AccessLevel.PRIVATE;
 public final class MoreCollectors {
 
     /**
+     * <p>Collects into a {@link Map}, mapping values with {@link Function#identity()}</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, T>> toMap(
+            Function<? super T, ? extends K> keyMapper
+    ) {
+        return Collectors.toMap(keyMapper, identity());
+    }
+
+    /**
+     * <p>Collects into an unmodifiable {@link Map}, mapping values with {@link Function#identity()}</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableMap(
+            Function<? super T, ? extends K> keyMapper
+    ) {
+        return Collectors.toUnmodifiableMap(keyMapper, identity());
+    }
+
+    /**
+     * <p>Collects into a {@link LinkedHashMap}, mapping values with {@link Function#identity()}</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, T>> toLinkedMap(
+            Function<? super T, ? extends K> keyMapper
+    ) {
+        return toLinkedMap(keyMapper, identity());
+    }
+
+    /**
      * <p>Collects into a {@link LinkedHashMap}.</p>
      */
     public static <T, K, U> Collector<T, ?, Map<K, U>> toLinkedMap(
             Function<? super T, ? extends K> keyMapper,
             Function<? super T, ? extends U> valueMapper
     ) {
-        return toMap(
+        return Collectors.toMap(
                 keyMapper,
                 valueMapper,
                 MoreCollectors::throwingMerger,
                 LinkedHashMap::new
         );
+    }
+
+    /**
+     * <p>Collects into an unmodifiable {@link LinkedHashMap}, mapping values with {@link Function#identity()}</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableLinkedMap(
+            Function<? super T, ? extends K> keyMapper
+    ) {
+        return toUnmodifiableLinkedMap(keyMapper, identity());
     }
 
     /**
@@ -45,10 +81,19 @@ public final class MoreCollectors {
             Function<? super T, ? extends K> keyMapper,
             Function<? super T, ? extends U> valueMapper
     ) {
-        return collectingAndThen(
+        return Collectors.collectingAndThen(
                 toLinkedMap(keyMapper, valueMapper),
                 Collections::unmodifiableMap
         );
+    }
+
+    /**
+     * <p>Collects into a {@link TreeMap}, mapping values with {@link Function#identity()}</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, T>> toTreeMap(
+            Function<? super T, ? extends K> keyMapper
+    ) {
+        return toTreeMap(keyMapper, identity());
     }
 
     /**
@@ -58,12 +103,21 @@ public final class MoreCollectors {
             Function<? super T, ? extends K> keyMapper,
             Function<? super T, ? extends U> valueMapper
     ) {
-        return toMap(
+        return Collectors.toMap(
                 keyMapper,
                 valueMapper,
                 MoreCollectors::throwingMerger,
                 TreeMap::new
         );
+    }
+
+    /**
+     * <p>Collects into an unmodifiable {@link TreeMap}, mapping values with {@link Function#identity()}</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableTreeMap(
+            Function<? super T, ? extends K> keyMapper
+    ) {
+        return toUnmodifiableTreeMap(keyMapper, identity());
     }
 
     /**
@@ -73,7 +127,7 @@ public final class MoreCollectors {
             Function<? super T, ? extends K> keyMapper,
             Function<? super T, ? extends U> valueMapper
     ) {
-        return collectingAndThen(
+        return Collectors.collectingAndThen(
                 toTreeMap(keyMapper, valueMapper),
                 Collections::unmodifiableMap
         );
@@ -90,7 +144,7 @@ public final class MoreCollectors {
      * <p>Collects into an unmodifiable {@link LinkedHashSet}.</p>
      */
     public static <T> Collector<T, ?, Set<T>> toUnmodifiableLinkedSet() {
-        return collectingAndThen(
+        return Collectors.collectingAndThen(
                 toLinkedSet(),
                 Collections::unmodifiableSet
         );
@@ -107,7 +161,7 @@ public final class MoreCollectors {
      * <p>Collects into an unmodifiable {@link TreeSet}.</p>
      */
     public static <T> Collector<T, ?, Set<T>> toUnmodifiableTreeSet() {
-        return collectingAndThen(
+        return Collectors.collectingAndThen(
                 toTreeSet(),
                 Collections::unmodifiableSet
         );
