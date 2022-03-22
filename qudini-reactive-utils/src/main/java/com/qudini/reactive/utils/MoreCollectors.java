@@ -3,18 +3,22 @@ package com.qudini.reactive.utils;
 import lombok.NoArgsConstructor;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toUnmodifiableList;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -164,6 +168,49 @@ public final class MoreCollectors {
         return Collectors.collectingAndThen(
                 toTreeSet(),
                 Collections::unmodifiableSet
+        );
+    }
+
+    /**
+     * <p>Returns an unmodifiable map containing unmodifiable lists.</p>
+     */
+    public static <T, K> Collector<T, ?, Map<K, List<T>>> groupingByUnmodifiable(
+            Function<? super T, ? extends K> classifier
+    ) {
+        return groupingByUnmodifiable(classifier, HashMap::new, toUnmodifiableList());
+    }
+
+    /**
+     * <p>Returns an unmodifiable map.</p>
+     */
+    public static <T, K, A, D> Collector<T, ?, Map<K, D>> groupingByUnmodifiable(
+            Function<? super T, ? extends K> classifier,
+            Collector<? super T, A, D> collector
+    ) {
+        return groupingByUnmodifiable(classifier, HashMap::new, collector);
+    }
+
+    /**
+     * <p>Returns an unmodifiable map containing unmodifiable lists.</p>
+     */
+    public static <T, K, M extends Map<K, List<T>>> Collector<T, ?, Map<K, List<T>>> groupingByUnmodifiable(
+            Function<? super T, ? extends K> classifier,
+            Supplier<M> supplier
+    ) {
+        return groupingByUnmodifiable(classifier, supplier, toUnmodifiableList());
+    }
+
+    /**
+     * <p>Returns an unmodifiable map.</p>
+     */
+    public static <T, K, D, A, M extends Map<K, D>> Collector<T, ?, Map<K, D>> groupingByUnmodifiable(
+            Function<? super T, ? extends K> classifier,
+            Supplier<M> supplier,
+            Collector<? super T, A, D> collector
+    ) {
+        return Collectors.collectingAndThen(
+                Collectors.groupingBy(classifier, supplier, collector),
+                Collections::unmodifiableMap
         );
     }
 
