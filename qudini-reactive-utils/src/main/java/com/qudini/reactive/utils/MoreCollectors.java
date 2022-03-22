@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -210,6 +211,28 @@ public final class MoreCollectors {
     ) {
         return Collectors.collectingAndThen(
                 Collectors.groupingBy(classifier, supplier, collector),
+                Collections::unmodifiableMap
+        );
+    }
+
+    /**
+     * <p>Returns an unmodifiable map containing unmodifiable lists.</p>
+     */
+    public static <T> Collector<T, ?, Map<Boolean, List<T>>> partitioningByUnmodifiable(
+            Predicate<? super T> predicate
+    ) {
+        return partitioningByUnmodifiable(predicate, toUnmodifiableList());
+    }
+
+    /**
+     * <p>Returns an unmodifiable map.</p>
+     */
+    public static <T, D, A> Collector<T, ?, Map<Boolean, D>> partitioningByUnmodifiable(
+            Predicate<? super T> predicate,
+            Collector<? super T, A, D> collector
+    ) {
+        return Collectors.collectingAndThen(
+                Collectors.partitioningBy(predicate, collector),
                 Collections::unmodifiableMap
         );
     }

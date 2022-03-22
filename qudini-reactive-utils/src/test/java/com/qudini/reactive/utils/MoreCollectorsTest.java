@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import java.util.stream.Stream;
 
 import static com.qudini.reactive.utils.MoreCollectors.groupingByUnmodifiable;
+import static com.qudini.reactive.utils.MoreCollectors.partitioningByUnmodifiable;
 import static com.qudini.reactive.utils.MoreCollectors.toLinkedMap;
 import static com.qudini.reactive.utils.MoreCollectors.toLinkedSet;
 import static com.qudini.reactive.utils.MoreCollectors.toMap;
@@ -262,6 +263,34 @@ class MoreCollectorsTest {
         );
         assertThrows(UnsupportedOperationException.class, () -> map.put(4, Set.of("dddd")));
         map.get(3).add("ddd");
+    }
+
+    @Test
+    @DisplayName("should allow partitioning into an unmodifiable map")
+    void unmodifiablePartitioning() {
+        var map = Stream
+                .of("aaa", "cc", "bb")
+                .collect(partitioningByUnmodifiable(s -> s.length() == 2));
+        assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of(
+                true, List.of("cc", "bb"),
+                false, List.of("aaa")
+        ));
+        assertThrows(UnsupportedOperationException.class, () -> map.remove(true));
+        assertThrows(UnsupportedOperationException.class, () -> map.get(false).add("ddd"));
+    }
+
+    @Test
+    @DisplayName("should allow partitioning into an unmodifiable map with a custom collector")
+    void unmodifiablePartitioningToTreeSet() {
+        var map = Stream
+                .of("aaa", "cc", "bb")
+                .collect(partitioningByUnmodifiable(s -> s.length() == 2, toTreeSet()));
+        assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of(
+                true, Set.of("bb", "cc"),
+                false, Set.of("aaa")
+        ));
+        assertThrows(UnsupportedOperationException.class, () -> map.remove(true));
+        map.get(false).add("ddd");
     }
 
 }

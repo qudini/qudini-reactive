@@ -216,6 +216,7 @@ Utilities around collectors:
 - `#toTreeSet(...)`: collects into a `TreeSet`,
 - `#toUnmodifiableTreeSet(...)`: collects into an unmodifiable `TreeSet`,
 - `#groupingByUnmodifiable(...)`: groups into an unmodifiable map,
+- `#partitioningByUnmodifiable(...)`: partitions into an unmodifiable map,
 - `#throwingMerger(...)`: throws an exception (useful when a merger is expected by the API but won't ever get called).
 
 ### com.qudini.reactive.utils.MoreComparables
