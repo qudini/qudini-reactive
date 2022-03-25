@@ -52,7 +52,15 @@ class QudiniJsonLayoutTest {
         var appenderRefs = new AppenderRef[]{
                 AppenderRef.createAppenderRef("STRING_APPENDER", null, null)
         };
-        var loggerConfig = LoggerConfig.createLogger(false, Level.INFO, "STRING_LOGGER", "true", appenderRefs, null, config, null);
+        var loggerConfig = LoggerConfig
+                .newBuilder()
+                .withAdditivity(false)
+                .withLevel(Level.INFO)
+                .withLoggerName("STRING_LOGGER")
+                .withIncludeLocation("true")
+                .withRefs(appenderRefs)
+                .withConfig(config)
+                .build();
         loggerConfig.addAppender(appender, null, null);
         config.addLogger("TEST_LOGGER", loggerConfig);
         LOGGER_CONTEXT.updateLoggers();
