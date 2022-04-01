@@ -254,3 +254,8 @@ Utilities around intervals such as enclosing/merging/subtracting.
 - `OffsetDateTimeInterval`
 - `ZonedDateTimeInterval`
 - `InstantInterval`
+
+### com.qudini.reactive.utils.MoreJackson
+
+- `#newObjectMapper()`: returns a new preconfigured `ObjectMapper`
+- `#newWebClient()`: returns a new preconfigured `WebClient`
