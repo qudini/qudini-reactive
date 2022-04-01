@@ -19,14 +19,14 @@ class MoreJacksonTest {
 
     @Test
     void writeIsoDates() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         var value = Instant.parse("2022-03-31T13:47:45.379271Z");
         assertThat(mapper.writeValueAsString(value)).isEqualTo("\"2022-03-31T13:47:45.379271Z\"");
     }
 
     @Test
     void doNotSerialiseNull() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         Map<String, Object> map = new HashMap<>();
         map.put("foobar", null);
         assertThat(mapper.writeValueAsString(map)).isEqualTo("{}");
@@ -34,7 +34,7 @@ class MoreJacksonTest {
 
     @Test
     void doNotSerialiseEmptyString() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         Map<String, Object> map = new HashMap<>();
         map.put("foobar", "");
         assertThat(mapper.writeValueAsString(map)).isEqualTo("{}");
@@ -42,7 +42,7 @@ class MoreJacksonTest {
 
     @Test
     void doNotSerialiseEmptyCollection() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         Map<String, Object> map = new HashMap<>();
         map.put("foobar", List.of());
         assertThat(mapper.writeValueAsString(map)).isEqualTo("{}");
@@ -50,7 +50,7 @@ class MoreJacksonTest {
 
     @Test
     void doNotSerialiseEmptyMap() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         Map<String, Object> map = new HashMap<>();
         map.put("foobar", Map.of());
         assertThat(mapper.writeValueAsString(map)).isEqualTo("{}");
@@ -58,7 +58,7 @@ class MoreJacksonTest {
 
     @Test
     void parseEmptyStringToNull() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         var parsed = mapper.readValue("{\"foobar\":\"\"}", MoreJackson.toMap());
         assertThat(parsed.containsKey("foobar")).isTrue();
         assertThat(parsed.get("foobar")).isNull();
@@ -67,13 +67,13 @@ class MoreJacksonTest {
 
     @Test
     void doNotFailOnUnknownProperties() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         mapper.readValue("{\"foobar\":\"\"}", ListWrapper.class);
     }
 
     @Test
     void parseNullCollectionsToEmpty() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         var parsed = mapper.readValue("{\"strings\":null}", ListWrapper.class);
         assertThat(parsed.strings).isNotNull();
         assertThat(parsed.strings.isEmpty()).isTrue();
@@ -82,7 +82,7 @@ class MoreJacksonTest {
 
     @Test
     void parseNullCollectionContentToEmpty() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         var parsed = mapper.readValue("{\"strings\":[null]}", ListWrapper.class);
         assertThat(parsed.strings).isNotNull();
         assertThat(parsed.strings.size()).isEqualTo(1);
@@ -93,7 +93,7 @@ class MoreJacksonTest {
 
     @Test
     void useLombokDefaultIfAbsent() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         var parsed = mapper.readValue("{}", ListWrapper.class);
         assertThat(parsed.strings).isNotNull();
         assertThat(parsed.strings.isEmpty()).isTrue();
@@ -102,7 +102,7 @@ class MoreJacksonTest {
 
     @Test
     void handleOptional() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
+        var mapper = MoreJackson.newObjectMapper();
         var parsedAbsent = mapper.readValue("{}", OptionalWrapper.class);
         assertThat(parsedAbsent.string).isNotNull();
         assertThat(parsedAbsent.string).isEmpty();

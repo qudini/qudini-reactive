@@ -30,31 +30,21 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class MoreJackson {
 
-    private static final ObjectMapper OBJECT_MAPPER = newObjectMapper();
-    private static final WebClient WEB_CLIENT = newWebClient();
     private static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {
     };
     private static final TypeReference<List<Object>> LIST_TYPE = new TypeReference<>() {
     };
 
     /**
-     * <p>Returns a singleton created with {@link #newObjectMapper()}</p>
+     * To deserialize into a {@link Map}.
      */
-    public static ObjectMapper getObjectMapper() {
-        return OBJECT_MAPPER;
-    }
-
-    /**
-     * <p>Returns a singleton created with {@link #newWebClient()}</p>
-     */
-    public static WebClient getWebClient() {
-        return WEB_CLIENT;
-    }
-
     public static TypeReference<Map<String, Object>> toMap() {
         return MAP_TYPE;
     }
 
+    /**
+     * To deserialize into a {@link List}.
+     */
     public static TypeReference<List<Object>> toList() {
         return LIST_TYPE;
     }
@@ -94,11 +84,11 @@ public final class MoreJackson {
     }
 
     /**
-     * <p>Creates a new {@link WebClient} using the {@link ObjectMapper} returned by {@link #getObjectMapper()}
+     * <p>Creates a new {@link WebClient} using the {@link ObjectMapper} returned by {@link #newObjectMapper()}
      * for both the encoder ({@link Jackson2JsonEncoder}) and the decoder ({@link Jackson2JsonDecoder}).</p>
      */
     public static WebClient newWebClient() {
-        return newWebClient(getObjectMapper());
+        return newWebClient(newObjectMapper());
     }
 
     /**
