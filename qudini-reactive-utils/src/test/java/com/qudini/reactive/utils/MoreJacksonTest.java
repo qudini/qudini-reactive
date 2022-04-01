@@ -10,8 +10,10 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MoreJacksonTest {
 
@@ -47,14 +49,6 @@ class MoreJacksonTest {
     }
 
     @Test
-    void doNotSerialiseEmptyArray() throws JsonProcessingException {
-        var mapper = MoreJackson.getObjectMapper();
-        Map<String, Object> map = new HashMap<>();
-        map.put("foobar", new String[0]);
-        assertThat(mapper.writeValueAsString(map)).isEqualTo("{}");
-    }
-
-    @Test
     void doNotSerialiseEmptyMap() throws JsonProcessingException {
         var mapper = MoreJackson.getObjectMapper();
         Map<String, Object> map = new HashMap<>();
@@ -68,12 +62,13 @@ class MoreJacksonTest {
         var parsed = mapper.readValue("{\"foobar\":\"\"}", MoreJackson.toMap());
         assertThat(parsed.containsKey("foobar")).isTrue();
         assertThat(parsed.get("foobar")).isNull();
+        assertThrows(UnsupportedOperationException.class, () -> parsed.put("fail", ""));
     }
 
     @Test
     void doNotFailOnUnknownProperties() throws JsonProcessingException {
         var mapper = MoreJackson.getObjectMapper();
-        mapper.readValue("{\"foobar\":\"\"}", EmptyClass.class);
+        mapper.readValue("{\"foobar\":\"\"}", ListWrapper.class);
     }
 
     @Test
@@ -82,6 +77,7 @@ class MoreJacksonTest {
         var parsed = mapper.readValue("{\"strings\":null}", ListWrapper.class);
         assertThat(parsed.strings).isNotNull();
         assertThat(parsed.strings.isEmpty()).isTrue();
+        assertThrows(UnsupportedOperationException.class, () -> parsed.strings.add(List.of()));
     }
 
     @Test
@@ -91,6 +87,8 @@ class MoreJacksonTest {
         assertThat(parsed.strings).isNotNull();
         assertThat(parsed.strings.size()).isEqualTo(1);
         assertThat(parsed.strings.contains(List.of())).isTrue();
+        assertThrows(UnsupportedOperationException.class, () -> parsed.strings.add(List.of()));
+        assertThrows(UnsupportedOperationException.class, () -> parsed.strings.get(0).add(""));
     }
 
     @Test
@@ -99,12 +97,24 @@ class MoreJacksonTest {
         var parsed = mapper.readValue("{}", ListWrapper.class);
         assertThat(parsed.strings).isNotNull();
         assertThat(parsed.strings.isEmpty()).isTrue();
+        assertThrows(UnsupportedOperationException.class, () -> parsed.strings.add(List.of()));
     }
 
-    @Value
-    @Builder
-    @Jacksonized
-    static class EmptyClass {
+    @Test
+    void handleOptional() throws JsonProcessingException {
+        var mapper = MoreJackson.getObjectMapper();
+        var parsedAbsent = mapper.readValue("{}", OptionalWrapper.class);
+        assertThat(parsedAbsent.string).isNotNull();
+        assertThat(parsedAbsent.string).isEmpty();
+        var parsedNull = mapper.readValue("{\"string\":null}", OptionalWrapper.class);
+        assertThat(parsedNull.string).isNotNull();
+        assertThat(parsedNull.string).isEmpty();
+        var parsedEmpty = mapper.readValue("{\"string\":\"\"}", OptionalWrapper.class);
+        assertThat(parsedEmpty.string).isNotNull();
+        assertThat(parsedEmpty.string).isEmpty();
+        var parsedValued = mapper.readValue("{\"string\":\"foobar\"}", OptionalWrapper.class);
+        assertThat(parsedValued.string).isNotNull();
+        assertThat(parsedValued.string).isEqualTo(Optional.of("foobar"));
     }
 
     @Value
@@ -113,6 +123,14 @@ class MoreJacksonTest {
     static class ListWrapper {
         @Builder.Default
         List<List<String>> strings = List.of();
+    }
+
+    @Value
+    @Builder
+    @Jacksonized
+    static class OptionalWrapper {
+        @Builder.Default
+        Optional<String> string = Optional.empty();
     }
 
 }
