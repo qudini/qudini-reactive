@@ -98,6 +98,7 @@ class QudiniJsonLayoutTest {
         assertThat(json.get("logger")).isEqualTo("TEST_LOGGER");
         assertThat(json.get("message")).isEqualTo("log message");
         assertThat(json.get("stacktrace")).isNull();
+        assertThat(json.get("build_name")).isEqualTo(BUILD_NAME);
         assertThat(json.get("build_version")).isEqualTo(BUILD_VERSION);
         assertThat(json.get("env")).isEqualTo(ENVIRONMENT);
     }
