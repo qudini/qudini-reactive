@@ -9,11 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 
 import javax.annotation.PreDestroy;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
 
@@ -79,8 +81,8 @@ public final class SqsListeners {
     private Flux<Void> startPolling(String queueUrl, SqsListener<?> listener) {
         return sqsMessageChecker
                 .checkForMessages(queueUrl, listener)
-                .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, long polling will keep going", queueUrl, error)))
-                .onErrorResume(error -> Mono.empty())
+                .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, retrying", queueUrl, error)))
+                .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1)).maxBackoff(Duration.ofMinutes(1)))
                 .contextWrite(context -> context.putAll(reactiveLoggingContextCreator.create()))
                 .repeat();
     }
