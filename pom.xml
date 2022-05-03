@@ -29,7 +29,7 @@
         <testcontainers.version>1.17.1</testcontainers.version>
         <wiremock.version>2.33.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
-        <newrelic.version>7.6.0</newrelic.version>
+        <newrelic.version>7.7.0</newrelic.version>
         <newrelic-agent.sha256-checksum>66243f4faeb0c71d018203786ab91ef06e75e096e778bba0ea9029b5196a22ea</newrelic-agent.sha256-checksum>
         <sentry.version>5.7.3</sentry.version>
         <aws-sdk.version>2.17.182</aws-sdk.version>
