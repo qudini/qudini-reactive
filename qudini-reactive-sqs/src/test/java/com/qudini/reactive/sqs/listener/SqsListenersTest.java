@@ -118,8 +118,7 @@ class SqsListenersTest {
 
         startAndStop();
 
-        verify(reactiveLoggingContextCreator, atLeast(2)).create();
-        assertThat(callCount.get()).isGreaterThanOrEqualTo(2);
+        assertThat(callCount.get()).isEqualTo(2);
 
     }
 
@@ -127,7 +126,7 @@ class SqsListenersTest {
     private void startAndStop() {
         var sqsListeners = new SqsListeners(Set.of(listener), sqsClient, sqsMessageChecker, reactiveLoggingContextCreator);
         runAsync(sqsListeners::start);
-        Thread.sleep(500);
+        Thread.sleep(1500);
         sqsListeners.stop();
     }
 

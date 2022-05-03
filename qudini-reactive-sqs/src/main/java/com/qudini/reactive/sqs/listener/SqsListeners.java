@@ -82,7 +82,7 @@ public final class SqsListeners {
         return sqsMessageChecker
                 .checkForMessages(queueUrl, listener)
                 .doOnEach(Log.onError(error -> log.error("An error occurred while checking for messages for queue {}, retrying", queueUrl, error)))
-                .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(2)).maxBackoff(Duration.ofMinutes(1)))
+                .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1)).maxBackoff(Duration.ofMinutes(1)))
                 .contextWrite(context -> context.putAll(reactiveLoggingContextCreator.create()))
                 .repeat();
     }
