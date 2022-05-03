@@ -1,5 +1,11 @@
 {
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^com.qudini:qudini-reactive[a-z0-9-]*"],
+      "enabled": false
+    }
   ]
 }
