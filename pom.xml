@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
+        <version>2.6.7</version>
     </parent>
 
     <properties>
@@ -26,17 +26,17 @@
         <!-- Qudini-managed versions: -->
         <jsr305.version>3.0.2</jsr305.version>
         <guava.version>31.1-jre</guava.version>
-        <testcontainers.version>1.16.3</testcontainers.version>
-        <wiremock.version>2.32.0</wiremock.version>
+        <testcontainers.version>1.17.1</testcontainers.version>
+        <wiremock.version>2.33.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
-        <newrelic.version>7.5.0</newrelic.version>
-        <newrelic-agent.sha256-checksum>14ebab1946a78f54ada6adda7559e6388919323cfefde29bc7b1c2a0e27709dc</newrelic-agent.sha256-checksum>
-        <sentry.version>5.7.0</sentry.version>
-        <aws-sdk.version>2.17.156</aws-sdk.version>
-        <qudini-gom.version>8.0.0</qudini-gom.version>
+        <newrelic.version>7.6.0</newrelic.version>
+        <newrelic-agent.sha256-checksum>66243f4faeb0c71d018203786ab91ef06e75e096e778bba0ea9029b5196a22ea</newrelic-agent.sha256-checksum>
+        <sentry.version>5.7.3</sentry.version>
+        <aws-sdk.version>2.17.182</aws-sdk.version>
+        <qudini-gom.version>8.1.0</qudini-gom.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
-        <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
         <!-- Spring-managed versions (https://docs.spring.io/spring-boot/docs/current/reference/html/dependency-versions.html#dependency-versions.properties): -->
     </properties>
@@ -223,11 +223,6 @@
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>mysql</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>redis</artifactId>
                 <version>${testcontainers.version}</version>
             </dependency>
             <dependency>
