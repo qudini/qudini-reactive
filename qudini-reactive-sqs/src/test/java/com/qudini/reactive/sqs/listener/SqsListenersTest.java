@@ -118,7 +118,7 @@ class SqsListenersTest {
 
         startAndStop();
 
-        assertThat(callCount.get()).isEqualTo(2);
+        assertThat(callCount.get()).isGreaterThanOrEqualTo(2);
 
     }
 
