@@ -31,7 +31,7 @@ public final class MoreCollectors {
     /**
      * <p>Collects into a {@link Map}, mapping values with {@link Function#identity()}</p>
      */
-    public static <T, K> Collector<T, ?, Map<K, T>> toMap(
+    public static <T, K> Collector<T, ?, Map<K, T>> toIdentityMap(
             Function<? super T, ? extends K> keyMapper
     ) {
         return Collectors.toMap(keyMapper, identity());
@@ -40,7 +40,7 @@ public final class MoreCollectors {
     /**
      * <p>Collects into an unmodifiable {@link Map}, mapping values with {@link Function#identity()}</p>
      */
-    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableMap(
+    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableIdentityMap(
             Function<? super T, ? extends K> keyMapper
     ) {
         return Collectors.toUnmodifiableMap(keyMapper, identity());
@@ -49,7 +49,7 @@ public final class MoreCollectors {
     /**
      * <p>Collects into a {@link LinkedHashMap}, mapping values with {@link Function#identity()}</p>
      */
-    public static <T, K> Collector<T, ?, Map<K, T>> toLinkedMap(
+    public static <T, K> Collector<T, ?, Map<K, T>> toIdentityLinkedMap(
             Function<? super T, ? extends K> keyMapper
     ) {
         return toLinkedMap(keyMapper, identity());
@@ -73,7 +73,7 @@ public final class MoreCollectors {
     /**
      * <p>Collects into an unmodifiable {@link LinkedHashMap}, mapping values with {@link Function#identity()}</p>
      */
-    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableLinkedMap(
+    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableIdentityLinkedMap(
             Function<? super T, ? extends K> keyMapper
     ) {
         return toUnmodifiableLinkedMap(keyMapper, identity());
@@ -95,7 +95,7 @@ public final class MoreCollectors {
     /**
      * <p>Collects into a {@link TreeMap}, mapping values with {@link Function#identity()}</p>
      */
-    public static <T, K> Collector<T, ?, Map<K, T>> toTreeMap(
+    public static <T, K> Collector<T, ?, Map<K, T>> toIdentityTreeMap(
             Function<? super T, ? extends K> keyMapper
     ) {
         return toTreeMap(keyMapper, identity());
@@ -119,7 +119,7 @@ public final class MoreCollectors {
     /**
      * <p>Collects into an unmodifiable {@link TreeMap}, mapping values with {@link Function#identity()}</p>
      */
-    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableTreeMap(
+    public static <T, K> Collector<T, ?, Map<K, T>> toUnmodifiableIdentityTreeMap(
             Function<? super T, ? extends K> keyMapper
     ) {
         return toUnmodifiableTreeMap(keyMapper, identity());
