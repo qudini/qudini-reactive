@@ -11,14 +11,18 @@ import java.util.stream.Stream;
 
 import static com.qudini.reactive.utils.MoreCollectors.groupingByUnmodifiable;
 import static com.qudini.reactive.utils.MoreCollectors.partitioningByUnmodifiable;
+import static com.qudini.reactive.utils.MoreCollectors.toIdentityLinkedMap;
+import static com.qudini.reactive.utils.MoreCollectors.toIdentityTreeMap;
 import static com.qudini.reactive.utils.MoreCollectors.toLinkedMap;
 import static com.qudini.reactive.utils.MoreCollectors.toLinkedSet;
-import static com.qudini.reactive.utils.MoreCollectors.toMap;
+import static com.qudini.reactive.utils.MoreCollectors.toIdentityMap;
 import static com.qudini.reactive.utils.MoreCollectors.toTreeMap;
 import static com.qudini.reactive.utils.MoreCollectors.toTreeSet;
+import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableIdentityLinkedMap;
+import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableIdentityTreeMap;
 import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableLinkedMap;
 import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableLinkedSet;
-import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableMap;
+import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableIdentityMap;
 import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableTreeMap;
 import static com.qudini.reactive.utils.MoreCollectors.toUnmodifiableTreeSet;
 import static java.util.Map.entry;
@@ -34,7 +38,7 @@ class MoreCollectorsTest {
     void mapIdentityValues() {
         var map = Stream
                 .of("aaa", "c", "bb")
-                .collect(toMap(String::length));
+                .collect(toIdentityMap(String::length));
         assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of(
                 3, "aaa",
                 1, "c",
@@ -48,7 +52,7 @@ class MoreCollectorsTest {
     void unmodifiableMapIdentityValues() {
         var map = Stream
                 .of("aaa", "c", "bb")
-                .collect(toUnmodifiableMap(String::length));
+                .collect(toUnmodifiableIdentityMap(String::length));
         assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of(
                 3, "aaa",
                 1, "c",
@@ -62,7 +66,7 @@ class MoreCollectorsTest {
     void linkedMapIdentityValues() {
         var map = Stream
                 .of("aaa", "c", "bb")
-                .collect(toLinkedMap(String::length));
+                .collect(toIdentityLinkedMap(String::length));
         assertThat(map).containsExactly(
                 entry(3, "aaa"),
                 entry(1, "c"),
@@ -90,7 +94,7 @@ class MoreCollectorsTest {
     void unmodifiableLinkedMapIdentityValues() {
         var map = Stream
                 .of("aaa", "c", "bb")
-                .collect(toUnmodifiableLinkedMap(String::length));
+                .collect(toUnmodifiableIdentityLinkedMap(String::length));
         assertThat(map).containsExactly(
                 entry(3, "aaa"),
                 entry(1, "c"),
@@ -118,7 +122,7 @@ class MoreCollectorsTest {
     void treeMapIdentityValues() {
         var map = Stream
                 .of("aaa", "c", "bb")
-                .collect(toTreeMap(String::length));
+                .collect(toIdentityTreeMap(String::length));
         assertThat(map).containsExactly(
                 entry(1, "c"),
                 entry(2, "bb"),
@@ -146,7 +150,7 @@ class MoreCollectorsTest {
     void unmodifiableTreeMapIdentityValues() {
         var map = Stream
                 .of("aaa", "c", "bb")
-                .collect(toUnmodifiableTreeMap(String::length));
+                .collect(toUnmodifiableIdentityTreeMap(String::length));
         assertThat(map).containsExactly(
                 entry(1, "c"),
                 entry(2, "bb"),
