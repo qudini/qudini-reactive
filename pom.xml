@@ -26,7 +26,7 @@
         <!-- Qudini-managed versions: -->
         <jsr305.version>3.0.2</jsr305.version>
         <guava.version>31.1-jre</guava.version>
-        <testcontainers.version>1.17.1</testcontainers.version>
+        <testcontainers.version>1.17.2</testcontainers.version>
         <wiremock.version>2.33.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>7.7.0</newrelic.version>
