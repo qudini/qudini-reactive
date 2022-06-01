@@ -91,13 +91,10 @@ If you're using Spring Security, you may want to have custom rules for the probe
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(
-            ServerHttpSecurity http,
-            @Value("${management.server.port}") int managementServerPort
-    ) {
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                .matchers(new ProbesMatcher(managementServerPort)).permitAll()
+                .matchers(ProbesMatcher.probes()).permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }
@@ -106,16 +103,16 @@ public class SecurityConfiguration {
 ```
 
 By default, the paths `/liveness`, `/readiness` and `/metrics` will be allowed. If you used other ones, you can specify
-them via `com.qudini.reactive.metrics.security.Paths` when creating the `ProbesMatcher`:
+them via `com.qudini.reactive.metrics.security.ProbesPaths` when creating the `ProbesMatcher`:
 
 ```java
-Paths paths = Paths
+ProbesPaths paths = ProbesPaths
     .builder()
     .liveness("/your-liveness")
     .readiness("/your-readiness")
     .metrics("/your-metrics")
     .build();
-ProbesMatcher matcher = new ProbesMatcher(serverPort, managementServerPort, paths);
+ProbesMatcher matcher = ProbesMatcher.probes(paths);
 ```
 
 ## Usage
