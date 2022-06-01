@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class Paths {
+public class ProbesPaths {
 
     @Builder.Default
     String liveness = "/liveness";
