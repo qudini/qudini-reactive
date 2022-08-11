@@ -37,7 +37,7 @@
         <newrelic-agent.sha256-checksum>d7e01225a77c0f6b339e62f77fc559208a02381db24d6f7f2b082afd5213645b</newrelic-agent.sha256-checksum>
         <sentry.version>6.3.1</sentry.version>
         <aws-sdk.version>2.17.240</aws-sdk.version>
-        <qudini-gom.version>8.3.0</qudini-gom.version>
+        <qudini-gom.version>8.3.1</qudini-gom.version>
         <auth0-jwt.version>4.0.0</auth0-jwt.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
