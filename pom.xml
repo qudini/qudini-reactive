@@ -35,7 +35,7 @@
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>7.9.0</newrelic.version>
         <newrelic-agent.sha256-checksum>d7e01225a77c0f6b339e62f77fc559208a02381db24d6f7f2b082afd5213645b</newrelic-agent.sha256-checksum>
-        <sentry.version>6.3.1</sentry.version>
+        <sentry.version>6.4.0</sentry.version>
         <aws-sdk.version>2.17.255</aws-sdk.version>
         <qudini-gom.version>8.3.1</qudini-gom.version>
         <auth0-jwt.version>4.0.0</auth0-jwt.version>
