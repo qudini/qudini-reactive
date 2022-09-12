@@ -13,11 +13,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.3</version>
+        <version>3.0.0-M4</version>
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <qudini-reactive.version>0-SNAPSHOT</qudini-reactive.version>
@@ -28,13 +28,13 @@
             ./target/site/coverage/it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
-        <jsr305.version>3.0.2</jsr305.version>
         <guava.version>31.1-jre</guava.version>
         <testcontainers.version>1.17.3</testcontainers.version>
         <wiremock.version>2.33.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>7.9.0</newrelic.version>
-        <newrelic-agent.sha256-checksum>d7e01225a77c0f6b339e62f77fc559208a02381db24d6f7f2b082afd5213645b</newrelic-agent.sha256-checksum>
+        <newrelic-agent.sha256-checksum>d7e01225a77c0f6b339e62f77fc559208a02381db24d6f7f2b082afd5213645b
+        </newrelic-agent.sha256-checksum>
         <sentry.version>6.4.1</sentry.version>
         <aws-sdk.version>2.17.255</aws-sdk.version>
         <qudini-gom.version>8.3.2</qudini-gom.version>
@@ -188,6 +188,14 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>repository.spring.milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -199,11 +207,6 @@
                         <artifactId>spring-boot-starter-logging</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>${jsr305.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>

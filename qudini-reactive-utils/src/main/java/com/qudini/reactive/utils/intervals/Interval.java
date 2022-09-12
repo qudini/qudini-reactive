@@ -3,8 +3,6 @@ package com.qudini.reactive.utils.intervals;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ComparisonChain;
 
-import javax.annotation.Nonnull;
-
 import static com.qudini.reactive.utils.MoreComparables.isGreaterThan;
 import static com.qudini.reactive.utils.MoreComparables.isGreaterThanOrEqualTo;
 import static com.qudini.reactive.utils.MoreComparables.isLessThan;
@@ -12,10 +10,8 @@ import static com.qudini.reactive.utils.MoreComparables.isLessThanOrEqualTo;
 
 public interface Interval<E extends Comparable<? super E>, T extends Interval<E, T>> extends Comparable<T> {
 
-    @Nonnull
     E getStart();
 
-    @Nonnull
     E getEnd();
 
     @JsonIgnore
