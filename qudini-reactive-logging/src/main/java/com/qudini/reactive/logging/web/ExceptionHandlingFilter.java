@@ -74,7 +74,7 @@ public final class ExceptionHandlingFilter extends DefaultErrorWebExceptionHandl
                 .ofNullable(exchange.getResponse().getStatusCode())
                 .filter(HttpStatusCode::isError)
                 .ifPresent(status -> {
-                    var method = request.getMethodValue();
+                    var method = request.getMethod();
                     var path = request.getPath().pathWithinApplication().value();
                     if (status.is4xxClientError()) {
                         log.warn("'{} {}' returned {}", method, path, status, throwable);
