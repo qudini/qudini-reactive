@@ -33,8 +33,7 @@
         <wiremock.version>2.33.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>7.9.0</newrelic.version>
-        <newrelic-agent.sha256-checksum>d7e01225a77c0f6b339e62f77fc559208a02381db24d6f7f2b082afd5213645b
-        </newrelic-agent.sha256-checksum>
+        <newrelic-agent.sha256-checksum>d7e01225a77c0f6b339e62f77fc559208a02381db24d6f7f2b082afd5213645b</newrelic-agent.sha256-checksum>
         <sentry.version>6.4.1</sentry.version>
         <aws-sdk.version>2.17.255</aws-sdk.version>
         <qudini-gom.version>8.3.2</qudini-gom.version>
