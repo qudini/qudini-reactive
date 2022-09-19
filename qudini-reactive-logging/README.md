@@ -188,7 +188,7 @@ Sentry's `environment` and `release` will be populated thanks to `com.qudini.rea
 
 ### Reactive context creation
 
-By default, the reactive context will be populated with a `Map<String, String>` mapped to the key `"LOGGING_MDC"`, that will used to populate the MDC when logging.
+By default, the reactive context will be populated with a `Map<String, String>` mapped to the key `"LOGGING_MDC"`, that will be used to populate the MDC when logging.
 
 Inside the MDC, the correlation id will be mapped to a key named `"correlation_id"`. 
 

@@ -1,6 +1,6 @@
 # qudini-reactive
 
-Spring WebFlux helps building scalable applications, Qudini Reactive helps making them production-ready.
+Spring WebFlux helps to build scalable applications, Qudini Reactive helps to make them production-ready.
 
 All these libraries are preconfigured: just adding them as dependencies is enough to get started. Further fine-grained configuration is available if needed.
 
