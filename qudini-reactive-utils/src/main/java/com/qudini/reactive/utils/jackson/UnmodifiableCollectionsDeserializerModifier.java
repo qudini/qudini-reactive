@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public final class UnmodifiableCollectionsDeserializerModifier extends BeanDeser
 
     private static final class UnmodifiableCollectionDeserializer<T> extends DelegatingDeserializer {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         private final Function<T, T> unmodifier;

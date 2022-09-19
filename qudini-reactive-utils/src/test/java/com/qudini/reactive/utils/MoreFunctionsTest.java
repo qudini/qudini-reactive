@@ -3,6 +3,7 @@ package com.qudini.reactive.utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.Serial;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -180,6 +181,7 @@ class MoreFunctionsTest {
 
     private static final class TestException extends Exception {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
     }

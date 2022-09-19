@@ -30,7 +30,7 @@ public final class MoreIntervals {
                 .filter(interval -> isLessThan(interval.getStart(), bounds.getEnd()))
                 .map(interval -> interval.withStart(greatestBetween(interval.getStart(), bounds.getStart())))
                 .map(interval -> interval.withEnd(leastBetween(interval.getEnd(), bounds.getEnd())))
-                .collect(toUnmodifiableList());
+                .toList();
     }
 
     /**
@@ -41,7 +41,7 @@ public final class MoreIntervals {
             return intervals;
         }
         var mergedIntervals = new ArrayList<T>();
-        var sortedIntervals = intervals.stream().sorted().collect(toUnmodifiableList());
+        var sortedIntervals = intervals.stream().sorted().toList();
         var a = sortedIntervals.get(0);
         for (int i = 1, n = intervals.size(); i < n; i++) {
             var b = sortedIntervals.get(i);
@@ -81,7 +81,7 @@ public final class MoreIntervals {
         return intervals
                 .stream()
                 .flatMap(interval -> subtract(interval, subtrahend))
-                .collect(toUnmodifiableList());
+                .toList();
     }
 
     /**

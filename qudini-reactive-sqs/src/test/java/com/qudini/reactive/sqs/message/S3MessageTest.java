@@ -13,45 +13,46 @@ class S3MessageTest {
     @DisplayName("should be parsable by Jackson")
     void parse() throws Exception {
         // example copied as is from https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html:
-        var payload = "{  \n" +
-                "   \"Records\":[  \n" +
-                "      {  \n" +
-                "         \"eventVersion\":\"2.1\",\n" +
-                "         \"eventSource\":\"aws:s3\",\n" +
-                "         \"awsRegion\":\"us-west-2\",\n" +
-                "         \"eventTime\":\"1970-01-01T00:00:00.000Z\",\n" +
-                "         \"eventName\":\"ObjectCreated:Put\",\n" +
-                "         \"userIdentity\":{  \n" +
-                "            \"principalId\":\"AIDAJDPLRKLG7UEXAMPLE\"\n" +
-                "         },\n" +
-                "         \"requestParameters\":{  \n" +
-                "            \"sourceIPAddress\":\"127.0.0.1\"\n" +
-                "         },\n" +
-                "         \"responseElements\":{  \n" +
-                "            \"x-amz-request-id\":\"C3D13FE58DE4C810\",\n" +
-                "            \"x-amz-id-2\":\"FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD\"\n" +
-                "         },\n" +
-                "         \"s3\":{  \n" +
-                "            \"s3SchemaVersion\":\"1.0\",\n" +
-                "            \"configurationId\":\"testConfigRule\",\n" +
-                "            \"bucket\":{  \n" +
-                "               \"name\":\"mybucket\",\n" +
-                "               \"ownerIdentity\":{  \n" +
-                "                  \"principalId\":\"A3NL1KOZZKExample\"\n" +
-                "               },\n" +
-                "               \"arn\":\"arn:aws:s3:::mybucket\"\n" +
-                "            },\n" +
-                "            \"object\":{  \n" +
-                "               \"key\":\"HappyFace.jpg\",\n" +
-                "               \"size\":1024,\n" +
-                "               \"eTag\":\"d41d8cd98f00b204e9800998ecf8427e\",\n" +
-                "               \"versionId\":\"096fKKXTRTtl3on89fVO.nfljtsv6qko\",\n" +
-                "               \"sequencer\":\"0055AED6DCD90281E5\"\n" +
-                "            }\n" +
-                "         }\n" +
-                "      }\n" +
-                "   ]\n" +
-                "}";
+        var payload = """
+                {
+                  "Records": [
+                    {
+                      "eventVersion": "2.1",
+                      "eventSource": "aws:s3",
+                      "awsRegion": "us-west-2",
+                      "eventTime": "1970-01-01T00:00:00.000Z",
+                      "eventName": "ObjectCreated:Put",
+                      "userIdentity": {
+                        "principalId": "AIDAJDPLRKLG7UEXAMPLE"
+                      },
+                      "requestParameters": {
+                        "sourceIPAddress": "127.0.0.1"
+                      },
+                      "responseElements": {
+                        "x-amz-request-id": "C3D13FE58DE4C810",
+                        "x-amz-id-2": "FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD"
+                      },
+                      "s3": {
+                        "s3SchemaVersion": "1.0",
+                        "configurationId": "testConfigRule",
+                        "bucket": {
+                          "name": "mybucket",
+                          "ownerIdentity": {
+                            "principalId": "A3NL1KOZZKExample"
+                          },
+                          "arn": "arn:aws:s3:::mybucket"
+                        },
+                        "object": {
+                          "key": "HappyFace.jpg",
+                          "size": 1024,
+                          "eTag": "d41d8cd98f00b204e9800998ecf8427e",
+                          "versionId": "096fKKXTRTtl3on89fVO.nfljtsv6qko",
+                          "sequencer": "0055AED6DCD90281E5"
+                        }
+                      }
+                    }
+                  ]
+                }""";
         var s3Message = new ObjectMapper().readValue(payload, S3Message.class);
         assertThat(s3Message).isNotNull();
         assertThat(s3Message.getRecords()).hasSize(1);

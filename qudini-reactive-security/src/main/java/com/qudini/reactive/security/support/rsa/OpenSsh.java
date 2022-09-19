@@ -30,7 +30,7 @@ public final class OpenSsh {
 
     private static final int PUBLIC_KEY_VALUE_LENGTH = 4;
     private static final byte[] PUBLIC_KEY_PREFIX = new byte[]{0x00, 0x00, 0x00, 0x07, 0x73, 0x73, 0x68, 0x2d, 0x72, 0x73, 0x61};
-    private static final Pattern PUBLIC_KEY_PATTERN = Pattern.compile("ssh-rsa[\\s]+([A-Za-z0-9/+]+=*)[\\s]+.*");
+    private static final Pattern PUBLIC_KEY_PATTERN = Pattern.compile("ssh-rsa\\s+([A-Za-z0-9/+]+=*)\\s+.*");
 
     private static final KeyFactory RSA_KEY_FACTORY;
     private static final KeyPairGenerator RSA_KEY_PAIR_GENERATOR;

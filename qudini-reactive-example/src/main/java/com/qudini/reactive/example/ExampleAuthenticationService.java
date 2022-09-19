@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ public class ExampleAuthenticationService implements AuthenticationService<Examp
 
     public static final class ExampleAuthentication implements Authentication {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         private static final Collection<SimpleGrantedAuthority> AUTHORITIES = Set.of(new SimpleGrantedAuthority("EXAMPLE"));
