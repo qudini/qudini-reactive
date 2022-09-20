@@ -84,7 +84,7 @@ This will allow having the following endpoints available:
 
 ### Security
 
-If you're using Spring Security, you may want to have custom rules for the probes. If should be the case, you can use `com.qudini.reactive.metrics.security.ProbesMatcher` to match them, for example:
+If you're using Spring Security, you may want to have custom rules for the probes, in which case you can use `com.qudini.reactive.metrics.security.ProbesMatcher` to match them, for example:
 
 ```java
 @EnableWebFluxSecurity

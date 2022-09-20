@@ -10,4 +10,4 @@ We release patches for security vulnerabilities for the following versions:
 
 ## Reporting a Vulnerability
 
-Please send an email to security@qudini.com.
+Please email security@qudini.com.

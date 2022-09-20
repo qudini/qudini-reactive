@@ -4,12 +4,14 @@ import com.qudini.reactive.logging.WithLoggingContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.Serial;
 import java.util.Map;
 
 import static com.qudini.reactive.security.web.LoggingContextPopulatingFilter.PRINCIPAL_KEY;
 
 public final class AuthenticatedResponseStatusException extends ResponseStatusException implements WithLoggingContext {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final String principal;
