@@ -5,6 +5,10 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Qudini Reactive</name>
+    <description>Spring WebFlux builds scalable applications, Qudini Reactive makes them production-ready.</description>
+    <url>https://github.com/qudini/qudini-reactive</url>
+
     <groupId>com.qudini</groupId>
     <artifactId>qudini-reactive</artifactId>
     <version>0-SNAPSHOT</version>
@@ -17,7 +21,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <qudini-reactive.version>0-SNAPSHOT</qudini-reactive.version>

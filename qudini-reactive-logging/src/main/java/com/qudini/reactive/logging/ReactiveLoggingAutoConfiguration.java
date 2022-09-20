@@ -83,7 +83,7 @@ public class ReactiveLoggingAutoConfiguration {
                 serverProperties.getError(),
                 applicationContext
         );
-        exceptionHandler.setViewResolvers(viewResolvers.orderedStream().collect(toUnmodifiableList()));
+        exceptionHandler.setViewResolvers(viewResolvers.orderedStream().toList());
         exceptionHandler.setMessageReaders(serverCodecConfigurer.getReaders());
         exceptionHandler.setMessageWriters(serverCodecConfigurer.getWriters());
         return exceptionHandler;
