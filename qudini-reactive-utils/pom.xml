@@ -15,6 +15,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.qudini</groupId>
+            <artifactId>qudini-utils</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
