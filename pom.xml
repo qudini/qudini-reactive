@@ -32,7 +32,7 @@
             ./target/site/coverage/it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
-        <jsr305.version>3.0.2</jsr305.version>
+        <qudini-utils.version>0.0.2</qudini-utils.version>
         <guava.version>31.1-jre</guava.version>
         <testcontainers.version>1.17.3</testcontainers.version>
         <wiremock.version>2.34.0</wiremock.version>
@@ -205,9 +205,9 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>${jsr305.version}</version>
+                <groupId>com.qudini</groupId>
+                <artifactId>qudini-utils</artifactId>
+                <version>${qudini-utils.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>

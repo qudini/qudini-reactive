@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static com.qudini.reactive.logging.Log.CORRELATION_ID_KEY;
 import static com.qudini.reactive.logging.Log.LOGGING_MDC_KEY;
-import static com.qudini.reactive.utils.MoreTuples.onBoth;
+import static com.qudini.utils.MoreTuples.onBoth;
 
 @Slf4j
 @RequiredArgsConstructor

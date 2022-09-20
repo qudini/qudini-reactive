@@ -4,7 +4,7 @@ import com.qudini.reactive.logging.Log;
 import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
 import com.qudini.reactive.sqs.SqsListener;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
-import com.qudini.reactive.utils.MoreTuples;
+import com.qudini.utils.MoreTuples;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -19,8 +19,8 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
 
-import static com.qudini.reactive.utils.MoreTuples.onBoth;
-import static com.qudini.reactive.utils.MoreTuples.onLeftWhen;
+import static com.qudini.utils.MoreTuples.onBoth;
+import static com.qudini.utils.MoreTuples.onLeftWhen;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
