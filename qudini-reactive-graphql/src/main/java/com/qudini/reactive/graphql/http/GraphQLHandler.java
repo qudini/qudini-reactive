@@ -17,7 +17,7 @@ import reactor.util.context.ContextView;
 
 import java.util.Map;
 
-import static com.qudini.reactive.utils.MoreTuples.onBoth;
+import static com.qudini.utils.MoreTuples.onBoth;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 

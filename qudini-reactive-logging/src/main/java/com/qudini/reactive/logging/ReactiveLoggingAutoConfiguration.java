@@ -29,8 +29,6 @@ import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.server.reactive.HttpHandlerDecoratorFactory;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
-
 @Configuration
 public class ReactiveLoggingAutoConfiguration {
 
