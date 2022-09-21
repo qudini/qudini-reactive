@@ -1,6 +1,6 @@
 # qudini-reactive-utils
 
-Utilities around Project Reactor.
+See also [`qudini-utils`](https://github.com/qudini/qudini-utils).
 
 ## Installation
 
