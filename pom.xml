@@ -32,7 +32,7 @@
             ./target/site/coverage/it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
-        <qudini-utils.version>0.0.2</qudini-utils.version>
+        <qudini-utils.version>0.0.3</qudini-utils.version>
         <guava.version>31.1-jre</guava.version>
         <testcontainers.version>1.17.3</testcontainers.version>
         <wiremock.version>2.34.0</wiremock.version>
