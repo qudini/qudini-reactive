@@ -40,7 +40,7 @@
         <newrelic.version>7.10.0</newrelic.version>
         <newrelic-agent.sha256-checksum>846bc9f3c311708c4e332859ed6ee6090368618354ee4c39de5ddc2e571eb0bd</newrelic-agent.sha256-checksum>
         <sentry.version>6.4.2</sentry.version>
-        <aws-sdk.version>2.17.255</aws-sdk.version>
+        <aws-sdk.version>2.17.279</aws-sdk.version>
         <qudini-gom.version>8.3.2</qudini-gom.version>
         <auth0-jwt.version>4.0.0</auth0-jwt.version>
         <bouncycastle.version>1.70</bouncycastle.version>
