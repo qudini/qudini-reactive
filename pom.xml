@@ -88,11 +88,25 @@
 
     <repositories>
         <repository>
-            <id>repository.spring.milestone</id>
-            <name>Spring Milestone Repository</name>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <scm>
         <connection>scm:git:git://github.com/qudini/qudini-reactive.git</connection>
