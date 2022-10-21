@@ -32,17 +32,17 @@
             ./target/site/coverage/it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
-        <qudini-utils.version>0.0.3</qudini-utils.version>
+        <qudini-utils.version>0.0.4</qudini-utils.version>
         <guava.version>31.1-jre</guava.version>
-        <testcontainers.version>1.17.3</testcontainers.version>
+        <testcontainers.version>1.17.5</testcontainers.version>
         <wiremock.version>2.34.0</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>7.10.0</newrelic.version>
         <newrelic-agent.sha256-checksum>846bc9f3c311708c4e332859ed6ee6090368618354ee4c39de5ddc2e571eb0bd</newrelic-agent.sha256-checksum>
-        <sentry.version>6.4.2</sentry.version>
-        <aws-sdk.version>2.17.279</aws-sdk.version>
-        <qudini-gom.version>8.3.2</qudini-gom.version>
-        <auth0-jwt.version>4.0.0</auth0-jwt.version>
+        <sentry.version>6.5.0</sentry.version>
+        <aws-sdk.version>2.17.295</aws-sdk.version>
+        <qudini-gom.version>8.3.3</qudini-gom.version>
+        <auth0-jwt.version>4.1.0</auth0-jwt.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
