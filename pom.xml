@@ -42,7 +42,7 @@
         <sentry.version>6.5.0</sentry.version>
         <aws-sdk.version>2.17.295</aws-sdk.version>
         <qudini-gom.version>8.4.2</qudini-gom.version>
-        <auth0-jwt.version>4.1.0</auth0-jwt.version>
+        <auth0-jwt.version>4.2.1</auth0-jwt.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
