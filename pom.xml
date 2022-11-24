@@ -35,7 +35,7 @@
         <qudini-utils.version>0.0.5</qudini-utils.version>
         <guava.version>31.1-jre</guava.version>
         <testcontainers.version>1.17.6</testcontainers.version>
-        <wiremock.version>2.34.0</wiremock.version>
+        <wiremock.version>2.35.0</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>7.11.1</newrelic.version>
         <newrelic-agent.sha256-checksum>dce8d08859dc4a823cfac9f40bc3b824f8d03f5117e6ced75d151bed605ec465</newrelic-agent.sha256-checksum>
