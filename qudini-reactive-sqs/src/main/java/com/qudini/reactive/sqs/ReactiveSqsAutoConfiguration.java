@@ -5,16 +5,16 @@ import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
 import com.qudini.reactive.sqs.listener.SqsListeners;
 import com.qudini.reactive.sqs.message.DefaultSqsMessageChecker;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
 import java.util.Collection;
 
-@Configuration
+@AutoConfiguration
 public class ReactiveSqsAutoConfiguration {
 
     @Bean

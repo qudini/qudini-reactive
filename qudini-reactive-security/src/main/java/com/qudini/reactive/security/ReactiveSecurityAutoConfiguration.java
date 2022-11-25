@@ -7,6 +7,7 @@ import com.qudini.reactive.security.web.LoggingContextPopulatingFilter;
 import com.qudini.reactive.security.web.csrf.CsrfVerifier;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import static org.springframework.security.config.web.server.SecurityWebFiltersOrder.AUTHENTICATION;
 import static org.springframework.security.config.web.server.SecurityWebFiltersOrder.AUTHORIZATION;
 
+@AutoConfiguration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 public class ReactiveSecurityAutoConfiguration {
