@@ -45,7 +45,7 @@
         <auth0-jwt.version>4.2.1</auth0-jwt.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
-        <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
         <!-- Spring-managed versions (https://docs.spring.io/spring-boot/docs/current/reference/html/dependency-versions.html#dependency-versions.properties): -->
     </properties>
