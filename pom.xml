@@ -24,7 +24,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <qudini-reactive.version>0-SNAPSHOT</qudini-reactive.version>
+        <qudini-reactive.version>0.0.16</qudini-reactive.version>
         <java-sources>src/main/java</java-sources>
         <skip-coverage>false</skip-coverage>
         <sonar.coverage.jacoco.xmlReportPaths>
