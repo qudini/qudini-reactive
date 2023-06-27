@@ -35,7 +35,7 @@
         <qudini-utils.version>0.0.5</qudini-utils.version>
         <guava.version>32.0.1-jre</guava.version>
         <testcontainers.version>1.18.3</testcontainers.version>
-        <wiremock.version>2.35.0</wiremock.version>
+        <wiremock.version>2.27.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>8.4.0</newrelic.version>
         <newrelic-agent.sha256-checksum>3c8c108e8e7e51b535b18d34e7e454ef81ff80b646be1f475991ef81b1d361b6</newrelic-agent.sha256-checksum>
@@ -227,7 +227,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.tomakehurst</groupId>
-                <artifactId>wiremock-jre8</artifactId>
+                <artifactId>wiremock</artifactId>
                 <version>${wiremock.version}</version>
             </dependency>
             <dependency>
