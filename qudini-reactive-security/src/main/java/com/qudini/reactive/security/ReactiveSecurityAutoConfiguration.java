@@ -46,9 +46,9 @@ public class ReactiveSecurityAutoConfiguration {
     ) {
         return serverHttpSecurity
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-                .csrf().disable()
-                .requestCache().disable()
-                .logout().disable()
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .requestCache(ServerHttpSecurity.RequestCacheSpec::disable)
+                .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .addFilterAt(new AuthenticatingFilter(authenticationServices), AUTHENTICATION)
                 .addFilterBefore(new AccessDeniedExceptionHandlingFilter(), AUTHORIZATION)
                 .build();
