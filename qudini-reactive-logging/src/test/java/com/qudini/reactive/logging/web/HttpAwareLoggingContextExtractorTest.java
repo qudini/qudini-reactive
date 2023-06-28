@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
@@ -31,7 +32,7 @@ class HttpAwareLoggingContextExtractorTest {
     void requestMetadata() {
         var headers = new HttpHeaders();
         headers.addAll("User-Agent", List.of("user", "agent"));
-        given(request.getMethodValue()).willReturn("POST");
+        given(request.getMethod()).willReturn(HttpMethod.POST);
         given(request.getPath()).willReturn(RequestPath.parse("/context/some/path", "/context"));
         given(request.getHeaders()).willReturn(headers);
         var context = extractor.extract(request).block();
