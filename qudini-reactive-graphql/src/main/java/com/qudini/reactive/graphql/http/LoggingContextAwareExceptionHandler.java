@@ -22,7 +22,7 @@ public final class LoggingContextAwareExceptionHandler implements DataFetcherExc
         var path = handlerParameters.getPath();
         var error = new ExceptionWhileDataFetching(path, exception, sourceLocation);
         ContextView context = handlerParameters.getDataFetchingEnvironment().getGraphQlContext().getOrDefault(Context.class, Context.empty());
-        if (exception instanceof ResponseStatusException && ((ResponseStatusException) exception).getStatus().is4xxClientError()) {
+        if (exception instanceof ResponseStatusException && ((ResponseStatusException) exception).getStatusCode().is4xxClientError()) {
             Log.withContext(context, () -> log.warn(error.getMessage(), exception));
         } else {
             Log.withContext(context, () -> log.error(error.getMessage(), exception));
