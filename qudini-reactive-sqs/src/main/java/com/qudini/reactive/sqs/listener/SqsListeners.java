@@ -5,6 +5,7 @@ import com.qudini.reactive.logging.ReactiveLoggingContextCreator;
 import com.qudini.reactive.sqs.SqsListener;
 import com.qudini.reactive.sqs.message.SqsMessageChecker;
 import com.qudini.utils.MoreTuples;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -14,7 +15,6 @@ import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 
-import javax.annotation.PreDestroy;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;

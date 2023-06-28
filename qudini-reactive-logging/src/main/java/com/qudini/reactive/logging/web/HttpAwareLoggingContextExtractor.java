@@ -12,7 +12,7 @@ public final class HttpAwareLoggingContextExtractor implements LoggingContextExt
     @Override
     public Mono<Map<String, String>> extract(ServerHttpRequest request) {
         return Mono.just(Map.of(
-                "request", request.getMethodValue() + " " + request.getPath().pathWithinApplication().value(),
+                "request", request.getMethod() + " " + request.getPath().pathWithinApplication().value(),
                 "user_agent", String.join(", ", request.getHeaders().getOrEmpty("User-Agent"))
         ));
     }

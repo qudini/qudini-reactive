@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWeb
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -72,9 +72,9 @@ public final class ExceptionHandlingFilter extends DefaultErrorWebExceptionHandl
         var request = exchange.getRequest();
         Optional
                 .ofNullable(exchange.getResponse().getStatusCode())
-                .filter(HttpStatus::isError)
+                .filter(HttpStatusCode::isError)
                 .ifPresent(status -> {
-                    var method = request.getMethodValue();
+                    var method = request.getMethod();
                     var path = request.getPath().pathWithinApplication().value();
                     if (status.is4xxClientError()) {
                         log.warn("'{} {}' returned {}", method, path, status, throwable);

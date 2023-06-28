@@ -17,7 +17,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.6</version>
+        <version>3.1.0</version>
     </parent>
 
     <properties>
@@ -33,21 +33,22 @@
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
         <qudini-utils.version>0.0.5</qudini-utils.version>
-        <guava.version>31.1-jre</guava.version>
-        <testcontainers.version>1.17.6</testcontainers.version>
-        <wiremock.version>2.35.0</wiremock.version>
+        <guava.version>32.0.1-jre</guava.version>
+        <testcontainers.version>1.18.3</testcontainers.version>
+        <wiremock.version>2.27.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
-        <newrelic.version>7.11.1</newrelic.version>
-        <newrelic-agent.sha256-checksum>dce8d08859dc4a823cfac9f40bc3b824f8d03f5117e6ced75d151bed605ec465</newrelic-agent.sha256-checksum>
-        <sentry.version>6.8.0</sentry.version>
-        <aws-sdk.version>2.18.24</aws-sdk.version>
+        <newrelic.version>8.4.0</newrelic.version>
+        <newrelic-agent.sha256-checksum>3c8c108e8e7e51b535b18d34e7e454ef81ff80b646be1f475991ef81b1d361b6</newrelic-agent.sha256-checksum>
+        <sentry.version>6.24.0</sentry.version>
+        <aws-sdk.version>2.20.92</aws-sdk.version>
         <qudini-gom.version>8.4.2</qudini-gom.version>
-        <auth0-jwt.version>4.2.1</auth0-jwt.version>
+        <auth0-jwt.version>4.4.0</auth0-jwt.version>
         <bouncycastle.version>1.70</bouncycastle.version>
-        <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
-        <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
-        <gpg-plugin.version>3.0.1</gpg-plugin.version>
+        <lombok-plugin.version>1.18.28</lombok-plugin.version>
+        <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
+        <gpg-plugin.version>3.1.0</gpg-plugin.version>
         <!-- Spring-managed versions (https://docs.spring.io/spring-boot/docs/current/reference/html/dependency-versions.html#dependency-versions.properties): -->
+        <maven.plugin.validation>VERBOSE</maven.plugin.validation>
     </properties>
 
     <licenses>
@@ -226,7 +227,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.tomakehurst</groupId>
-                <artifactId>wiremock-jre8</artifactId>
+                <artifactId>wiremock</artifactId>
                 <version>${wiremock.version}</version>
             </dependency>
             <dependency>
