@@ -15,6 +15,7 @@ import com.qudini.reactive.logging.web.LoggingContextHttpHandlerDecorator;
 import com.qudini.reactive.utils.metadata.MetadataService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -23,13 +24,12 @@ import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.server.reactive.HttpHandlerDecoratorFactory;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
-@Configuration
+@AutoConfiguration
 public class ReactiveLoggingAutoConfiguration {
 
     @Bean

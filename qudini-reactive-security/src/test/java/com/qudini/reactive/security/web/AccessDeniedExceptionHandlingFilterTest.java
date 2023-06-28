@@ -44,7 +44,7 @@ class AccessDeniedExceptionHandlingFilterTest {
         given(chain.filter(exchange)).willReturn(Mono.error(new AccessDeniedException("test")));
         var completion = filter.filter(exchange, chain);
         var thrown = assertThrows(ResponseStatusException.class, completion::block);
-        assertThat(thrown.getStatus()).isEqualTo(UNAUTHORIZED);
+        assertThat(thrown.getStatusCode()).isEqualTo(UNAUTHORIZED);
     }
 
     @Test
@@ -52,7 +52,7 @@ class AccessDeniedExceptionHandlingFilterTest {
         given(chain.filter(exchange)).willReturn(Mono.error(new AccessDeniedException("test")));
         var completion = filter.filter(exchange, chain).contextWrite(withAuthentication(Unauthenticated.INSTANCE));
         var thrown = assertThrows(ResponseStatusException.class, completion::block);
-        assertThat(thrown.getStatus()).isEqualTo(UNAUTHORIZED);
+        assertThat(thrown.getStatusCode()).isEqualTo(UNAUTHORIZED);
     }
 
     @Test
@@ -60,7 +60,7 @@ class AccessDeniedExceptionHandlingFilterTest {
         given(chain.filter(exchange)).willReturn(Mono.error(new AccessDeniedException("test")));
         var completion = filter.filter(exchange, chain).contextWrite(withAuthentication(AUTHENTICATION));
         var thrown = assertThrows(AuthenticatedResponseStatusException.class, completion::block);
-        assertThat(thrown.getStatus()).isEqualTo(FORBIDDEN);
+        assertThat(thrown.getStatusCode()).isEqualTo(FORBIDDEN);
         assertThat(thrown.getLoggingContext()).containsExactlyInAnyOrderEntriesOf(Map.of("principal", "foo"));
     }
 
