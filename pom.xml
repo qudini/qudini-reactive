@@ -33,7 +33,7 @@
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
         <qudini-utils.version>0.0.5</qudini-utils.version>
-        <guava.version>32.0.1-jre</guava.version>
+        <guava.version>32.1.1-jre</guava.version>
         <testcontainers.version>1.18.3</testcontainers.version>
         <wiremock.version>2.27.2</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
