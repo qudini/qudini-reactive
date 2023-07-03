@@ -31,7 +31,7 @@ jobs:
           export GPG_TTY=$(tty)
           echo $GPG_PUBLIC_KEY | base64 --decode > gpg-public-key && gpg --import gpg-public-key
           echo $GPG_PRIVATE_KEY | base64 --decode > gpg-private-key && gpg --batch --passphrase $GPG_PASSPHRASE --import gpg-private-key
-          mvn --no-transfer-progress --settings ./.m2/settings.xml clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE -Prelease
+          mvn -X --no-transfer-progress --settings ./.m2/settings.xml clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE -Prelease
         env:
           LOG_LEVEL: FATAL
           JIRA_ID: ${{ secrets.JIRA_ID }}
