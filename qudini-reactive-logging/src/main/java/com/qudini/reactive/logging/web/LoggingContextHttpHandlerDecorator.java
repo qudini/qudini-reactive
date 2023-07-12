@@ -8,6 +8,7 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.context.ContextView;
 
 import java.util.Map;
@@ -34,7 +35,8 @@ public final class LoggingContextHttpHandlerDecorator implements HttpHandler {
                         extractLoggingContext(request)
                 )
                 .map(onBoth(reactiveLoggingContextCreator::create))
-                .flatMap(context -> handle(request, response, context));
+                .flatMap(context -> handle(request, response, context))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     private Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response, ContextView context) {
