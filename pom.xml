@@ -17,7 +17,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.3</version>
+        <version>3.2.1</version>
     </parent>
 
     <properties>
@@ -33,19 +33,20 @@
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- Qudini-managed versions: -->
         <qudini-utils.version>0.0.5</qudini-utils.version>
-        <guava.version>32.1.2-jre</guava.version>
-        <testcontainers.version>1.19.0</testcontainers.version>
-        <wiremock.version>2.27.2</wiremock.version>
+        <guava.version>33.0.0-jre</guava.version>
+        <testcontainers.version>1.19.3</testcontainers.version>
+        <wiremock.version>3.3.1</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
-        <newrelic.version>8.5.0</newrelic.version>
-        <newrelic-agent.sha256-checksum>b6e53d5d24ba61267aa21054dd320ca0cf948c393657eeff2308d12f0247e477</newrelic-agent.sha256-checksum>
-        <sentry.version>6.29.0</sentry.version>
-        <aws-sdk.version>2.20.151</aws-sdk.version>
+        <newrelic.version>8.7.0</newrelic.version>
+        <!-- $shasum -a 256 /Users/.../qudini-reactive/qudini-reactive-example/target/newrelic-agent-8.7.0.zip -->
+        <newrelic-agent.sha256-checksum>dc718f6e37433b9f8e5e8a9d58352ecbb6f710b67ac17bb81c86c2aa86bf20a9</newrelic-agent.sha256-checksum>
+        <sentry.version>7.1.0</sentry.version>
+        <aws-sdk.version>2.22.3</aws-sdk.version>
         <qudini-gom.version>8.4.2</qudini-gom.version>
         <auth0-jwt.version>4.4.0</auth0-jwt.version>
-        <bouncycastle.version>1.76</bouncycastle.version>
+        <bouncycastle.version>1.77</bouncycastle.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
-        <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
         <gpg-plugin.version>3.1.0</gpg-plugin.version>
         <!-- Spring-managed versions (https://docs.spring.io/spring-boot/docs/current/reference/html/dependency-versions.html#dependency-versions.properties): -->
         <maven.plugin.validation>VERBOSE</maven.plugin.validation>
