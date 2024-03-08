@@ -40,7 +40,7 @@
         <newrelic.version>8.9.1</newrelic.version>
         <!-- $shasum -a 256 /Users/.../qudini-reactive/qudini-reactive-example/target/newrelic-agent-8.7.0.zip -->
         <newrelic-agent.sha256-checksum>f9f81a3a500460d33cf9aec6bec288e733de843730dcbf06c9656c63f598cf19</newrelic-agent.sha256-checksum>
-        <sentry.version>7.1.0</sentry.version>
+        <sentry.version>7.6.0</sentry.version>
         <aws-sdk.version>2.23.19</aws-sdk.version>
         <qudini-gom.version>8.4.2</qudini-gom.version>
         <auth0-jwt.version>4.4.0</auth0-jwt.version>
