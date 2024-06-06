@@ -4,11 +4,12 @@ import com.qudini.gom.Gom;
 import com.qudini.reactive.logging.Log;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.DataFetcherExceptionHandler;
-import graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentation;
 import graphql.schema.GraphQLSchema;
 import lombok.RequiredArgsConstructor;
 import org.dataloader.DataLoaderRegistry;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -28,6 +29,9 @@ public final class GraphQLHandler {
     private final GraphQLSchema schema;
     private final DataFetcherExceptionHandler exceptionHandler;
 
+    @Value("${qudini-reactive.graphql-max-depth}")
+    private Integer maxDepth = 3;
+
     public Mono<ServerResponse> postJson(ServerRequest request) {
         return Mono
                 .deferContextual(Mono::just)
@@ -42,7 +46,7 @@ public final class GraphQLHandler {
         var input = request.toExecutionInput(context, registry);
         var graphql = GraphQL
                 .newGraphQL(schema)
-                .instrumentation(new DataLoaderDispatcherInstrumentation())
+                .instrumentation(new MaxQueryDepthInstrumentation(maxDepth))
                 .defaultDataFetcherExceptionHandler(exceptionHandler)
                 .build();
         return Log
