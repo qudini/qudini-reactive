@@ -1,6 +1,7 @@
 package com.qudini.reactive.graphql.http;
 
 import com.qudini.gom.Gom;
+import com.qudini.reactive.graphql.exception.MaxQueryDepthExceededException;
 import com.qudini.reactive.logging.Log;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
@@ -48,11 +49,7 @@ public final class GraphQLHandler {
                 .newGraphQL(schema)
                 .instrumentation(new MaxQueryDepthInstrumentation(maxDepth, queryDepthInfo -> {
                     if (queryDepthInfo.getDepth() > maxDepth) {
-                        try {
-                            throw new Exception("Query depth exceeded maximum allowed depth of" + maxDepth);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                        throw new MaxQueryDepthExceededException("Query depth exceeded maximum allowed depth of " + maxDepth);
                     }
                     return false;
                 }))
