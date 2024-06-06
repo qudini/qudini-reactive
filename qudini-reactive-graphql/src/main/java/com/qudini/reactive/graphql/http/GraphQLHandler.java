@@ -30,7 +30,7 @@ public final class GraphQLHandler {
     private final DataFetcherExceptionHandler exceptionHandler;
 
     @Value("${qudini-reactive.graphql-max-depth}")
-    private Integer maxDepth = 3;
+    private Integer maxDepth;
 
     public Mono<ServerResponse> postJson(ServerRequest request) {
         return Mono
@@ -46,7 +46,16 @@ public final class GraphQLHandler {
         var input = request.toExecutionInput(context, registry);
         var graphql = GraphQL
                 .newGraphQL(schema)
-                .instrumentation(new MaxQueryDepthInstrumentation(maxDepth))
+                .instrumentation(new MaxQueryDepthInstrumentation(maxDepth, queryDepthInfo -> {
+                    if (queryDepthInfo.getDepth() > maxDepth) {
+                        try {
+                            throw new Exception("Query depth exceeded maximum allowed depth of" + maxDepth);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    return false;
+                }))
                 .defaultDataFetcherExceptionHandler(exceptionHandler)
                 .build();
         return Log
