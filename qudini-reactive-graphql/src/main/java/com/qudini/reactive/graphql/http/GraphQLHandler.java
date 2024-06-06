@@ -48,7 +48,7 @@ public final class GraphQLHandler {
         var graphql = GraphQL
                 .newGraphQL(schema)
                 .instrumentation(new MaxQueryDepthInstrumentation(maxDepth, queryDepthInfo -> {
-                    if (queryDepthInfo.getDepth() > maxDepth) {
+                    if (queryDepthInfo.getDepth() > 15) {
                         throw new MaxQueryDepthExceededException("Query depth exceeded maximum allowed depth of " + maxDepth);
                     }
                     return false;
