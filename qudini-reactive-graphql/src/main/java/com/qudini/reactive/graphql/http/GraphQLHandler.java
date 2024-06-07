@@ -29,7 +29,7 @@ public final class GraphQLHandler {
     private final GraphQLSchema schema;
     private final DataFetcherExceptionHandler exceptionHandler;
 
-    @Value("${qudini-reactive.graphql-max-depth:15}")
+    @Value("${qudini-reactive.graphql-max-depth:5}")
     private Integer maxDepth;
 
     public Mono<ServerResponse> postJson(ServerRequest request) {
