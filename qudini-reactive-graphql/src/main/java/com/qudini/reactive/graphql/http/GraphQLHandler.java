@@ -59,5 +59,4 @@ public final class GraphQLHandler {
                 .contentType(APPLICATION_JSON)
                 .body(body, ParameterizedTypeReference.forType(Map.class));
     }
-
 }
