@@ -39,6 +39,11 @@ public DataFetcherExceptionHandler graphqlExceptionHandler(...) {
 }
 ```
 
+### Introspection
+Your GraphQL Introspection properties is expected to be available in the classpath, in `application.properties`. `qudini-reactive.introspection-enabled` is the property name.
+Default it is set as false.
+
+
 ### Query Depth
 
 Your GraphQL Max Query Depth  is expected to be available in the classpath, in `application.properties`. `qudini-reactive.graphql-max-depth` is the property name.
