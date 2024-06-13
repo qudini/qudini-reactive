@@ -7,8 +7,10 @@ import com.qudini.reactive.graphql.http.GraphQLHandler;
 import com.qudini.reactive.graphql.http.LoggingContextAwareExceptionHandler;
 import com.qudini.reactive.graphql.scalar.Scalar;
 import graphql.execution.DataFetcherExceptionHandler;
+import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.SchemaDirectiveWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -97,6 +100,29 @@ public class ReactiveGraphQLAutoConfiguration {
                 POST("/graphql").and(contentType(APPLICATION_JSON)),
                 graphqlHandler::postJson
         );
+    }
+
+    @Value("${qudini-reactive.introspection-enabled:false}")
+    private boolean schemaIntrospectionEnabled;
+
+    /**
+     * @return GraphQlProperties with introspection disabled by default.
+     */
+    @Bean
+    public GraphQlProperties graphqlProperties() {
+        return new GraphQlProperties(){
+            @Override
+            public Schema getSchema() {
+                return new Schema() {
+                    @Override
+                    public Introspection getIntrospection() {
+                        Introspection introspection = new Introspection();
+                        introspection.setEnabled(schemaIntrospectionEnabled);
+                        return introspection;
+                    }
+                };
+            }
+        };
     }
 
 }
