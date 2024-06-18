@@ -101,28 +101,4 @@ public class ReactiveGraphQLAutoConfiguration {
                 graphqlHandler::postJson
         );
     }
-
-    @Value("${qudini-reactive.introspection-enabled:false}")
-    private boolean schemaIntrospectionEnabled;
-
-    /**
-     * @return GraphQlProperties with introspection disabled by default.
-     */
-    @Bean
-    public GraphQlProperties graphqlProperties() {
-        return new GraphQlProperties(){
-            @Override
-            public Schema getSchema() {
-                return new Schema() {
-                    @Override
-                    public Introspection getIntrospection() {
-                        Introspection introspection = new Introspection();
-                        introspection.setEnabled(schemaIntrospectionEnabled);
-                        return introspection;
-                    }
-                };
-            }
-        };
-    }
-
 }
