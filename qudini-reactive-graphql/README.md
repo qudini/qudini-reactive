@@ -38,6 +38,10 @@ public DataFetcherExceptionHandler graphqlExceptionHandler(...) {
     return ...;
 }
 ```
+### Query Depth
+
+Your GraphQL Max Query Depth  is expected to be available in the classpath, in `application.properties`. `qudini-reactive.graphql-max-depth` is the property name.
+Exception is thrown if Query Depth is exceeded. If Property itself is not present, default value 5 is set.
 
 ### Wiring
 
