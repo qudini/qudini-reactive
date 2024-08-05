@@ -50,7 +50,7 @@ public final class GraphQLHandler {
         var input = request.toExecutionInput(context, registry);
         var graphql = GraphQL
                 .newGraphQL(schema)
-                .instrumentation(new MaxQueryDepthInstrumentation(maxDepth))
+                .instrumentation(instrumentation())
                 .defaultDataFetcherExceptionHandler(exceptionHandler)
                 .build();
         return Log
