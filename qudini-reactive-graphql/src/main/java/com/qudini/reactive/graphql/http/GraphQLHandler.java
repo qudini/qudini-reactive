@@ -4,18 +4,23 @@ import com.qudini.gom.Gom;
 import com.qudini.reactive.logging.Log;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.analysis.MaxQueryComplexityInstrumentation;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.execution.DataFetcherExceptionHandler;
+import graphql.execution.instrumentation.ChainedInstrumentation;
+import graphql.execution.instrumentation.Instrumentation;
 import graphql.schema.GraphQLSchema;
 import lombok.RequiredArgsConstructor;
 import org.dataloader.DataLoaderRegistry;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import reactor.util.context.ContextView;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import static com.qudini.utils.MoreTuples.onBoth;
@@ -46,12 +51,21 @@ public final class GraphQLHandler {
         var input = request.toExecutionInput(context, registry);
         var graphql = GraphQL
                 .newGraphQL(schema)
-                .instrumentation(new MaxQueryDepthInstrumentation(maxDepth))
+                .instrumentation(instrumentation())
                 .defaultDataFetcherExceptionHandler(exceptionHandler)
                 .build();
         return Log
                 .thenFuture(() -> graphql.executeAsync(input))
                 .map(ExecutionResult::toSpecification);
+    }
+
+    public Instrumentation instrumentation() {
+        return new ChainedInstrumentation(
+                Arrays.asList(
+                        new MaxQueryDepthInstrumentation(maxDepth), // Limit query depth to maxDepth
+                        new MaxQueryComplexityInstrumentation(maxDepth) // Limit query complexity to maxDepth
+                )
+        );
     }
 
     private Mono<ServerResponse> respond(Mono<Map<String, Object>> body) {
