@@ -13,6 +13,7 @@ import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import graphql.schema.idl.TypeRuntimeWiring;
+import graphql.schema.visibility.NoIntrospectionGraphqlFieldVisibility;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,7 +69,7 @@ public class ReactiveGraphQLAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public RuntimeWiring graphqlWiring(Gom gom, Collection<Scalar<?, ?, ?>> scalars, Collection<TypeRuntimeWiring> wirings) {
-        var wiring = RuntimeWiring.newRuntimeWiring();
+        var wiring = RuntimeWiring.newRuntimeWiring().fieldVisibility(NoIntrospectionGraphqlFieldVisibility.NO_INTROSPECTION_FIELD_VISIBILITY);
         scalars.stream().map(Scalar::build).forEach(wiring::scalar);
         wirings.forEach(wiring::type);
         gom.decorateRuntimeWiringBuilder(wiring);
@@ -98,5 +99,4 @@ public class ReactiveGraphQLAutoConfiguration {
                 graphqlHandler::postJson
         );
     }
-
 }
