@@ -58,6 +58,7 @@ public final class GraphQLHandler {
                 .map(ExecutionResult::toSpecification);
     }
 
+
     private Mono<ServerResponse> respond(Mono<Map<String, Object>> body) {
         return ok()
                 .contentType(APPLICATION_JSON)
