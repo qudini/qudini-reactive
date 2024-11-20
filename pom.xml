@@ -34,7 +34,7 @@
         <!-- Qudini-managed versions: -->
         <qudini-utils.version>0.0.5</qudini-utils.version>
         <guava.version>33.0.0-jre</guava.version>
-        <testcontainers.version>1.20.3</testcontainers.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
         <wiremock.version>3.9.1</wiremock.version>
         <lmax-disruptor.version>3.4.4</lmax-disruptor.version>
         <newrelic.version>8.13.0</newrelic.version>
