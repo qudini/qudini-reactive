@@ -33,7 +33,7 @@ public class ReactiveMetricsAutoConfiguration {
     public RouterFunction<ServerResponse> liveness() {
         return route(
                 methods(HEAD, GET).and(path("/liveness")),
-                request -> ok().body(empty())
+                request -> ok().body("ok")
         );
     }
 
