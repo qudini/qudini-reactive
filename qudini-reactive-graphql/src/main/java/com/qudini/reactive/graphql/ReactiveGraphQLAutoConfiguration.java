@@ -99,5 +99,4 @@ public class ReactiveGraphQLAutoConfiguration {
                 graphqlHandler::postJson
         );
     }
-
 }
