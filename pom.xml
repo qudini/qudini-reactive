@@ -41,7 +41,7 @@
         <!-- $shasum -a 256 /Users/.../qudini-reactive/qudini-reactive-example/target/newrelic-agent-8.7.0.zip -->
         <newrelic-agent.sha256-checksum>66dc45e62e2891c1a5b5f6b5beb6a75b702e4dee6f930fa827e2355923561bfc</newrelic-agent.sha256-checksum>
         <sentry.version>8.3.0</sentry.version>
-        <aws-sdk.version>2.30.33</aws-sdk.version>
+        <aws-sdk.version>2.30.36</aws-sdk.version>
         <qudini-gom.version>8.4.2</qudini-gom.version>
         <auth0-jwt.version>4.5.0</auth0-jwt.version>
         <bouncycastle.version>1.79</bouncycastle.version>
